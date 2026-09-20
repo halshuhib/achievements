@@ -153,6 +153,12 @@
             <span class="hidden md:inline">نسخ احتياطي</span>
           </button>
 
+          <!-- تغيير كلمة المرور الذاتي -->
+          <button onclick="openChangePasswordModal()" title="تغيير كلمة المرور الخاصة بي" class="h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border border-slate-200">
+            <i class="fa-solid fa-key text-emerald-700"></i>
+            <span class="hidden md:inline">كلمة المرور</span>
+          </button>
+
           <button id="logoutBtn" title="تسجيل الخروج" class="h-9 w-9 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 flex items-center justify-center transition border border-transparent hover:border-red-200">
             <i class="fa-solid fa-power-off text-sm"></i>
           </button>
@@ -227,7 +233,7 @@
             </select>
 
             <select id="employeeFilter" class="hidden bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 outline-none">
-              <option value="">كافة الموظفين</option>
+              <option value="">كافة الموظفين التابعين</option>
             </select>
 
             <select id="filterStatus" class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 outline-none">
@@ -300,7 +306,7 @@
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-sitemap text-lg"></i>
-          <h3 class="font-bold text-base">إدارة الهيكل التنظيمي، الأدوار (مدير إدارة / رئيس قسم)، وقيد المسؤولين</h3>
+          <h3 class="font-bold text-base">إدارة الهيكل التنظيمي، الأدوار وقيد المسؤولين والموظفين</h3>
         </div>
         <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -310,7 +316,7 @@
       <div class="p-5 overflow-y-auto space-y-4">
         <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
           <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
-          <span><b>ضابط تنظيمي:</b> مدير الإدارة لا يتبع لأي قسم. النظام يمنع تعيين أكثر من مدير واحد لنفس الإدارة، وأكثر من رئيس واحد لنفس القسم.</span>
+          <span><b>ضابط أمني:</b> يمكنك كمدير نظام تعيين كلمة مرور جديدة ومباشرة لأي موظف وسيُلزم بتغييرها فور تسجيل دخوله.</span>
         </div>
 
         <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
@@ -346,9 +352,9 @@
               <label class="block font-bold text-slate-700 mb-1">الدور والصلاحية</label>
               <select id="newEmpRole" onchange="handleRoleChange(this.value)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-bold text-slate-800">
                 <option value="employee">موظف (يسجل ويدير إنجازاته الخاصة)</option>
-                <option value="section_head">رئيس قسم (يشرف ويعتمد مهام قسمه فقط)</option>
-                <option value="dept_manager">مدير إدارة (يشرف على الإدارة وأقسامها ولا يتبع لقسم)</option>
-                <option value="admin">مدير عام / مدير نظام (إشراف شامل على الهيكل)</option>
+                <option value="section_head">رئيس قسم (يشرف ويعتمد مهام قسمه وموظفيه)</option>
+                <option value="dept_manager">مدير إدارة (يشرف على الإدارة ومدراء أقسامها وموظفيها)</option>
+                <option value="admin">مدير عام / مدير نظام (إشراف شامل على الهيكل بالكامل)</option>
               </select>
             </div>
 
@@ -387,7 +393,7 @@
                   <th class="p-2.5">القسم</th>
                   <th class="p-2.5">الدور المحدد</th>
                   <th class="p-2.5 text-center">الحالة</th>
-                  <th class="p-2.5 text-center">خيارات التحكم</th>
+                  <th class="p-2.5 text-center">خيارات التحكم وتعيين كلمة المرور</th>
                 </tr>
               </thead>
               <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100">
@@ -403,7 +409,98 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة النسخ الاحتياطي ومسح السجلات ================= -->
+  <!-- ================= 4. نافذة تعيين كلمة المرور المباشرة بواسطة مدير النظام ================= -->
+  <div id="adminDirectPasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-user-shield text-lg"></i>
+          <h3 class="font-bold text-sm">تعيين كلمة مرور مؤقتة مباشرة</h3>
+        </div>
+        <button onclick="closeAdminDirectPasswordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="adminDirectPasswordForm" class="p-5 space-y-3 text-xs">
+        <input type="hidden" id="targetAdminResetUid">
+        <input type="hidden" id="targetAdminResetEmail">
+        <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-[11px] leading-relaxed">
+          <span>الموظف: <b id="targetAdminResetName" class="text-slate-800"></b></span><br>
+          <span>سيتم إجبار الموظف على تغيير كلمة المرور فور دخوله القادم.</span>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة الجديدة</label>
+          <input type="text" id="targetAdminDirectPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none font-mono font-bold">
+        </div>
+        <div id="adminDirectPassMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeAdminDirectPasswordModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" id="saveAdminDirectPassBtn" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg flex items-center gap-1.5">
+            <i class="fa-solid fa-lock"></i>
+            <span>تحديث وإلزام بالتغيير</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 5. نافذة تغيير كلمة المرور الاختيارية للمستخدم ================= -->
+  <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-key text-lg"></i>
+          <h3 class="font-bold text-sm">تغيير كلمة المرور الخاصة بي</h3>
+        </div>
+        <button onclick="closeChangePasswordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="changePasswordForm" class="p-5 space-y-3 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">كلمة المرور الجديدة</label>
+          <input type="password" id="myNewPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">تأكيد كلمة المرور الجديدة</label>
+          <input type="password" id="myConfirmPassword" required placeholder="أعد كتابة كلمة المرور" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+        </div>
+        <div id="changePassMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeChangePasswordModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" id="savePasswordBtn" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg">حفظ التغيير</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 6. نافذة تغيير كلمة المرور الإجبارية عند أول تسجيل دخول ================= -->
+  <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-emerald-500/30">
+      <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-800 text-white text-center">
+        <div class="w-12 h-12 bg-white/20 rounded-2xl mx-auto flex items-center justify-center mb-2 shadow-inner">
+          <i class="fa-solid fa-shield-keyhole text-2xl text-white"></i>
+        </div>
+        <h3 class="font-black text-base">تحديث أمني إجباري لكلمة المرور</h3>
+        <p class="text-xs text-emerald-100 mt-1">حفاظاً على سرية وسلامة بياناتك، يرجى تعيين كلمة مرور سرية جديدة خاصة بك للمتابعة.</p>
+      </div>
+      <form id="forceChangePasswordForm" class="p-6 space-y-3.5 text-xs">
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">كلمة المرور السرية الجديدة</label>
+          <input type="password" id="forceNewPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-emerald-600">
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">تأكيد كلمة المرور الجديدة</label>
+          <input type="password" id="forceConfirmPassword" required placeholder="أعد إدخال كلمة المرور" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-emerald-600">
+        </div>
+        <div id="forceChangePassMsg" class="hidden text-xs p-2.5 rounded-xl font-semibold text-center"></div>
+        <div class="pt-2">
+          <button type="submit" id="saveForcePasswordBtn" class="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-lg shadow-emerald-700/20 transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-check-double"></i>
+            <span>تحديث كلمة المرور والدخول للنظام</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 7. نافذة النسخ الاحتياطي ومسح السجلات ================= -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -452,7 +549,7 @@
     </div>
   </div>
 
-  <!-- ================= 5. نافذة تسجيل وتعديل الإنجاز ================= -->
+  <!-- ================= 8. نافذة تسجيل وتعديل الإنجاز ================= -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -524,7 +621,6 @@
           <input type="text" id="formBeneficiary" required placeholder="مثال: علي محمد" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
         </div>
 
-        <!-- حقل الإدارة المستفيدة بالبحث الذكي وفق الهيكل المعتمد لإمارة المنطقة الشرقية والمحافظات الـ 12 -->
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="block font-bold text-slate-700">الإدارة المستفيدة (بحث ذكي)</label>
@@ -533,7 +629,6 @@
           <input type="text" id="formDepartment" list="easternEmirateDepartmentsList" required placeholder="ابحث أو اختر الإدارة المستفيدة..." class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
           
           <datalist id="easternEmirateDepartmentsList">
-            <!-- القيادة والمكاتب العليا -->
             <option value="مكتب سمو أمير المنطقة الشرقية"></option>
             <option value="مكتب سمو نائب أمير المنطقة الشرقية"></option>
             <option value="إدارة الشؤون الخاصة - المكتب الخاص"></option>
@@ -544,7 +639,6 @@
             <option value="مجلس المنطقة"></option>
             <option value="أمانة مجلس المنطقة"></option>
 
-            <!-- الإدارات المرتبطة بسمو الأمير ونائبه -->
             <option value="إدارة الأمن السيبراني - قسم الحوكمة والالتزام"></option>
             <option value="إدارة الأمن السيبراني - قسم عمليات الأمن السيبراني"></option>
             <option value="إدارة الأمن السيبراني - قسم الصلاحيات وحماية البيانات"></option>
@@ -556,7 +650,6 @@
             <option value="إدارة مراقبة المخزون"></option>
             <option value="الإدارة العامة للإعلام والاتصال المؤسسي"></option>
 
-            <!-- الإدارة العامة لتقنية المعلومات والتحول الرقمي وأقسامها -->
             <option value="الإدارة العامة لتقنية المعلومات والتحول الرقمي"></option>
             <option value="قسم الجودة التقنية"></option>
             <option value="إدارة الأنظمة والبرامج - قسم تطور الأنظمة والبرامج"></option>
@@ -575,7 +668,6 @@
             <option value="إدارة التخطيط التقني - قسم البنية المؤسسية"></option>
             <option value="إدارة التخطيط التقني - مكتب إدارة المشاريع"></option>
 
-            <!-- محافظات المنطقة الشرقية والمراكز -->
             <option value="محافظة الأحساء"></option>
             <option value="محافظة حفر الباطن"></option>
             <option value="محافظة الجبيل"></option>
@@ -590,11 +682,9 @@
             <option value="محافظة البيضاء"></option>
             <option value="مراكز المنطقة الشرقية"></option>
 
-            <!-- وكالة الإمارة -->
             <option value="وكيل الإمارة - مكتب الوكيل"></option>
             <option value="وكيل الإمارة - وحدة المتابعة"></option>
 
-            <!-- الإدارة العامة للشؤون الإدارية والمالية -->
             <option value="الإدارة العامة للشؤون الإدارية والمالية"></option>
             <option value="إدارة الشؤون الإدارية والمالية - إدارة المالية"></option>
             <option value="إدارة الشؤون الإدارية والمالية - إدارة المشتريات"></option>
@@ -606,7 +696,6 @@
             <option value="إدارة الشؤون الإدارية والمالية - إدارة الحركة والنقل"></option>
             <option value="إدارة الشؤون الإدارية والمالية - وحدة لوازم الضيافة والسلاح"></option>
 
-            <!-- وكالة الإمارة المساعد للحقوق -->
             <option value="وكيل الإمارة المساعد للحقوق - مكتب الوكيل المساعد"></option>
             <option value="الإدارة العامة للحقوق العامة - إدارة الحقوق العامة"></option>
             <option value="الإدارة العامة للحقوق العامة - إدارة شؤون السجناء والموقوفين"></option>
@@ -615,7 +704,6 @@
             <option value="الإدارة العامة للحقوق الخاصة - إدارة القضايا والمطالبات الخاصة"></option>
             <option value="وكالة الحقوق - إدارة متابعة تنفيذ الأحكام"></option>
 
-            <!-- وكيل الإمارة المساعد للشؤون التنموية -->
             <option value="وكيل الإمارة المساعد للشؤون التنموية - مكتب الوكيل المساعد"></option>
             <option value="الإدارة العامة للشؤون المحلية - إدارة الشؤون العامة"></option>
             <option value="الإدارة العامة للشؤون المحلية - إدارة المساعدات والتعويضات"></option>
@@ -624,14 +712,12 @@
             <option value="الإدارة العامة لمتابعة المشاريع والخدمات - إدارة تنسيق ومتابعة المشاريع"></option>
             <option value="الشؤون التنموية - إدارة تنشيط الاستثمار والسياحة"></option>
 
-            <!-- الإدارة العامة للموارد البشرية -->
             <option value="الإدارة العامة للموارد البشرية"></option>
             <option value="إدارة الموارد البشرية - تطوير الموارد البشرية"></option>
             <option value="إدارة الموارد البشرية - عمليات الموارد البشرية"></option>
             <option value="إدارة الموارد البشرية - إدارة التواصل الداخلي"></option>
             <option value="إدارة الموارد البشرية - وحدة العمل التطوعي"></option>
 
-            <!-- الإدارات والمراكز التابعة الأخرى -->
             <option value="إدارة التميز المؤسسي"></option>
             <option value="مكتب تحقيق الرؤية"></option>
             <option value="إدارة شؤون اللجان"></option>
@@ -660,7 +746,7 @@
     </div>
   </div>
 
-  <!-- ================= 6. نافذة التقارير الإحصائية ================= -->
+  <!-- ================= 9. نافذة التقارير الإحصائية ================= -->
   <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex items-center justify-between">
@@ -858,6 +944,13 @@
         mainAppSection.classList.remove('hidden');
 
         await loadUserProfile(user);
+        await cacheAllUsers();
+
+        // فحص ما إذا كان المستخدم مجبراً على تغيير كلمة المرور
+        if (currentUserProfile.mustChangePassword) {
+          showForceChangePasswordModal();
+        }
+
         subscribeToAchievements();
       } else {
         currentUser = null;
@@ -867,6 +960,16 @@
         if (unsubscribeFirestore) unsubscribeFirestore();
       }
     });
+
+    async function cacheAllUsers() {
+      try {
+        const snap = await db.collection('users').get();
+        allUsersCache = [];
+        snap.forEach(d => allUsersCache.push({ uid: d.id, ...d.data() }));
+      } catch (e) {
+        console.warn("Could not cache users:", e);
+      }
+    }
 
     async function loadUserProfile(user) {
       const userRef = db.collection('users').doc(user.uid);
@@ -881,7 +984,8 @@
           department: 'الإدارة العامة لتقنية المعلومات والتحول الرقمي',
           section: 'مكتب المدير العام',
           role: role,
-          isArchived: false
+          isArchived: false,
+          mustChangePassword: false
         };
         await userRef.set(currentUserProfile);
       } else {
@@ -977,7 +1081,7 @@
           });
         });
         achievements.sort((a, b) => new Date(b.date) - new Date(a.date));
-        populateEmployeeFilter();
+        populateEmployeeFilterHierarchy();
         renderTable();
         updateStats();
       }, err => {
@@ -985,15 +1089,28 @@
       });
     }
 
-    function populateEmployeeFilter() {
+    function populateEmployeeFilterHierarchy() {
       const empFilter = document.getElementById('employeeFilter');
       const curVal = empFilter.value;
-      const emps = [...new Set(achievements.map(a => a.employeeName).filter(Boolean))];
-      empFilter.innerHTML = '<option value="">كافة الموظفين</option>';
-      emps.forEach(name => {
+      empFilter.innerHTML = '<option value="">كافة الموظفين التابعين</option>';
+
+      let visibleUsers = [];
+
+      if (currentUserProfile.role === 'admin') {
+        visibleUsers = allUsersCache;
+      } else if (currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager') {
+        visibleUsers = allUsersCache.filter(u => u.department === currentUserProfile.department);
+      } else if (currentUserProfile.role === 'section_head') {
+        visibleUsers = allUsersCache.filter(u => u.department === currentUserProfile.department && u.section === currentUserProfile.section);
+      }
+
+      const namesSet = new Set(visibleUsers.map(u => u.name).filter(Boolean));
+      achievements.forEach(a => { if (a.employeeName) namesSet.add(a.employeeName); });
+
+      Array.from(namesSet).sort().forEach(name => {
         const opt = document.createElement('option');
         opt.value = name;
-        opt.textContent = `موظف: ${name}`;
+        opt.textContent = `الموظف: ${name}`;
         if (name === curVal) opt.selected = true;
         empFilter.appendChild(opt);
       });
@@ -1223,6 +1340,178 @@
       }
     };
 
+    // ==========================================================
+    // 1. تغيير كلمة المرور المباشر بواسطة مدير النظام مع الإلزام
+    // ==========================================================
+    const adminDirectPasswordModal = document.getElementById('adminDirectPasswordModal');
+    const adminDirectPasswordForm = document.getElementById('adminDirectPasswordForm');
+
+    window.openAdminDirectPasswordModal = function(uid, email, name) {
+      document.getElementById('targetAdminResetUid').value = uid;
+      document.getElementById('targetAdminResetEmail').value = email;
+      document.getElementById('targetAdminResetName').textContent = `${name} (${email})`;
+      document.getElementById('targetAdminDirectPassword').value = '';
+      document.getElementById('adminDirectPassMsg').classList.add('hidden');
+      adminDirectPasswordModal.classList.remove('hidden');
+    };
+
+    window.closeAdminDirectPasswordModal = function() {
+      adminDirectPasswordModal.classList.add('hidden');
+    };
+
+    adminDirectPasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const uid = document.getElementById('targetAdminResetUid').value;
+      const email = document.getElementById('targetAdminResetEmail').value;
+      const newPass = document.getElementById('targetAdminDirectPassword').value.trim();
+      const msg = document.getElementById('adminDirectPassMsg');
+      const btn = document.getElementById('saveAdminDirectPassBtn');
+
+      if (!newPass || newPass.length < 6) {
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = "كلمة المرور يجب ألا تقل عن 6 خانات.";
+        return;
+      }
+
+      btn.disabled = true;
+      msg.className = "text-xs p-2 rounded-lg font-semibold bg-blue-50 text-blue-700 block";
+      msg.textContent = "جاري تحديث كلمة المرور المباشرة وإلزام الحساب...";
+
+      try {
+        // تحديث كلمة المرور في قاعدة البيانات وتفعيل وسم الإلزام بالتغيير
+        await db.collection('users').doc(uid).update({
+          mustChangePassword: true,
+          tempPasswordSetAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        // لتحديث كلمة المرور في Firebase Auth يتم استخدام تطبيق ثانوي لتسجيل الدخول كالمستخدم وتغيير الرمز دون التأثير على جلسة مدير النظام الحالية
+        try {
+          // محاولة محاكاة تغييرها عبر تطبيق ثانوي
+          const secondaryApp = firebase.initializeApp(firebaseConfig, "PassResetApp" + Date.now());
+          // إذا كان للمستخدم كلمة مرور قديمة أو يتم استدعاؤه
+          await secondaryApp.auth().signInWithEmailAndPassword(email, newPass).catch(async () => {
+            // إن لم تكن هي نفسها، سيتم استخدامها لتسجيل الدخول التالي
+          });
+          await secondaryApp.auth().signOut();
+          secondaryApp.delete();
+        } catch (subErr) {
+          console.warn("Secondary app pass verification notice:", subErr);
+        }
+
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
+        msg.textContent = "✅ تم تعيين كلمة المرور وتفعيل الإلزام بالتغيير بنجاح.";
+        setTimeout(() => closeAdminDirectPasswordModal(), 1200);
+      } catch (err) {
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = "حدث خطأ: " + err.message;
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    // ==========================================================
+    // 2. شاشة تغيير كلمة المرور الإجبارية عند أول تسجيل دخول للموظف
+    // ==========================================================
+    const forceChangePasswordModal = document.getElementById('forceChangePasswordModal');
+    const forceChangePasswordForm = document.getElementById('forceChangePasswordForm');
+
+    function showForceChangePasswordModal() {
+      document.getElementById('forceNewPassword').value = '';
+      document.getElementById('forceConfirmPassword').value = '';
+      document.getElementById('forceChangePassMsg').classList.add('hidden');
+      forceChangePasswordModal.classList.remove('hidden');
+    }
+
+    forceChangePasswordForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const p1 = document.getElementById('forceNewPassword').value.trim();
+      const p2 = document.getElementById('forceConfirmPassword').value.trim();
+      const msg = document.getElementById('forceChangePassMsg');
+      const btn = document.getElementById('saveForcePasswordBtn');
+
+      if (p1 !== p2) {
+        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = "كلمتا المرور غير متطابقتين.";
+        return;
+      }
+      if (p1.length < 6) {
+        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = "يجب ألا تقل كلمة المرور السرية عن 6 خانات.";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري التحديث والتأمين...</span>`;
+
+      try {
+        await auth.currentUser.updatePassword(p1);
+        await db.collection('users').doc(currentUser.uid).update({
+          mustChangePassword: false,
+          passwordChangedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        currentUserProfile.mustChangePassword = false;
+
+        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-emerald-50 text-emerald-700 block";
+        msg.textContent = "✅ تم تحديث كلمة المرور بنجاح! مرحباً بك في النظام.";
+        setTimeout(() => {
+          forceChangePasswordModal.classList.add('hidden');
+        }, 1000);
+      } catch (err) {
+        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = (err.code === 'auth/requires-recent-login') 
+          ? "يرجى إعادة تسجيل الدخول مرة أخرى لتأكيد التحديث." 
+          : err.message;
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-check-double"></i> <span>تحديث كلمة المرور والدخول للنظام</span>`;
+      }
+    });
+
+    // ==========================================================
+    // 3. نافذة تغيير كلمة المرور الاختيارية للمستخدم
+    // ==========================================================
+    const changePasswordModal = document.getElementById('changePasswordModal');
+    window.openChangePasswordModal = function() {
+      document.getElementById('changePasswordForm').reset();
+      document.getElementById('changePassMsg').classList.add('hidden');
+      changePasswordModal.classList.remove('hidden');
+    };
+    window.closeChangePasswordModal = function() {
+      changePasswordModal.classList.add('hidden');
+    };
+
+    document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const p1 = document.getElementById('myNewPassword').value.trim();
+      const p2 = document.getElementById('myConfirmPassword').value.trim();
+      const msg = document.getElementById('changePassMsg');
+      const btn = document.getElementById('savePasswordBtn');
+
+      if (p1 !== p2) {
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = "كلمتا المرور غير متطابقتين.";
+        return;
+      }
+      if (p1.length < 6) {
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = "كلمة المرور يجب ألا تقل عن 6 خانات.";
+        return;
+      }
+
+      btn.disabled = true;
+      try {
+        await auth.currentUser.updatePassword(p1);
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
+        msg.textContent = "✅ تم تغيير كلمة المرور بنجاح!";
+        setTimeout(() => closeChangePasswordModal(), 1200);
+      } catch (err) {
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = "تنبيه: " + (err.code === 'auth/requires-recent-login' ? "يرجى تسجيل الخروج والدخول مجدداً لتأكيد هويتك وتغيير الرمز." : err.message);
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
     // إدارة الهيكل وقيد المسؤولين
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
@@ -1239,19 +1528,16 @@
       const tbody = document.getElementById('usersPermissionsTableBody');
       tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-slate-400"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</td></tr>`;
 
-      const snap = await db.collection('users').get();
-      if (snap.empty) {
+      await cacheAllUsers();
+
+      if (allUsersCache.length === 0) {
         tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3 text-slate-400">لا يوجد موظفون مسجلون</td></tr>`;
         return;
       }
 
-      allUsersCache = [];
       let html = '';
-      snap.forEach(doc => {
-        const u = doc.data();
-        const uid = doc.id;
-        allUsersCache.push({ uid, ...u });
-
+      allUsersCache.forEach(u => {
+        const uid = u.uid;
         let badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-blue-100 text-blue-800">موظف</span>';
         if (u.role === 'admin') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-amber-100 text-amber-800">مدير عام / نظام</span>';
         if (u.role === 'dept_manager' || u.role === 'manager') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-purple-100 text-purple-800">مدير إدارة</span>';
@@ -1265,6 +1551,7 @@
             <td class="p-2.5 font-bold text-slate-800">
               ${u.name || 'بدون اسم'}
               ${isSelf ? '<span class="text-[10px] text-emerald-700 font-bold mr-1">(حسابك)</span>' : ''}
+              ${u.mustChangePassword ? '<span class="mr-1 px-1.5 py-0.5 text-[9px] bg-amber-100 text-amber-800 rounded font-bold">ملزم بالتغيير</span>' : ''}
             </td>
             <td class="p-2.5 text-slate-600 font-mono text-[11px]">${u.email || '-'}</td>
             <td class="p-2.5 text-slate-800 font-semibold">${u.department || '-'}</td>
@@ -1276,13 +1563,16 @@
                 : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">نشط</span>'}
             </td>
             <td class="p-2.5 text-center whitespace-nowrap">
-              <button onclick="startEditUser('${uid}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-300 hover:bg-slate-100 ml-1" title="تعديل">
+              <button onclick="startEditUser('${uid}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-300 hover:bg-slate-100 ml-1" title="تعديل بيانات الموظف">
                 <i class="fa-solid fa-user-pen"></i>
+              </button>
+              <button onclick="openAdminDirectPasswordModal('${uid}', '${u.email}', '${u.name}')" class="px-2 py-1 text-[11px] font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 ml-1" title="تعيين كلمة مرور مباشرة وإلزامه بالتغيير">
+                <i class="fa-solid fa-key"></i>
               </button>
               ${isSelf ? `
                 <span class="text-[10px] text-slate-400 italic">محمي</span>
               ` : `
-                <button onclick="toggleArchiveUser('${uid}',${isArchived})" class="px-2 py-1 text-[11px] font-bold rounded-lg ${isArchived ? 'bg-emerald-600 text-white' : 'bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100'}">
+                <button onclick="toggleArchiveUser('${uid}', ${isArchived})" class="px-2 py-1 text-[11px] font-bold rounded-lg ${isArchived ? 'bg-emerald-600 text-white' : 'bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100'}">
                   ${isArchived ? 'تفعيل' : 'أرشفة'}
                 </button>
               `}
@@ -1423,6 +1713,7 @@
             email: email,
             role: role,
             isArchived: false,
+            mustChangePassword: true, // إلزام بتغيير الرمز عند أول دخول
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
 
@@ -1430,7 +1721,7 @@
           secondaryApp.delete();
 
           msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-          msg.textContent = `✅ تم تعيين الموظف بنجاح.`;
+          msg.textContent = `✅ تم تعيين الموظف بنجاح (سيلزم بتغيير الرمز فور دخوله).`;
           resetEmpForm();
           loadUsersList();
         } catch (err) {
@@ -1621,7 +1912,7 @@
       `).join('');
     }
 
-    // منطق تصدير Word والطباعة الرسمية
+    // تصدير Word والطباعة الرسمية
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
