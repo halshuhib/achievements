@@ -95,10 +95,10 @@
       </table>
     </div>
 
-    <!-- الشريط العلوي المتناسق بتصميم موحد وأنيق -->
+    <!-- الشريط العلوي المنسق والموحد -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
-        <!-- هوية المستخدم والإدارة -->
+        <!-- هوية المستخدم -->
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
             <i class="fa-solid fa-clipboard-list text-sm"></i>
@@ -116,15 +116,13 @@
           </div>
         </div>
 
-        <!-- أزرار الإجراءات المتناسقة بارتفاع ونمط موحد -->
+        <!-- حزمة الأزرار بتنسيق موحد -->
         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
-          <!-- زر إضافة إنجاز رئيسي -->
           <button id="openAddModalBtn" class="h-9 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-plus text-xs"></i>
             <span>إضافة إنجاز</span>
           </button>
 
-          <!-- حزمة أزرار التصدير الموحدة -->
           <div class="inline-flex rounded-lg border border-slate-200 bg-slate-50 p-0.5 shadow-2xs">
             <button id="exportExcelBtn" title="تصدير إكسل" class="h-8 px-2.5 hover:bg-white text-emerald-700 hover:text-emerald-800 rounded-md text-xs font-semibold transition flex items-center gap-1">
               <i class="fa-solid fa-file-excel"></i>
@@ -140,7 +138,6 @@
             </button>
           </div>
 
-          <!-- أزرار الإدارة والإشراف -->
           <button id="analyticsBtn" onclick="openAnalyticsModal()" class="hidden h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition items-center gap-1.5 border border-slate-200">
             <i class="fa-solid fa-chart-pie text-indigo-600"></i>
             <span class="hidden sm:inline">التحليلات</span>
@@ -156,7 +153,6 @@
             <span class="hidden md:inline">نسخ احتياطي</span>
           </button>
 
-          <!-- زر تسجيل الخروج -->
           <button id="logoutBtn" title="تسجيل الخروج" class="h-9 w-9 text-slate-400 hover:text-red-600 rounded-lg hover:bg-red-50 flex items-center justify-center transition border border-transparent hover:border-red-200">
             <i class="fa-solid fa-power-off text-sm"></i>
           </button>
@@ -165,7 +161,7 @@
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5 space-y-4">
-      <!-- بطاقات الإحصائيات -->
+      <!-- الإحصائيات -->
       <div id="statsSection" class="grid grid-cols-2 lg:grid-cols-4 gap-3 no-print">
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
           <div>
@@ -197,7 +193,7 @@
         </div>
       </div>
 
-      <!-- قسم الفلترة والبحث المتقدم -->
+      <!-- الفلترة والبحث المتقدم -->
       <div id="searchFilterSection" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs space-y-2.5 no-print">
         <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 text-xs">
           <div class="flex items-center gap-1.5 font-bold text-slate-700">
@@ -221,7 +217,7 @@
         <div class="flex flex-col lg:flex-row gap-2 items-center justify-between">
           <div class="relative flex-1 w-full">
             <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input type="text" id="searchInput" placeholder="بحث شامل: الموظف، المستفيد، الإدارة المستفيدة، الخدمة أو الإجراء..."
+            <input type="text" id="searchInput" placeholder="بحث شامل: الموظف، المستفيد، الإدارة، القسم، الخدمة أو الحل..."
                    class="w-full pr-8 pl-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-600 outline-none">
           </div>
 
@@ -291,20 +287,20 @@
         </div>
       </div>
 
-      <!-- تذييل الطباعة المعتمد -->
+      <!-- تذييل الطباعة -->
       <div id="printReportFooter" class="mt-8 pt-4 border-t-2 border-slate-900">
         <div id="printFooterBoxes" style="display: flex; justify-content: space-between; text-align: center; font-size: 12pt;"></div>
       </div>
     </main>
   </div>
 
-  <!-- ================= 3. نافذة إدارة الهيكل، الموظفين، والأدوار ================= -->
+  <!-- ================= 3. نافذة إدارة الهيكل والموظفين والأدوار المفصلة ================= -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-sitemap text-lg"></i>
-          <h3 class="font-bold text-base">إدارة الهيكل التنظيمي والموظفين وقيد مدراء الإدارات</h3>
+          <h3 class="font-bold text-base">إدارة الهيكل التنظيمي، الأدوار (مدير إدارة / رئيس قسم)، وقيد المسؤولين</h3>
         </div>
         <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -314,7 +310,7 @@
       <div class="p-5 overflow-y-auto space-y-4">
         <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
           <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
-          <span><b>ضابط تنظيمي:</b> لا يمكن تعيين أكثر من مدير واحد للإدارة الواحدة.</span>
+          <span><b>ضابط تنظيمي:</b> النظام يمنع تعيين أكثر من مدير واحد للإدارة نفسها، وأكثر من رئيس واحد للقسم نفسه.</span>
         </div>
 
         <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
@@ -358,12 +354,14 @@
               <input type="text" id="newEmpPass" placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
             </div>
 
+            <!-- تمييز دقيق بين مدير الإدارة ورئيس القسم -->
             <div>
               <label class="block font-bold text-slate-700 mb-1">الدور والصلاحية</label>
-              <select id="newEmpRole" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-bold">
+              <select id="newEmpRole" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-bold text-slate-800">
                 <option value="employee">موظف (يسجل ويدير إنجازاته الخاصة)</option>
-                <option value="manager">مدير إدارة (يدير ويعتمد إنجازات إدارته فقط)</option>
-                <option value="admin">مدير عام / مدير نظام (إشراف شامل على كافة الإدارات)</option>
+                <option value="section_head">رئيس قسم (يشرف ويعتمد مهام قسمه فقط)</option>
+                <option value="dept_manager">مدير إدارة (يشرف ويعتمد مهام الإدارة وأقسامها)</option>
+                <option value="admin">مدير عام / مدير نظام (إشراف شامل على الهيكل بالكامل)</option>
               </select>
             </div>
 
@@ -386,9 +384,9 @@
                 <tr>
                   <th class="p-2.5">اسم الموظف</th>
                   <th class="p-2.5">البريد</th>
-                  <th class="p-2.5">الإدارة التابع لها</th>
+                  <th class="p-2.5">الإدارة</th>
                   <th class="p-2.5">القسم</th>
-                  <th class="p-2.5">الدور</th>
+                  <th class="p-2.5">الدور المحدد</th>
                   <th class="p-2.5 text-center">الحالة</th>
                   <th class="p-2.5 text-center">خيارات التحكم</th>
                 </tr>
@@ -406,13 +404,13 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة النسخ الاحتياطي ================= -->
+  <!-- ================= 4. نافذة النسخ الاحتياطي + مسح وتصفير السجلات ================= -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-database text-lg"></i>
-          <h3 class="font-bold text-base">النسخ الاحتياطي والاستعادة</h3>
+          <h3 class="font-bold text-base">إدارة النسخ الاحتياطي ومسح السجلات</h3>
         </div>
         <button onclick="closeBackupModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
@@ -436,6 +434,19 @@
           </button>
           <div id="restoreStatusMsg" class="mt-2 text-[11px] font-bold"></div>
         </div>
+
+        <!-- قسم مسح البيانات الإجباري للمدير العام فقط -->
+        <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl">
+          <h4 class="font-bold text-rose-900 mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
+            <span>مسح وتصفير جميع بيانات الإنجازات:</span>
+          </h4>
+          <p class="text-slate-600 mb-2.5">سيقوم النظام إجبارياً بتنزيل نسخة احتياطية على جهازك أولاً، ثم مسح كافة سجلات الإنجازات نهائياً مع الإبقاء على حسابات الموظفين والهيكل.</p>
+          <button onclick="safePurgeAllData()" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-trash-can"></i>
+            <span>أخذ نسخة وتصفير السجلات الآن</span>
+          </button>
+        </div>
       </div>
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
         <button onclick="closeBackupModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl">إغلاق</button>
@@ -443,7 +454,7 @@
     </div>
   </div>
 
-  <!-- ================= 5. نافذة تسجيل وتعديل الإنجاز مع خيار تحديد الحاجة للاعتماد ================= -->
+  <!-- ================= 5. نافذة تسجيل وتعديل الإنجاز ================= -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -468,7 +479,7 @@
           </div>
         </div>
 
-        <!-- حقل تحديد الحاجة لاعتماد المدير (القيمة الافتراضية: لا يحتاج اعتماد) -->
+        <!-- حقل تحديد الحاجة للاعتماد (افتراضياً: لا يحتاج اعتماد) -->
         <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
           <label class="block font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
             <i class="fa-solid fa-stamp text-emerald-700"></i>
@@ -481,7 +492,7 @@
             </label>
             <label class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-white transition">
               <input type="radio" name="requiresApproval" value="true" class="text-emerald-600 focus:ring-emerald-500">
-              <span class="font-bold text-slate-700">يتطلب اعتماد المدير</span>
+              <span class="font-bold text-slate-700">يتطلب اعتماد المسؤول</span>
             </label>
           </div>
         </div>
@@ -597,7 +608,6 @@
   </div>
 
   <script>
-    // الهيكل التنظيمي المعتمد
     const ORG_STRUCTURE = {
       "الإدارة العامة لتقنية المعلومات والتحول الرقمي": [
         "قسم الجودة التقنية",
@@ -750,7 +760,7 @@
         if (!currentUserProfile.name) currentUserProfile.name = user.email.split('@')[0];
         if (!currentUserProfile.email) currentUserProfile.email = user.email;
         if (!currentUserProfile.department) currentUserProfile.department = 'الإدارة العامة لتقنية المعلومات والتحول الرقمي';
-        if (!currentUserProfile.section) currentUserProfile.section = 'عام';
+        if (!currentUserProfile.section) currentUserProfile.section = 'عام الإدارة';
         if (!currentUserProfile.role) currentUserProfile.role = 'employee';
       }
 
@@ -764,6 +774,7 @@
       const empFilter = document.getElementById('employeeFilter');
       const deptFilter = document.getElementById('filterDepartmentScope');
 
+      // توظيف الدور بدقة
       if (currentUserProfile.role === 'admin') {
         roleBadge.textContent = 'مدير عام / مدير نظام';
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
@@ -773,9 +784,17 @@
         empFilter.classList.remove('hidden');
         deptFilter.classList.remove('hidden');
         populateDepartmentScopeFilter();
-      } else if (currentUserProfile.role === 'manager') {
-        roleBadge.textContent = `مدير: ${currentUserProfile.department}`;
+      } else if (currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager') {
+        roleBadge.textContent = `مدير إدارة: ${currentUserProfile.department}`;
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800';
+        adminBtn.classList.add('hidden'); adminBtn.classList.remove('flex');
+        analyticsBtn.classList.remove('hidden'); analyticsBtn.classList.add('flex');
+        backupBtn.classList.add('hidden'); backupBtn.classList.remove('flex');
+        empFilter.classList.remove('hidden');
+        deptFilter.classList.add('hidden');
+      } else if (currentUserProfile.role === 'section_head') {
+        roleBadge.textContent = `رئيس قسم: ${currentUserProfile.section}`;
+        roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-teal-100 text-teal-800';
         adminBtn.classList.add('hidden'); adminBtn.classList.remove('flex');
         analyticsBtn.classList.remove('hidden'); analyticsBtn.classList.add('flex');
         backupBtn.classList.add('hidden'); backupBtn.classList.remove('flex');
@@ -803,14 +822,22 @@
       });
     }
 
+    // مزامنة الإنجازات مع العزل الهيكلي التام (مدير عام / مدير إدارة / رئيس قسم / موظف)
     function subscribeToAchievements() {
       let query = db.collection('achievements');
 
       if (currentUserProfile.role === 'employee') {
+        // الموظف يرى إنجازاته فقط
         query = query.where('userId', '==', currentUser.uid);
-      } else if (currentUserProfile.role === 'manager') {
+      } else if (currentUserProfile.role === 'section_head') {
+        // رئيس القسم يرى منسوبي قسمه التابع لنفس الإدارة فقط
+        query = query.where('employeeDept', '==', currentUserProfile.department)
+                     .where('employeeSection', '==', currentUserProfile.section);
+      } else if (currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager') {
+        // مدير الإدارة يرى كافة أقسام إدارته
         query = query.where('employeeDept', '==', currentUserProfile.department);
       }
+      // المدير العام ومدير النظام يشاهدان كافة إدارات الهيكل
 
       unsubscribeFirestore = query.onSnapshot((snapshot) => {
         achievements = [];
@@ -891,6 +918,7 @@
           (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
           (item.department && item.department.toLowerCase().includes(q)) ||
           (item.employeeDept && item.employeeDept.toLowerCase().includes(q)) ||
+          (item.employeeSection && item.employeeSection.toLowerCase().includes(q)) ||
           (item.system && item.system.toLowerCase().includes(q)) ||
           (item.service && item.service.toLowerCase().includes(q)) ||
           (item.type && item.type.toLowerCase().includes(q)) ||
@@ -915,7 +943,7 @@
         return;
       }
 
-      const isManagerOrAdmin = (currentUserProfile.role === 'admin' || currentUserProfile.role === 'manager');
+      const isSupervisor = (currentUserProfile.role === 'admin' || currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager' || currentUserProfile.role === 'section_head');
 
       tbody.innerHTML = filtered.map((item, idx) => {
         const isApproved = item.status === 'معتمد';
@@ -942,7 +970,7 @@
             <td class="py-2.5 px-3 text-slate-700 max-w-[180px] truncate" title="${item.service}">${item.service || '-'}</td>
             <td class="py-2.5 px-3 text-slate-600 max-w-[180px] truncate" title="${item.solution}">${item.solution || '-'}</td>
             <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
-              ${isManagerOrAdmin ? `
+              ${isSupervisor ? `
                 <button onclick="toggleApproval('${item.id}', '${item.status}')" class="px-2 py-1 text-[10px] font-bold rounded-lg ${isApproved ? 'bg-amber-50 text-amber-700 border border-amber-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'} mr-1">
                   ${isApproved ? 'إلغاء الاعتماد' : 'اعتماد'}
                 </button>
@@ -1026,7 +1054,7 @@
         userId: currentUser.uid,
         employeeName: currentUserProfile.name || currentUser.email,
         employeeDept: currentUserProfile.department || 'إدارة الأنظمة والبرامج',
-        employeeSection: currentUserProfile.section || 'عام',
+        employeeSection: currentUserProfile.section || 'عام الإدارة',
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -1069,7 +1097,9 @@
       }
     };
 
-    // إدارة الهيكل وقيد مدراء الإدارات
+    // ==========================================================
+    // إدارة الهيكل وتطبيق قاعدة (مدير واحد للإدارة + رئيس واحد للقسم)
+    // ==========================================================
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -1100,7 +1130,8 @@
 
         let badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-blue-100 text-blue-800">موظف</span>';
         if (u.role === 'admin') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-amber-100 text-amber-800">مدير عام / نظام</span>';
-        if (u.role === 'manager') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-purple-100 text-purple-800">مدير إدارة</span>';
+        if (u.role === 'dept_manager' || u.role === 'manager') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-purple-100 text-purple-800">مدير إدارة</span>';
+        if (u.role === 'section_head') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-teal-100 text-teal-800">رئيس قسم</span>';
 
         const isSelf = (currentUser && currentUser.uid === uid);
         const isArchived = !!u.isArchived;
@@ -1147,9 +1178,9 @@
       document.getElementById('newEmpDept').value = u.department || '';
       updateSectionDropdown(u.department || '');
       document.getElementById('newEmpSection').value = u.section || 'عام الإدارة';
-      document.getElementById('newEmpRole').value = u.role || 'employee';
+      document.getElementById('newEmpRole').value = (u.role === 'manager') ? 'dept_manager' : (u.role || 'employee');
       document.getElementById('passContainer').classList.add('hidden');
-      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-pen text-emerald-700"></i> <span>تعديل الموظف: ${u.name}</span>`;
+      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-pen text-emerald-700"></i> <span>تعديل بيانات الموظف: ${u.name}</span>`;
       document.getElementById('createEmpBtnText').textContent = 'حفظ التعديلات';
       document.getElementById('cancelEditEmpBtn').classList.remove('hidden');
     };
@@ -1173,20 +1204,35 @@
       }
     };
 
-    function validateSingleManagerRule(targetDept, targetRole, excludeUid = null) {
-      if (targetRole !== 'manager') return true;
-
-      const existingManager = allUsersCache.find(u => 
-        u.department === targetDept && 
-        u.role === 'manager' && 
-        !u.isArchived && 
-        u.uid !== excludeUid
-      );
-
-      if (existingManager) {
-        alert(`مخالفة لقواعد الهيكل الإداري:\nيوجد مدير معين بالفعل لـ (${targetDept}) وهو الموظف: (${existingManager.name}).\nلا يمكن تعيين أكثر من مدير للإدارة الواحدة.`);
-        return false;
+    // التحقق من قاعدة: مدير واحد للإدارة + رئيس واحد للقسم
+    function validateManagerAndHeadRule(targetDept, targetSection, targetRole, excludeUid = null) {
+      if (targetRole === 'dept_manager') {
+        const existingMgr = allUsersCache.find(u => 
+          u.department === targetDept && 
+          (u.role === 'dept_manager' || u.role === 'manager') && 
+          !u.isArchived && 
+          u.uid !== excludeUid
+        );
+        if (existingMgr) {
+          alert(`قيد إداري:\nيوجد مدير معين بالفعل لـ (${targetDept}) وهو: (${existingMgr.name}).\nلا يمكن تعيين أكثر من مدير واحد لنفس الإدارة.`);
+          return false;
+        }
       }
+
+      if (targetRole === 'section_head') {
+        const existingHead = allUsersCache.find(u => 
+          u.department === targetDept && 
+          u.section === targetSection && 
+          u.role === 'section_head' && 
+          !u.isArchived && 
+          u.uid !== excludeUid
+        );
+        if (existingHead) {
+          alert(`قيد إداري:\nيوجد رئيس قسم معين بالفعل لـ (${targetSection}) وهو: (${existingHead.name}).\nلا يمكن تعيين أكثر من رئيس قسم واحد لنفس القسم.`);
+          return false;
+        }
+      }
+
       return true;
     }
 
@@ -1201,7 +1247,7 @@
       const msg = document.getElementById('createEmpMsg');
       const btn = document.getElementById('createEmpBtn');
 
-      if (!validateSingleManagerRule(dept, role, editUid)) return;
+      if (!validateManagerAndHeadRule(dept, sec, role, editUid)) return;
 
       btn.disabled = true;
 
@@ -1252,7 +1298,7 @@
           secondaryApp.delete();
 
           msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-          msg.textContent = `✅ تم تعيين الموظف بنجاح ضمن (${dept}).`;
+          msg.textContent = `✅ تم تعيين الموظف بنجاح.`;
           resetEmpForm();
           loadUsersList();
         } catch (err) {
@@ -1264,30 +1310,84 @@
       }
     });
 
-    // النسخ الاحتياطي
+    // ==========================================================
+    // النسخ الاحتياطي ومسح وتصفير السجلات الإجباري بأمان
+    // ==========================================================
     const backupModal = document.getElementById('backupModal');
     window.openBackupModal = function() { backupModal.classList.remove('hidden'); };
     window.closeBackupModal = function() { backupModal.classList.add('hidden'); };
 
+    async function triggerBackupDownload() {
+      const achSnap = await db.collection('achievements').get();
+      const usrSnap = await db.collection('users').get();
+      const achList = []; achSnap.forEach(d => achList.push({ id: d.id, ...d.data() }));
+      const usrList = []; usrSnap.forEach(d => usrList.push({ id: d.id, ...d.data() }));
+
+      const backupData = {
+        exportDate: new Date().toISOString(),
+        totalAchievements: achList.length,
+        achievements: achList,
+        users: usrList
+      };
+
+      const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `نسخة_احتياطية_شاملة_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      return true;
+    }
+
     window.exportBackupData = async function() {
       try {
-        const achSnap = await db.collection('achievements').get();
-        const usrSnap = await db.collection('users').get();
-        const achList = []; achSnap.forEach(d => achList.push({ id: d.id, ...d.data() }));
-        const usrList = []; usrSnap.forEach(d => usrList.push({ id: d.id, ...d.data() }));
-
-        const backupData = {
-          exportDate: new Date().toISOString(),
-          achievements: achList,
-          users: usrList
-        };
-
-        const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `نسخة_شاملة_الإدارة_العامة_${new Date().toISOString().split('T')[0]}.json`;
-        a.click();
+        await triggerBackupDownload();
       } catch (e) { alert("فشل التصدير: " + e.message); }
+    };
+
+    window.safePurgeAllData = async function() {
+      if (currentUserProfile.role !== 'admin') {
+        alert("هذا الإجراء متاح لمدير النظام فقط.");
+        return;
+      }
+
+      const confirmPrompt = prompt("تحذير أمني خطير:\nأنت على وشك مسح وتصفير كافة سجلات الإنجازات نهائياً.\nسيقوم النظام بتنزيل نسخة احتياطية إجبارياً على جهازك قبل البدء.\n\nلتأكيد العملية، اكتب في الخانة أدناه كلمة:\nتأكيد المسح");
+
+      if (confirmPrompt !== "تأكيد المسح") {
+        alert("تم إلغاء عملية المسح.");
+        return;
+      }
+
+      try {
+        // 1. أخذ نسخة احتياطية إجبارية فوراً
+        alert("جاري تنزيل النسخة الاحتياطية لجهازك الآن... انتظر لحظات.");
+        await triggerBackupDownload();
+
+        // 2. مسح وثائق الإنجازات
+        const snap = await db.collection('achievements').get();
+        if (snap.empty) {
+          alert("قاعدة بيانات الإنجازات فارغة بالفعل.");
+          return;
+        }
+
+        const batchSize = 400;
+        let batch = db.batch();
+        let counter = 0;
+
+        for (const doc of snap.docs) {
+          batch.delete(doc.ref);
+          counter++;
+          if (counter % batchSize === 0) {
+            await batch.commit();
+            batch = db.batch();
+          }
+        }
+        await batch.commit();
+
+        alert("✅ تم تنزيل النسخة الاحتياطية بنجاح ومسح جميع سجلات الإنجازات وتصفير النظام بالكامل.");
+        closeBackupModal();
+      } catch (err) {
+        alert("حدث خطأ أثناء المسح: " + err.message);
+      }
     };
 
     window.importBackupData = function() {
@@ -1393,7 +1493,7 @@
       `).join('');
     }
 
-    // منطق التقرير وتصدير Word والطباعة مع تحديد اسم مدير الإدارة ديناميكياً
+    // منطق تصدير Word والطباعة الرسمية مع أسماء المسؤولين ديناميكياً
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1409,6 +1509,7 @@
           (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
           (item.department && item.department.toLowerCase().includes(q)) ||
           (item.employeeDept && item.employeeDept.toLowerCase().includes(q)) ||
+          (item.employeeSection && item.employeeSection.toLowerCase().includes(q)) ||
           (item.system && item.system.toLowerCase().includes(q)) ||
           (item.service && item.service.toLowerCase().includes(q)) ||
           (item.type && item.type.toLowerCase().includes(q)) ||
@@ -1430,9 +1531,11 @@
       const targetEmpName = isIndividual ? (fEmp || currentUserProfile.name) : (fDeptScope ? `تقرير منسوبي ${fDeptScope}` : 'تقرير شامل لكافة إدارات الهيكل');
 
       let targetEmpDept = currentUserProfile.department || 'الإدارة العامة لتقنية المعلومات والتحول الرقمي';
+      let targetEmpSec = currentUserProfile.section || 'عام الإدارة';
       if (isIndividual && fEmp) {
         const matched = achievements.find(a => a.employeeName === fEmp);
         if (matched && matched.employeeDept) targetEmpDept = matched.employeeDept;
+        if (matched && matched.employeeSection) targetEmpSec = matched.employeeSection;
       } else if (fDeptScope) {
         targetEmpDept = fDeptScope;
       }
@@ -1442,9 +1545,9 @@
       else if (sDate) periodText = `من تاريخ ${sDate}`;
       else if (eDate) periodText = `حتى تاريخ ${eDate}`;
 
-      // استخراج اسم مدير الإدارة ديناميكياً من المستخدمين المحملين
+      // استخراج اسم مدير الإدارة ورئيس القسم ديناميكياً
       let dynamicManagerTitle = `اعتماد مدير ${targetEmpDept}`;
-      const actualManager = allUsersCache.find(u => u.department === targetEmpDept && u.role === 'manager' && !u.isArchived);
+      const actualManager = allUsersCache.find(u => u.department === targetEmpDept && (u.role === 'dept_manager' || u.role === 'manager') && !u.isArchived);
       if (actualManager) {
         dynamicManagerTitle = `اعتماد مدير الإدارة (${actualManager.name})`;
       }
@@ -1496,7 +1599,7 @@
             <th style="width: 9%;">التاريخ</th>
             <th style="width: 8%;">الاعتماد</th>
             <th style="width: 12%;">الموظف</th>
-            <th style="width: 11%;">الإدارة التابع لها</th>
+            <th style="width: 11%;">الإدارة والقسم</th>
             <th style="width: 10%;">نوع الطلب</th>
             <th style="width: 11%;">المستفيد</th>
             <th style="width: 9%;">النظام</th>
@@ -1510,7 +1613,7 @@
             <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${item.date || ''}</td>
             <td style="border: 1px solid #000; text-align:center; font-size:11pt; padding:5px; font-weight:bold;">${item.status || 'معتمد'}</td>
             <td style="border: 1px solid #000; font-size:12pt; padding:5px; font-weight:bold;">${item.employeeName}</td>
-            <td style="border: 1px solid #000; font-size:11pt; padding:5px;">${item.employeeDept || ''}</td>
+            <td style="border: 1px solid #000; font-size:11pt; padding:5px;">${item.employeeDept || ''} - ${item.employeeSection || ''}</td>
             <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${item.type || 'دعم فني'}</td>
             <td style="border: 1px solid #000; font-size:12pt; padding:5px;">${item.beneficiary || ''}</td>
             <td style="border: 1px solid #000; font-size:11pt; padding:5px; text-align:center;">${item.system || ''}</td>
@@ -1613,7 +1716,7 @@
       XLSX.writeFile(wb, `سجل_إنجازات_${safeName}_${new Date().toISOString().split('T')[0]}.xlsx`);
     });
 
-    // الطباعة
+    // الطباعة الرسمية
     document.getElementById('printBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle } = getExportScope();
       if (data.length === 0) return alert("لا توجد إنجازات للطباعة.");
