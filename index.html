@@ -44,15 +44,15 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- شاشة الدخول -->
+  <!-- ================= 1. شاشة تسجيل الدخول ================= -->
   <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 w-full max-w-md">
       <div class="text-center mb-6">
         <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-2xl mb-3 shadow-md shadow-blue-600/30">
           <i class="fa-solid fa-clipboard-check text-2xl"></i>
         </div>
-        <h2 class="text-2xl font-black text-slate-800">بوابة الإنجازات اليومية</h2>
-        <p class="text-slate-500 text-xs mt-1">سجل الدخول بحسابك للوصول للنظام</p>
+        <h2 class="text-2xl font-black text-slate-800">بوابة الإنجازات المؤسسية</h2>
+        <p class="text-slate-500 text-xs mt-1">سجل الدخول بحسابك لمتابعة الأعمال والتقارير</p>
       </div>
 
       <form id="loginForm" class="space-y-4">
@@ -78,7 +78,7 @@
     </div>
   </div>
 
-  <!-- الواجهة الرئيسية -->
+  <!-- ================= 2. واجهة التطبيق الرئيسية ================= -->
   <div id="mainAppSection" class="hidden flex-1 flex flex-col">
     <!-- ترويسة الطباعة الرسمية -->
     <div id="printReportHeader" class="mb-4">
@@ -88,7 +88,7 @@
       </div>
       <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 10px; font-size: 14pt;">
         <tr>
-          <td style="padding: 6px; width: 33%;"><b>الموظف:</b> <span id="printEmployeeName">-</span></td>
+          <td style="padding: 6px; width: 33%;"><b>الموظف / النطاق:</b> <span id="printEmployeeName">-</span></td>
           <td style="padding: 6px; width: 33%;"><b>الإدارة:</b> <span id="printEmployeeDept">-</span></td>
           <td style="padding: 6px; width: 34%;"><b>فترة التقرير:</b> <span id="printDatePeriod">-</span></td>
         </tr>
@@ -108,37 +108,49 @@
               <span id="userBadgeName" class="font-bold text-slate-800"></span>
               <span class="text-slate-300">|</span>
               <span id="userBadgeDept" class="text-slate-600"></span>
-              <span id="userRoleBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">موظف</span>
+              <span id="userRoleBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold"></span>
             </div>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5 sm:gap-2">
+          <!-- زر اللوحة الإحصائية والتحليل (للمدير ومدير النظام) -->
+          <button id="analyticsBtn" onclick="openAnalyticsModal()" class="hidden items-center gap-1.5 px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
+            <i class="fa-solid fa-chart-pie text-indigo-600"></i>
+            <span>التحليلات المقارنة</span>
+          </button>
+
+          <!-- زر إدارة المستخدمين (لمدير النظام فقط) -->
           <button id="adminUsersBtn" onclick="openPermissionsModal()" class="hidden items-center gap-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
             <i class="fa-solid fa-users-gear"></i>
-            <span>إدارة الموظفين والصلاحيات</span>
+            <span>إدارة الموظفين والأدوار</span>
           </button>
 
+          <!-- زر Excel -->
           <button id="exportExcelBtn" class="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
             <i class="fa-solid fa-file-excel"></i>
-            <span class="hidden sm:inline">تصدير Excel</span>
+            <span class="hidden sm:inline">Excel</span>
           </button>
 
+          <!-- زر Word -->
           <button id="exportWordBtn" class="flex items-center gap-1.5 px-2.5 py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-300 rounded-xl text-xs sm:text-sm font-bold transition">
             <i class="fa-solid fa-file-word text-sky-600"></i>
             <span class="hidden md:inline">Word</span>
           </button>
 
+          <!-- زر طباعة -->
           <button id="printBtn" class="flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold transition">
             <i class="fa-solid fa-print"></i>
             <span>طباعة</span>
           </button>
 
+          <!-- زر إضافة إنجاز -->
           <button id="openAddModalBtn" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition">
             <i class="fa-solid fa-plus"></i>
             <span>إضافة إنجاز</span>
           </button>
 
+          <!-- زر تسجيل خروج -->
           <button id="logoutBtn" title="تسجيل الخروج" class="p-2 text-slate-400 hover:text-red-600 rounded-xl hover:bg-red-50 transition">
             <i class="fa-solid fa-power-off text-base"></i>
           </button>
@@ -147,11 +159,11 @@
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      <!-- المؤشرات -->
+      <!-- بطاقات الإحصائيات العلوية -->
       <div id="statsSection" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 no-print">
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-medium">إجمالي الإنجازات</p>
+            <p class="text-xs text-slate-500 font-medium">إجمالي الإنجازات المعروضة</p>
             <h3 id="statTotal" class="text-xl sm:text-2xl font-bold text-slate-800 mt-0.5">0</h3>
           </div>
           <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base"><i class="fa-solid fa-layer-group"></i></div>
@@ -179,23 +191,31 @@
         </div>
       </div>
 
-      <!-- أدوات الفلترة والبحث -->
-      <div id="searchFilterSection" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between no-print">
-        <div class="relative flex-1 w-full">
-          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-          <input type="text" id="searchInput" placeholder="بحث باسم الموظف، المستفيد، الإدارة، النظام، أو الخدمة..."
-                 class="w-full pr-10 pl-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
-        </div>
-        <div class="flex items-center gap-2 w-full md:w-auto">
-          <input type="date" id="filterDate" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 outline-none">
-          <button id="resetFilterBtn" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition">إعادة تعيين</button>
+      <!-- أدوات الفلترة والبحث المتقدم -->
+      <div id="searchFilterSection" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3 no-print">
+        <div class="flex flex-col md:flex-row gap-3 items-center justify-between">
+          <div class="relative flex-1 w-full">
+            <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+            <input type="text" id="searchInput" placeholder="بحث باسم الموظف، المستفيد، الإدارة، النظام، أو تفاصيل الخدمة..."
+                   class="w-full pr-10 pl-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+            <!-- فلتر الموظفين (يظهر للمدير ومدير النظام فقط) -->
+            <select id="employeeFilter" class="hidden bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-semibold text-slate-700 outline-none focus:ring-2 focus:ring-blue-600">
+              <option value="">كافة الموظفين</option>
+            </select>
+
+            <input type="date" id="filterDate" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 outline-none">
+            <button id="resetFilterBtn" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition">إعادة تعيين</button>
+          </div>
         </div>
       </div>
 
-      <!-- جدول العرض -->
+      <!-- جدول الإنجازات -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <div id="tableHeaderControls" class="p-3.5 border-b border-slate-100 flex items-center justify-between no-print">
-          <h3 class="font-bold text-slate-800 text-sm">سجل الإنجازات</h3>
+          <h3 class="font-bold text-slate-800 text-sm">سجل الإنجازات المسجلة</h3>
           <span id="recordsCounter" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-0.5 rounded-full font-semibold">0 سجل</span>
         </div>
         <div class="overflow-x-auto">
@@ -226,7 +246,7 @@
         </div>
       </div>
 
-      <!-- تذييل الطباعة -->
+      <!-- تذييل الطباعة المعتمد -->
       <div id="printReportFooter" class="mt-8 pt-4 border-t-2 border-slate-900">
         <div style="display: flex; justify-content: space-between; text-align: center; font-size: 14pt;">
           <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
@@ -234,7 +254,7 @@
             التوقيع: ...........................................
           </div>
           <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
-            <b>اعتماد المشرف المباشر / المدير:</b><br><br>
+            <b>اعتماد مدير الإدارة / المشرف المباشر:</b><br><br>
             التوقيع: ...........................................
           </div>
         </div>
@@ -242,13 +262,77 @@
     </main>
   </div>
 
-  <!-- نافذة إدارة الموظفين وإضافة مستخدم جديد (Admin Only) -->
+  <!-- ================= 3. نافذة التقارير الإحصائية والتحليلات المقارنة ================= -->
+  <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 bg-gradient-to-r from-indigo-700 to-blue-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-chart-line text-lg"></i>
+          <h3 class="font-bold text-base">التقارير الإحصائية ومقارنة إنتاجية الموظفين</h3>
+        </div>
+        <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-6">
+        <!-- قسم مقارنة إنتاجية الموظفين -->
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-trophy text-amber-500"></i>
+              <span>مقارنة إنتاجية الموظفين (حسب عدد المهام المنجزة)</span>
+            </h4>
+          </div>
+          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+            <table class="w-full text-right text-xs">
+              <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+                <tr>
+                  <th class="p-3">الترتيب</th>
+                  <th class="p-3">اسم الموظف</th>
+                  <th class="p-3">الإدارة / القسم</th>
+                  <th class="p-3 text-center">المهام المنجزة</th>
+                  <th class="p-3">نسبة المساهمة في العمل</th>
+                </tr>
+              </thead>
+              <tbody id="empRankingTableBody" class="divide-y divide-slate-100"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- تحليل الأنظمة الأكثر طلباً -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
+            <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
+              <i class="fa-solid fa-server text-blue-600"></i>
+              <span>أكثر الأنظمة التقنية طلباً للدعم:</span>
+            </h5>
+            <div id="systemsAnalyticsList" class="space-y-2 text-xs"></div>
+          </div>
+
+          <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
+            <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
+              <i class="fa-solid fa-building-circle-check text-emerald-600"></i>
+              <span>أكثر الإدارات طلباً للخدمات:</span>
+            </h5>
+            <div id="departmentsAnalyticsList" class="space-y-2 text-xs"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="closeAnalyticsModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl transition">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. نافذة إدارة الموظفين والأدوار (لمدير النظام فقط) ================= -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
-    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+    <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-amber-500 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-users-gear text-lg"></i>
-          <h3 class="font-bold text-base">إدارة الموظفين والصلاحيات</h3>
+          <h3 class="font-bold text-base">إدارة حسابات الموظفين وصلاحيات الأدوار</h3>
         </div>
         <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -256,11 +340,11 @@
       </div>
 
       <div class="p-5 overflow-y-auto space-y-5">
-        <!-- نموذج إضافة موظف جديد -->
-        <div class="p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-3">
+        <!-- نموذج إضافة مستخدم وتعيين دوره فوراً -->
+        <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-3">
           <h4 class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
             <i class="fa-solid fa-user-plus"></i>
-            <span>إضافة وتعيين موظف جديد بالنظام</span>
+            <span>إضافة وتعيين موظف جديد وتحديد دوره</span>
           </h4>
           <form id="createEmployeeForm" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
             <div>
@@ -279,19 +363,27 @@
               <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة</label>
               <input type="text" id="newEmpPass" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
             </div>
+            <div class="sm:col-span-2">
+              <label class="block font-bold text-slate-700 mb-1">الدور والصلاحية</label>
+              <select id="newEmpRole" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-bold">
+                <option value="employee">موظف (يسجل ويدير إنجازاته الخاصة فقط)</option>
+                <option value="manager">مدير (يطلع على جميع إنجازات الموظفين والتقارير الإحصائية)</option>
+                <option value="admin">مدير نظام (تحكم كامل بالنظام والصلاحيات والتقارير)</option>
+              </select>
+            </div>
             <div class="sm:col-span-2 flex justify-end pt-1">
               <button type="submit" id="createEmpBtn" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg transition flex items-center gap-1">
                 <i class="fa-solid fa-check"></i>
-                <span>إنشاء وتفعيل حساب الموظف</span>
+                <span>إنشاء وتفعيل الحساب</span>
               </button>
             </div>
           </form>
           <div id="createEmpMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         </div>
 
-        <!-- قائمة الموظفين وتعديل الرتب -->
+        <!-- قائمة الحسابات والتحكم في الأدوار -->
         <div>
-          <h4 class="text-xs font-bold text-slate-700 mb-2">قائمة حسابات الموظفين الحالية:</h4>
+          <h4 class="text-xs font-bold text-slate-700 mb-2">قائمة المستخدمين وتعديل الأدوار:</h4>
           <div class="overflow-x-auto border border-slate-200 rounded-xl">
             <table class="w-full text-right text-xs">
               <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
@@ -299,12 +391,12 @@
                   <th class="p-2.5">اسم الموظف</th>
                   <th class="p-2.5">البريد</th>
                   <th class="p-2.5">الإدارة</th>
-                  <th class="p-2.5">الصلاحية</th>
-                  <th class="p-2.5 text-center">الإجراء</th>
+                  <th class="p-2.5">الدور الحالي</th>
+                  <th class="p-2.5 text-center">تغيير الدور</th>
                 </tr>
               </thead>
               <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100">
-                <tr><td colspan="5" class="text-center py-4 text-slate-400">جاري تحميل قائمة الموظفين...</td></tr>
+                <tr><td colspan="5" class="text-center py-4 text-slate-400">جاري تحميل قائمة المستخدمين...</td></tr>
               </tbody>
             </table>
           </div>
@@ -316,7 +408,7 @@
     </div>
   </div>
 
-  <!-- نافذة إضافة وتعديل إنجاز -->
+  <!-- ================= 5. نافذة تسجيل وتعديل الإنجاز ================= -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -386,7 +478,7 @@
       measurementId: "G-PYPV4ML73X"
     };
 
-    const mainApp = firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
@@ -394,6 +486,7 @@
     let currentUserProfile = null;
     let achievements = [];
     let unsubscribeFirestore = null;
+    let allUsersCache = [];
 
     function generateTicketNo() {
       const yr = new Date().getFullYear();
@@ -424,7 +517,7 @@
         await auth.signInWithEmailAndPassword(authEmail.value.trim(), authPassword.value);
       } catch (err) {
         authError.classList.remove('hidden');
-        authError.textContent = "بيانات الدخول غير صحيحة أو الحساب غير مفعل.";
+        authError.textContent = "بيانات الدخول غير صحيحة.";
       } finally {
         authSubmitBtn.disabled = false;
         authSubmitBtn.innerHTML = `<span>دخول للنظام</span> <i class="fa-solid fa-arrow-left text-sm"></i>`;
@@ -456,6 +549,7 @@
 
       if (!doc.exists) {
         const usersSnap = await db.collection('users').get();
+        // أول حساب يسجل هو مدير النظام افتراضياً
         const role = usersSnap.empty ? 'admin' : 'employee';
         currentUserProfile = {
           name: user.email.split('@')[0],
@@ -469,6 +563,7 @@
         if (!currentUserProfile.name) currentUserProfile.name = user.email.split('@')[0];
         if (!currentUserProfile.email) currentUserProfile.email = user.email;
         if (!currentUserProfile.department) currentUserProfile.department = 'الإدارة العامة';
+        if (!currentUserProfile.role) currentUserProfile.role = 'employee';
       }
 
       document.getElementById('userBadgeName').textContent = currentUserProfile.name;
@@ -476,22 +571,41 @@
 
       const roleBadge = document.getElementById('userRoleBadge');
       const adminBtn = document.getElementById('adminUsersBtn');
+      const analyticsBtn = document.getElementById('analyticsBtn');
+      const empFilter = document.getElementById('employeeFilter');
+
       if (currentUserProfile.role === 'admin') {
-        roleBadge.textContent = 'مدير النظام';
+        roleBadge.textContent = 'مدير نظام';
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
         adminBtn.classList.remove('hidden');
         adminBtn.classList.add('flex');
+        analyticsBtn.classList.remove('hidden');
+        analyticsBtn.classList.add('flex');
+        empFilter.classList.remove('hidden');
+      } else if (currentUserProfile.role === 'manager') {
+        roleBadge.textContent = 'مدير إدارة';
+        roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800';
+        adminBtn.classList.add('hidden');
+        adminBtn.classList.remove('flex');
+        analyticsBtn.classList.remove('hidden');
+        analyticsBtn.classList.add('flex');
+        empFilter.classList.remove('hidden');
       } else {
         roleBadge.textContent = 'موظف';
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800';
         adminBtn.classList.add('hidden');
         adminBtn.classList.remove('flex');
+        analyticsBtn.classList.add('hidden');
+        analyticsBtn.classList.remove('flex');
+        empFilter.classList.add('hidden');
       }
     }
 
+    // مزامنة السجلات سحابياً
     function subscribeToAchievements() {
       let query = db.collection('achievements');
-      if (currentUserProfile.role !== 'admin') {
+      // الموظف العادي يرى إنجازاته فقط، أما المدير ومدير النظام فيشاهدان الكل
+      if (currentUserProfile.role === 'employee') {
         query = query.where('userId', '==', currentUser.uid);
       }
 
@@ -501,6 +615,7 @@
           achievements.push({ id: doc.id, ...doc.data() });
         });
         achievements.sort((a, b) => new Date(b.date) - new Date(a.date));
+        populateEmployeeFilter();
         renderTable();
         updateStats();
       }, err => {
@@ -508,10 +623,25 @@
       });
     }
 
+    function populateEmployeeFilter() {
+      const empFilter = document.getElementById('employeeFilter');
+      const curVal = empFilter.value;
+      const emps = [...new Set(achievements.map(a => a.employeeName).filter(Boolean))];
+      empFilter.innerHTML = '<option value="">كافة الموظفين</option>';
+      emps.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        if (name === curVal) opt.selected = true;
+        empFilter.appendChild(opt);
+      });
+    }
+
     function renderTable() {
       const tbody = document.getElementById('achievementsTableBody');
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
       const fDate = document.getElementById('filterDate').value;
+      const fEmp = document.getElementById('employeeFilter').value;
 
       const filtered = achievements.filter(item => {
         const matchesQuery = !q ||
@@ -523,7 +653,8 @@
           (item.solution && item.solution.toLowerCase().includes(q));
 
         const matchesDate = !fDate || item.date === fDate;
-        return matchesQuery && matchesDate;
+        const matchesEmp = !fEmp || item.employeeName === fEmp;
+        return matchesQuery && matchesDate && matchesEmp;
       });
 
       document.getElementById('recordsCounter').textContent = `${filtered.length} سجل`;
@@ -567,9 +698,11 @@
 
     document.getElementById('searchInput').addEventListener('input', renderTable);
     document.getElementById('filterDate').addEventListener('change', renderTable);
+    document.getElementById('employeeFilter').addEventListener('change', renderTable);
     document.getElementById('resetFilterBtn').addEventListener('click', () => {
       document.getElementById('searchInput').value = '';
       document.getElementById('filterDate').value = '';
+      document.getElementById('employeeFilter').value = '';
       renderTable();
     });
 
@@ -640,7 +773,9 @@
       }
     };
 
-    // إدارة الموظفين والصلاحيات
+    // ==========================================
+    // إدارة الصلاحيات والأدوار (Admin Only)
+    // ==========================================
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -661,25 +796,29 @@
         return;
       }
 
+      allUsersCache = [];
       let html = '';
       snap.forEach(doc => {
         const u = doc.data();
         const uid = doc.id;
-        const isAdmin = u.role === 'admin';
+        allUsersCache.push({ uid, ...u });
+
+        let badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-blue-100 text-blue-800">موظف</span>';
+        if (u.role === 'admin') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-amber-100 text-amber-800">مدير نظام</span>';
+        if (u.role === 'manager') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-purple-100 text-purple-800">مدير</span>';
+
         html += `
           <tr class="hover:bg-slate-50">
             <td class="p-2.5 font-bold text-slate-800">${u.name || 'بدون اسم'}</td>
             <td class="p-2.5 text-slate-600 font-mono text-[11px]">${u.email || '-'}</td>
             <td class="p-2.5 text-slate-700">${u.department || '-'}</td>
-            <td class="p-2.5">
-              <span class="px-2 py-0.5 rounded-md font-bold ${isAdmin ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
-                ${isAdmin ? 'مدير نظام' : 'موظف'}
-              </span>
-            </td>
+            <td class="p-2.5">${badge}</td>
             <td class="p-2.5 text-center">
-              <button onclick="toggleRole('${uid}', '${u.role}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-300 hover:bg-slate-100">
-                ${isAdmin ? 'تحويل لموظف' : 'ترقية لمدير'}
-              </button>
+              <select onchange="updateUserRole('${uid}', this.value)" class="bg-slate-50 border border-slate-300 rounded px-2 py-1 text-xs font-semibold">
+                <option value="employee" ${u.role === 'employee' ? 'selected' : ''}>موظف</option>
+                <option value="manager" ${u.role === 'manager' ? 'selected' : ''}>مدير</option>
+                <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>مدير نظام</option>
+              </select>
             </td>
           </tr>
         `;
@@ -687,19 +826,28 @@
       tbody.innerHTML = html;
     }
 
-    window.toggleRole = async function(uid, currentRole) {
-      const newRole = currentRole === 'admin' ? 'employee' : 'admin';
-      await db.collection('users').doc(uid).update({ role: newRole });
-      loadUsersList();
+    window.updateUserRole = async function(uid, newRole) {
+      const roleNames = { admin: 'مدير نظام', manager: 'مدير', employee: 'موظف' };
+      if (confirm(`هل أنت متأكد من تغيير دور هذا المستخدم إلى (${roleNames[newRole]})؟`)) {
+        try {
+          await db.collection('users').doc(uid).update({ role: newRole });
+          loadUsersList();
+        } catch (e) {
+          alert("حدث خطأ أثناء تعديل الدور: " + e.message);
+        }
+      } else {
+        loadUsersList();
+      }
     };
 
-    // إنشاء موظف جديد من داخل النظام مباشرة
+    // إنشاء مستخدم جديد وتعيين دوره فوراً
     document.getElementById('createEmployeeForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('newEmpName').value.trim();
       const dept = document.getElementById('newEmpDept').value.trim();
       const email = document.getElementById('newEmpEmail').value.trim();
       const pass = document.getElementById('newEmpPass').value.trim();
+      const role = document.getElementById('newEmpRole').value;
       const msg = document.getElementById('createEmpMsg');
       const btn = document.getElementById('createEmpBtn');
 
@@ -708,15 +856,14 @@
       msg.textContent = "جاري إنشاء الحساب وتفعيله...";
 
       try {
-        // استخدام تطبيق ثانوي مؤقت حتى لا يتم تسجيل خروج المدير الحالي
-        const secondaryApp = firebase.initializeApp(firebaseConfig, "Secondary");
+        const secondaryApp = firebase.initializeApp(firebaseConfig, "SecondaryApp");
         const newUserCred = await secondaryApp.auth().createUserWithEmailAndPassword(email, pass);
         
         await db.collection('users').doc(newUserCred.user.uid).set({
           name: name,
           department: dept,
           email: email,
-          role: 'employee',
+          role: role,
           createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
@@ -724,7 +871,7 @@
         secondaryApp.delete();
 
         msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-        msg.textContent = `✅ تم إنشاء حساب الموظف بنجاح! يمكنه الدخول ببريده وكلمة المرور المسجلة.`;
+        msg.textContent = `✅ تم إنشاء الحساب بنجاح وتعيينه بدور: ${role === 'admin' ? 'مدير نظام' : role === 'manager' ? 'مدير' : 'موظف'}`;
         document.getElementById('createEmployeeForm').reset();
         loadUsersList();
       } catch (err) {
@@ -735,19 +882,123 @@
       }
     });
 
-    // تصدير Word الرسمي مع ترويسة بيانات الموظف والجهة
+    // ==========================================
+    // التقارير الإحصائية والتحليلات المقارنة
+    // ==========================================
+    const analyticsModal = document.getElementById('analyticsModal');
+    window.openAnalyticsModal = function() {
+      analyticsModal.classList.remove('hidden');
+      buildAnalyticsReport();
+    };
+    window.closeAnalyticsModal = function() {
+      analyticsModal.classList.add('hidden');
+    };
+
+    function buildAnalyticsReport() {
+      const empRankingTbody = document.getElementById('empRankingTableBody');
+      const systemsList = document.getElementById('systemsAnalyticsList');
+      const deptsList = document.getElementById('departmentsAnalyticsList');
+
+      const totalTasks = achievements.length || 1;
+
+      // 1. حساب مهام كل موظف
+      const empStats = {};
+      achievements.forEach(a => {
+        const emp = a.employeeName || 'غير محدد';
+        if (!empStats[emp]) empStats[emp] = { count: 0, dept: a.employeeDept || '-' };
+        empStats[emp].count++;
+      });
+
+      const sortedEmps = Object.entries(empStats).sort((a, b) => b[1].count - a[1].count);
+
+      empRankingTbody.innerHTML = sortedEmps.map(([empName, data], index) => {
+        const pct = Math.round((data.count / totalTasks) * 100);
+        return `
+          <tr class="hover:bg-slate-50">
+            <td class="p-3 font-bold text-slate-500">${index + 1}</td>
+            <td class="p-3 font-extrabold text-slate-800">${empName}</td>
+            <td class="p-3 text-slate-600">${data.dept}</td>
+            <td class="p-3 text-center font-bold text-blue-700 text-sm">${data.count}</td>
+            <td class="p-3">
+              <div class="flex items-center gap-2">
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div class="bg-blue-600 h-2 rounded-full" style="width: ${pct}%"></div>
+                </div>
+                <span class="text-[11px] font-bold text-slate-600">${pct}%</span>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // 2. إحصاء الأنظمة الأكثر طلباً
+      const sysCount = {};
+      achievements.forEach(a => {
+        const s = a.system || 'عام / أخرى';
+        sysCount[s] = (sysCount[s] || 0) + 1;
+      });
+      const sortedSys = Object.entries(sysCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      systemsList.innerHTML = sortedSys.map(([sys, cnt]) => `
+        <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100">
+          <span class="font-bold text-slate-700">${sys}</span>
+          <span class="px-2 py-0.5 bg-blue-50 text-blue-700 font-bold rounded-lg text-xs">${cnt} طلب</span>
+        </div>
+      `).join('');
+
+      // 3. إحصاء الإدارات المستفيدة الأكثر طلباً
+      const deptCount = {};
+      achievements.forEach(a => {
+        const d = a.department || 'أخرى';
+        deptCount[d] = (deptCount[d] || 0) + 1;
+      });
+      const sortedDepts = Object.entries(deptCount).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+      deptsList.innerHTML = sortedDepts.map(([dept, cnt]) => `
+        <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100">
+          <span class="font-bold text-slate-700">${dept}</span>
+          <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-lg text-xs">${cnt} خدمة</span>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // التصدير المعتمد (Excel & Word & Print)
+    // ==========================================
+    function getExportScopeData() {
+      const fEmp = document.getElementById('employeeFilter').value;
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const fDate = document.getElementById('filterDate').value;
+
+      return achievements.filter(item => {
+        const matchesQuery = !q ||
+          (item.employeeName && item.employeeName.toLowerCase().includes(q)) ||
+          (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
+          (item.department && item.department.toLowerCase().includes(q)) ||
+          (item.system && item.system.toLowerCase().includes(q)) ||
+          (item.service && item.service.toLowerCase().includes(q)) ||
+          (item.solution && item.solution.toLowerCase().includes(q));
+
+        const matchesDate = !fDate || item.date === fDate;
+        const matchesEmp = !fEmp || item.employeeName === fEmp;
+        return matchesQuery && matchesDate && matchesEmp;
+      });
+    }
+
     document.getElementById('exportWordBtn').addEventListener('click', () => {
-      if (achievements.length === 0) return alert("لا توجد إنجازات للتصدير.");
+      const dataToExport = getExportScopeData();
+      if (dataToExport.length === 0) return alert("لا توجد إنجازات للتصدير.");
       const printDate = new Date().toISOString().split('T')[0];
-      const empName = currentUserProfile.name || 'الموظف المختص';
+      const selectedEmp = document.getElementById('employeeFilter').value;
+      const empName = selectedEmp || (currentUserProfile.role === 'employee' ? currentUserProfile.name : 'تقرير شامل لكافة الموظفين');
       const empDept = currentUserProfile.department || 'الإدارة العامة';
 
-      let rowsHtml = achievements.map((item, idx) => `
+      let rowsHtml = dataToExport.map((item, idx) => `
         <tr>
           <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${idx + 1}</td>
           <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${item.ticketNo || '-'}</td>
           <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${item.date || ''}</td>
-          <td style="border: 1px solid #000; font-size:14pt; padding:6px; font-weight:bold;">${item.employeeName || empName}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px; font-weight:bold;">${item.employeeName || ''}</td>
           <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.beneficiary || ''}</td>
           <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.department || ''}</td>
           <td style="border: 1px solid #000; font-size:14pt; padding:6px; text-align:center;">${item.system || ''}</td>
@@ -772,9 +1023,9 @@
             <h2 style="text-align:center; font-size: 20pt; font-family: Arial; margin:0 0 10px 0;">تقرير الإنجازات والمهام اليومية</h2>
             <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 12px; font-size: 14pt;">
               <tr>
-                <td style="padding: 6px; border: 1px solid #000; width: 33%;"><b>الموظف:</b> ${empName}</td>
+                <td style="padding: 6px; border: 1px solid #000; width: 33%;"><b>الموظف / النطاق:</b> ${empName}</td>
                 <td style="padding: 6px; border: 1px solid #000; width: 33%;"><b>الإدارة:</b> ${empDept}</td>
-                <td style="padding: 6px; border: 1px solid #000; width: 34%;"><b>تاريخ التقرير:</b> ${printDate}</td>
+                <td style="padding: 6px; border: 1px solid #000; width: 34%;"><b>تاريخ التصدير:</b> ${printDate}</td>
               </tr>
             </table>
 
@@ -814,14 +1065,14 @@
       const blob = new Blob(['\ufeff' + wordDoc], { type: 'application/msword' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `تقرير_الانجازات_${empName.replace(/\s+/g, '_')}_${printDate}.doc`;
+      a.download = `تقرير_الانجازات_${printDate}.doc`;
       a.click();
     });
 
-    // تصدير إكسل
     document.getElementById('exportExcelBtn').addEventListener('click', () => {
-      if (achievements.length === 0) return alert("لا توجد بيانات للتصدير.");
-      const rows = achievements.map((item, idx) => ({
+      const dataToExport = getExportScopeData();
+      if (dataToExport.length === 0) return alert("لا توجد بيانات للتصدير.");
+      const rows = dataToExport.map((item, idx) => ({
         "م": idx + 1,
         "رقم التذكرة": item.ticketNo || '',
         "التاريخ": item.date || '',
@@ -840,12 +1091,15 @@
       XLSX.writeFile(wb, `سجل_الانجازات_${new Date().toISOString().split('T')[0]}.xlsx`);
     });
 
-    // طباعة
     document.getElementById('printBtn').addEventListener('click', () => {
-      if (achievements.length === 0) return alert("لا توجد إنجازات للطباعة.");
-      document.getElementById('printEmployeeName').textContent = currentUserProfile.name || currentUser.email;
+      const dataToExport = getExportScopeData();
+      if (dataToExport.length === 0) return alert("لا توجد إنجازات للطباعة.");
+      const selectedEmp = document.getElementById('employeeFilter').value;
+      const empScopeName = selectedEmp || (currentUserProfile.role === 'employee' ? currentUserProfile.name : 'تقرير شامل لكافة الموظفين');
+
+      document.getElementById('printEmployeeName').textContent = empScopeName;
       document.getElementById('printEmployeeDept').textContent = currentUserProfile.department || 'تقنية المعلومات';
-      document.getElementById('printDatePeriod').textContent = `بتاريخ: ${new Date().toISOString().split('T')[0]}`;
+      document.getElementById('printDatePeriod').textContent = `تاريخ التقرير: ${new Date().toISOString().split('T')[0]}`;
       document.getElementById('printFooterEmpName').textContent = currentUserProfile.name || currentUser.email;
       setTimeout(() => window.print(), 150);
     });
