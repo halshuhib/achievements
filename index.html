@@ -7,8 +7,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <!-- SheetJS لتصدير إكسل -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <!-- SheetJS -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -19,13 +19,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
 
   <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-    }
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: #f1f5f9; }
-    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
+    body { font-family: 'Cairo', Arial, sans-serif; }
     @page {
       size: A4 landscape;
       margin-top: 3.5cm !important;
@@ -33,19 +27,9 @@
       margin-left: 1.2cm !important;
       margin-right: 1.2cm !important;
     }
-
     @media print {
-      body {
-        background: #ffffff !important;
-        color: #000000 !important;
-        font-family: Arial, sans-serif !important;
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-      header, nav, footer, .no-print, #statsSection, #searchFilterSection, 
-      #tableHeaderControls, .modal-backdrop, .fixed {
-        display: none !important;
-      }
+      body { background: #fff !important; color: #000 !important; font-family: Arial, sans-serif !important; padding: 0 !important; }
+      header, nav, footer, .no-print, #statsSection, #searchFilterSection, #tableHeaderControls, .modal-backdrop, .fixed { display: none !important; }
       main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
       table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #000 !important; }
       thead th { border: 1px solid #000 !important; padding: 6px !important; font-size: 14pt !important; background: #f1f5f9 !important; font-family: Arial, sans-serif !important; }
@@ -53,7 +37,6 @@
       th:last-child, td:last-child { display: none !important; }
       #printReportHeader, #printReportFooter { display: block !important; font-family: Arial, sans-serif !important; }
     }
-
     @media screen {
       #printReportHeader, #printReportFooter { display: none; }
     }
@@ -61,21 +44,21 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- ================= 1. شاشة تسجيل الدخول ================= -->
+  <!-- شاشة الدخول -->
   <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 w-full max-w-md">
       <div class="text-center mb-6">
         <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-2xl mb-3 shadow-md shadow-blue-600/30">
-          <i class="fa-solid fa-shield-halved text-2xl"></i>
+          <i class="fa-solid fa-clipboard-check text-2xl"></i>
         </div>
         <h2 class="text-2xl font-black text-slate-800">بوابة الإنجازات اليومية</h2>
-        <p class="text-slate-500 text-xs mt-1">سجل الدخول بحسابك للوصول إلى قاعدة البيانات</p>
+        <p class="text-slate-500 text-xs mt-1">سجل الدخول بحسابك للوصول للنظام</p>
       </div>
 
       <form id="loginForm" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">البريد الإلكتروني</label>
-          <input type="email" id="authEmail" required placeholder="user@domain.com"
+          <input type="email" id="authEmail" required placeholder="name@domain.com"
                  class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
         </div>
         <div>
@@ -95,9 +78,9 @@
     </div>
   </div>
 
-  <!-- ================= 2. واجهة التطبيق الرئيسية ================= -->
+  <!-- الواجهة الرئيسية -->
   <div id="mainAppSection" class="hidden flex-1 flex flex-col">
-    <!-- الترويسة المطبوعة (A4 Landscape) -->
+    <!-- ترويسة الطباعة الرسمية -->
     <div id="printReportHeader" class="mb-4">
       <div class="text-center pb-2 mb-2">
         <h2 style="font-size: 20pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية</h2>
@@ -107,59 +90,55 @@
         <tr>
           <td style="padding: 6px; width: 33%;"><b>الموظف:</b> <span id="printEmployeeName">-</span></td>
           <td style="padding: 6px; width: 33%;"><b>الإدارة:</b> <span id="printEmployeeDept">-</span></td>
-          <td style="padding: 6px; width: 34%;"><b>الفترة:</b> <span id="printDatePeriod">-</span></td>
+          <td style="padding: 6px; width: 34%;"><b>فترة التقرير:</b> <span id="printDatePeriod">-</span></td>
         </tr>
       </table>
     </div>
 
-    <!-- هيدر التطبيق العلوي -->
+    <!-- الشريط العلوي -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs no-print">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20">
-            <i class="fa-solid fa-clipboard-check text-lg"></i>
+            <i class="fa-solid fa-clipboard-list text-lg"></i>
           </div>
           <div>
             <h1 class="text-base sm:text-lg font-bold text-slate-900">سجل الإنجازات اليومية</h1>
             <div class="flex items-center gap-2 text-xs text-slate-500">
-              <span id="userBadgeEmail" class="font-semibold text-slate-700"></span>
+              <span id="userBadgeName" class="font-bold text-slate-800"></span>
+              <span class="text-slate-300">|</span>
+              <span id="userBadgeDept" class="text-slate-600"></span>
               <span id="userRoleBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">موظف</span>
             </div>
           </div>
         </div>
 
         <div class="flex items-center gap-1.5 sm:gap-2">
-          <!-- زر إدارة الصلاحيات (يظهر للمدير فقط) -->
           <button id="adminUsersBtn" onclick="openPermissionsModal()" class="hidden items-center gap-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
             <i class="fa-solid fa-users-gear"></i>
-            <span>إدارة الصلاحيات</span>
+            <span>إدارة الموظفين والصلاحيات</span>
           </button>
 
-          <!-- زر تصدير Excel -->
           <button id="exportExcelBtn" class="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
             <i class="fa-solid fa-file-excel"></i>
             <span class="hidden sm:inline">تصدير Excel</span>
           </button>
 
-          <!-- زر Word بالعرض -->
           <button id="exportWordBtn" class="flex items-center gap-1.5 px-2.5 py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-300 rounded-xl text-xs sm:text-sm font-bold transition">
             <i class="fa-solid fa-file-word text-sky-600"></i>
             <span class="hidden md:inline">Word</span>
           </button>
 
-          <!-- زر الطباعة -->
           <button id="printBtn" class="flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold transition">
             <i class="fa-solid fa-print"></i>
             <span>طباعة</span>
           </button>
 
-          <!-- زر إضافة إنجاز -->
           <button id="openAddModalBtn" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition">
             <i class="fa-solid fa-plus"></i>
             <span>إضافة إنجاز</span>
           </button>
 
-          <!-- زر خروج -->
           <button id="logoutBtn" title="تسجيل الخروج" class="p-2 text-slate-400 hover:text-red-600 rounded-xl hover:bg-red-50 transition">
             <i class="fa-solid fa-power-off text-base"></i>
           </button>
@@ -168,7 +147,7 @@
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
-      <!-- بطاقات الإحصائيات -->
+      <!-- المؤشرات -->
       <div id="statsSection" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 no-print">
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
@@ -200,11 +179,11 @@
         </div>
       </div>
 
-      <!-- البحث والفلترة -->
+      <!-- أدوات الفلترة والبحث -->
       <div id="searchFilterSection" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between no-print">
         <div class="relative flex-1 w-full">
           <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-          <input type="text" id="searchInput" placeholder="بحث بالمستفيد، الإدارة، النظام، التذكرة، أو الإجراء..."
+          <input type="text" id="searchInput" placeholder="بحث باسم الموظف، المستفيد، الإدارة، النظام، أو الخدمة..."
                  class="w-full pr-10 pl-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
         </div>
         <div class="flex items-center gap-2 w-full md:w-auto">
@@ -213,7 +192,7 @@
         </div>
       </div>
 
-      <!-- جدول الإنجازات -->
+      <!-- جدول العرض -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <div id="tableHeaderControls" class="p-3.5 border-b border-slate-100 flex items-center justify-between no-print">
           <h3 class="font-bold text-slate-800 text-sm">سجل الإنجازات</h3>
@@ -226,8 +205,9 @@
                 <th class="py-3 px-2 text-center w-10">م</th>
                 <th class="py-3 px-2 text-center">التذكرة</th>
                 <th class="py-3 px-2.5 text-center">التاريخ</th>
+                <th class="py-3 px-3">الموظف المنفّذ</th>
                 <th class="py-3 px-3">المستفيد</th>
-                <th class="py-3 px-3">الإدارة</th>
+                <th class="py-3 px-3">الإدارة المستفيدة</th>
                 <th class="py-3 px-2.5">النظام</th>
                 <th class="py-3 px-3">الخدمة المطلوبة</th>
                 <th class="py-3 px-3">الإجراء المنفذ</th>
@@ -236,9 +216,9 @@
             </thead>
             <tbody id="achievementsTableBody" class="divide-y divide-slate-100 text-slate-700">
               <tr>
-                <td colspan="9" class="text-center py-12 text-slate-400">
+                <td colspan="10" class="text-center py-12 text-slate-400">
                   <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
-                  <p>جاري مزامنة السجلات سحابياً...</p>
+                  <p>جاري مزامنة السجلات...</p>
                 </td>
               </tr>
             </tbody>
@@ -246,11 +226,11 @@
         </div>
       </div>
 
-      <!-- التذييل المعتمد للطباعة -->
+      <!-- تذييل الطباعة -->
       <div id="printReportFooter" class="mt-8 pt-4 border-t-2 border-slate-900">
         <div style="display: flex; justify-content: space-between; text-align: center; font-size: 14pt;">
           <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
-            <b>الموظف المختص:</b> <span id="printFooterEmpName">-</span><br><br>
+            <b>الموظف المختص (مُعدّ التقرير):</b> <span id="printFooterEmpName">-</span><br><br>
             التوقيع: ...........................................
           </div>
           <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
@@ -262,38 +242,72 @@
     </main>
   </div>
 
-  <!-- ================= 3. نافذة إدارة الصلاحيات للمدير (Permissions Modal) ================= -->
+  <!-- نافذة إدارة الموظفين وإضافة مستخدم جديد (Admin Only) -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-amber-500 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-users-gear text-lg"></i>
-          <h3 class="font-bold text-base">إدارة صلاحيات المستخدمين (RBAC)</h3>
+          <h3 class="font-bold text-base">إدارة الموظفين والصلاحيات</h3>
         </div>
         <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
-      <div class="p-5 overflow-y-auto space-y-4">
-        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 leading-relaxed">
-          <i class="fa-solid fa-circle-info ml-1"></i>
-          يمكن للمدير تحديد دور كل مستخدم؛ <b>المدير (Admin)</b> يمكنه إدارة كافة الإنجازات والصلاحيات، بينما <b>الموظف (Employee)</b> يدير إنجازاته الخاصة فقط.
+      <div class="p-5 overflow-y-auto space-y-5">
+        <!-- نموذج إضافة موظف جديد -->
+        <div class="p-4 bg-amber-50/60 border border-amber-200 rounded-xl space-y-3">
+          <h4 class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-plus"></i>
+            <span>إضافة وتعيين موظف جديد بالنظام</span>
+          </h4>
+          <form id="createEmployeeForm" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">اسم الموظف الثلاثي</label>
+              <input type="text" id="newEmpName" required placeholder="مثال: فهد محمد الدوسري" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">الإدارة / القسم</label>
+              <input type="text" id="newEmpDept" required placeholder="مثال: الأنظمة والبرامج" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">البريد الإلكتروني للدخول</label>
+              <input type="email" id="newEmpEmail" required placeholder="emp@domain.gov.sa" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
+            </div>
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة</label>
+              <input type="text" id="newEmpPass" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
+            </div>
+            <div class="sm:col-span-2 flex justify-end pt-1">
+              <button type="submit" id="createEmpBtn" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg transition flex items-center gap-1">
+                <i class="fa-solid fa-check"></i>
+                <span>إنشاء وتفعيل حساب الموظف</span>
+              </button>
+            </div>
+          </form>
+          <div id="createEmpMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         </div>
 
-        <div class="overflow-x-auto border border-slate-200 rounded-xl">
-          <table class="w-full text-right text-xs">
-            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-              <tr>
-                <th class="p-2.5">المستخدم</th>
-                <th class="p-2.5">الدور الحالي</th>
-                <th class="p-2.5 text-center">تغيير الصلاحية</th>
-              </tr>
-            </thead>
-            <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100">
-              <tr><td colspan="3" class="text-center py-4 text-slate-400">جاري تحميل قائمة المستخدمين...</td></tr>
-            </tbody>
-          </table>
+        <!-- قائمة الموظفين وتعديل الرتب -->
+        <div>
+          <h4 class="text-xs font-bold text-slate-700 mb-2">قائمة حسابات الموظفين الحالية:</h4>
+          <div class="overflow-x-auto border border-slate-200 rounded-xl">
+            <table class="w-full text-right text-xs">
+              <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                <tr>
+                  <th class="p-2.5">اسم الموظف</th>
+                  <th class="p-2.5">البريد</th>
+                  <th class="p-2.5">الإدارة</th>
+                  <th class="p-2.5">الصلاحية</th>
+                  <th class="p-2.5 text-center">الإجراء</th>
+                </tr>
+              </thead>
+              <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100">
+                <tr><td colspan="5" class="text-center py-4 text-slate-400">جاري تحميل قائمة الموظفين...</td></tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
@@ -302,7 +316,7 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة إضافة وتعديل إنجاز ================= -->
+  <!-- نافذة إضافة وتعديل إنجاز -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -329,13 +343,13 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">اسم المستفيد</label>
-          <input type="text" id="formBeneficiary" required placeholder="مثال: نايف حسن" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
+          <input type="text" id="formBeneficiary" required placeholder="مثال: علي محمد" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block text-xs font-bold text-slate-700 mb-1">الإدارة / القسم</label>
-            <input type="text" id="formDepartment" required placeholder="مثال: محافظة النعيرية" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
+            <label class="block text-xs font-bold text-slate-700 mb-1">الإدارة المستفيدة</label>
+            <input type="text" id="formDepartment" required placeholder="مثال: الأنظمة والبرامج" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
           </div>
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">اسم النظام</label>
@@ -345,12 +359,12 @@
 
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">الخدمة المطلوبة</label>
-          <input type="text" id="formService" required placeholder="مثال: إضافة اسم مستخدم وكلمة مرور" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
+          <input type="text" id="formService" required placeholder="مثال: تعديل صلاحية" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">الإجراء والحل المنفذ</label>
-          <textarea id="formSolution" required rows="3" placeholder="اكتب بالتفصيل ما تم عمله..." class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none resize-none"></textarea>
+          <textarea id="formSolution" required rows="3" placeholder="اكتب بالتفصيل ما تم تنفيذه..." class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none resize-none"></textarea>
         </div>
 
         <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
@@ -362,9 +376,6 @@
   </div>
 
   <script>
-    // ==========================================
-    // 1. إعدادات Firebase الخاصة بك
-    // ==========================================
     const firebaseConfig = {
       apiKey: "AIzaSyCdAJbhASinCo7gX7JjhNUDyftsZ8-CI9I",
       authDomain: "achievements-portal.firebaseapp.com",
@@ -375,16 +386,15 @@
       measurementId: "G-PYPV4ML73X"
     };
 
-    firebase.initializeApp(firebaseConfig);
+    const mainApp = firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
     let currentUser = null;
-    let currentUserRole = 'employee'; // 'admin' أو 'employee'
+    let currentUserProfile = null;
     let achievements = [];
     let unsubscribeFirestore = null;
 
-    // توليد تذكرة تلقائية
     function generateTicketNo() {
       const yr = new Date().getFullYear();
       const rnd = Math.floor(1000 + Math.random() * 9000);
@@ -394,7 +404,7 @@
       document.getElementById('formTicketNo').value = generateTicketNo();
     };
 
-    // عناصر المصادقة
+    // عناصر الدخول
     const authSection = document.getElementById('authSection');
     const mainAppSection = document.getElementById('mainAppSection');
     const loginForm = document.getElementById('loginForm');
@@ -404,7 +414,6 @@
     const authSubmitBtn = document.getElementById('authSubmitBtn');
     const logoutBtn = document.getElementById('logoutBtn');
 
-    // تسجيل الدخول
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       authError.classList.add('hidden');
@@ -415,13 +424,7 @@
         await auth.signInWithEmailAndPassword(authEmail.value.trim(), authPassword.value);
       } catch (err) {
         authError.classList.remove('hidden');
-        if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
-          authError.textContent = "بيانات الدخول غير صحيحة.";
-        } else if (err.code === 'auth/unauthorized-domain') {
-          authError.textContent = "النطاق غير مصرح به في Firebase. أضف halshuhib.github.io في Authorized Domains.";
-        } else {
-          authError.textContent = `خطأ (${err.code}): ${err.message}`;
-        }
+        authError.textContent = "بيانات الدخول غير صحيحة أو الحساب غير مفعل.";
       } finally {
         authSubmitBtn.disabled = false;
         authSubmitBtn.innerHTML = `<span>دخول للنظام</span> <i class="fa-solid fa-arrow-left text-sm"></i>`;
@@ -430,49 +433,50 @@
 
     logoutBtn.addEventListener('click', () => auth.signOut());
 
-    // مراقبة الدخول وتحديد الصلاحيات
     auth.onAuthStateChanged(async (user) => {
       if (user) {
         currentUser = user;
         authSection.classList.add('hidden');
         mainAppSection.classList.remove('hidden');
-        document.getElementById('userBadgeEmail').textContent = user.email;
 
-        await initUserProfileAndRole(user);
+        await loadUserProfile(user);
         subscribeToAchievements();
       } else {
         currentUser = null;
-        currentUserRole = 'employee';
+        currentUserProfile = null;
         authSection.classList.remove('hidden');
         mainAppSection.classList.add('hidden');
         if (unsubscribeFirestore) unsubscribeFirestore();
       }
     });
 
-    // إدارة الملف الشخصي والصلاحية في Firestore
-    async function initUserProfileAndRole(user) {
-      const userDocRef = db.collection('users').doc(user.uid);
-      const doc = await userDocRef.get();
+    async function loadUserProfile(user) {
+      const userRef = db.collection('users').doc(user.uid);
+      const doc = await userRef.get();
 
       if (!doc.exists) {
-        // إذا كان أول مستخدم يسجل في المنظومة يصبح Admin تلقائياً
         const usersSnap = await db.collection('users').get();
         const role = usersSnap.empty ? 'admin' : 'employee';
-        await userDocRef.set({
+        currentUserProfile = {
+          name: user.email.split('@')[0],
           email: user.email,
-          role: role,
-          department: 'تقنية المعلومات',
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        currentUserRole = role;
+          department: 'تقنية المعلومات والتحول الرقمي',
+          role: role
+        };
+        await userRef.set(currentUserProfile);
       } else {
-        currentUserRole = doc.data().role || 'employee';
+        currentUserProfile = doc.data();
+        if (!currentUserProfile.name) currentUserProfile.name = user.email.split('@')[0];
+        if (!currentUserProfile.email) currentUserProfile.email = user.email;
+        if (!currentUserProfile.department) currentUserProfile.department = 'الإدارة العامة';
       }
 
-      // ضبط الواجهة حسب الصلاحية
+      document.getElementById('userBadgeName').textContent = currentUserProfile.name;
+      document.getElementById('userBadgeDept').textContent = currentUserProfile.department;
+
       const roleBadge = document.getElementById('userRoleBadge');
       const adminBtn = document.getElementById('adminUsersBtn');
-      if (currentUserRole === 'admin') {
+      if (currentUserProfile.role === 'admin') {
         roleBadge.textContent = 'مدير النظام';
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
         adminBtn.classList.remove('hidden');
@@ -485,11 +489,9 @@
       }
     }
 
-    // مزامنة الإنجازات
     function subscribeToAchievements() {
       let query = db.collection('achievements');
-      // إذا كان موظف عادي، يرى إنجازاته فقط. أما المدير فيرى كافة الإنجازات
-      if (currentUserRole !== 'admin') {
+      if (currentUserProfile.role !== 'admin') {
         query = query.where('userId', '==', currentUser.uid);
       }
 
@@ -506,7 +508,6 @@
       });
     }
 
-    // عرض الجدول
     function renderTable() {
       const tbody = document.getElementById('achievementsTableBody');
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -514,7 +515,7 @@
 
       const filtered = achievements.filter(item => {
         const matchesQuery = !q ||
-          (item.ticketNo && item.ticketNo.toLowerCase().includes(q)) ||
+          (item.employeeName && item.employeeName.toLowerCase().includes(q)) ||
           (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
           (item.department && item.department.toLowerCase().includes(q)) ||
           (item.system && item.system.toLowerCase().includes(q)) ||
@@ -528,7 +529,7 @@
       document.getElementById('recordsCounter').textContent = `${filtered.length} سجل`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400">لا توجد إنجازات مطابقة</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="10" class="text-center py-8 text-slate-400">لا توجد إنجازات مطابقة</td></tr>`;
         return;
       }
 
@@ -537,20 +538,25 @@
           <td class="py-2.5 px-2 text-center text-slate-400 text-xs">${idx + 1}</td>
           <td class="py-2.5 px-2 text-center font-mono text-[11px] font-bold text-blue-700 whitespace-nowrap">${item.ticketNo || '-'}</td>
           <td class="py-2.5 px-2.5 text-center text-xs font-semibold whitespace-nowrap">${item.date || '-'}</td>
-          <td class="py-2.5 px-3 font-bold text-slate-800 text-xs">${item.beneficiary || '-'}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-800 text-xs">
+            ${item.employeeName || 'غير محدد'}
+            <span class="block text-[10px] text-slate-400 font-normal">${item.employeeDept || ''}</span>
+          </td>
+          <td class="py-2.5 px-3 font-bold text-blue-900 text-xs">${item.beneficiary || '-'}</td>
           <td class="py-2.5 px-3 text-xs text-slate-600">${item.department || '-'}</td>
           <td class="py-2.5 px-2.5 text-xs text-slate-700 font-semibold">${item.system || '-'}</td>
           <td class="py-2.5 px-3 text-xs text-slate-700 max-w-xs truncate" title="${item.service}">${item.service || '-'}</td>
           <td class="py-2.5 px-3 text-xs text-slate-600 max-w-xs truncate" title="${item.solution}">${item.solution || '-'}</td>
           <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
-            <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 mx-0.5" title="تعديل"><i class="fa-solid fa-pen text-xs"></i></button>
-            <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 mx-0.5" title="حذف"><i class="fa-solid fa-trash text-xs"></i></button>
+            ${(currentUserProfile.role === 'admin' || item.userId === currentUser.uid) ? `
+              <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 mx-0.5" title="تعديل"><i class="fa-solid fa-pen text-xs"></i></button>
+              <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 mx-0.5" title="حذف"><i class="fa-solid fa-trash text-xs"></i></button>
+            ` : `<span class="text-slate-300 text-xs">للاطلاع</span>`}
           </td>
         </tr>
       `).join('');
     }
 
-    // تحديث الإحصائيات
     function updateStats() {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('statTotal').textContent = achievements.length;
@@ -567,7 +573,7 @@
       renderTable();
     });
 
-    // نوافذ إضافة / تعديل الإنجاز
+    // إضافة وتعديل الإنجاز
     const recordModal = document.getElementById('recordModal');
     const recordForm = document.getElementById('recordForm');
     document.getElementById('openAddModalBtn').addEventListener('click', () => {
@@ -595,7 +601,8 @@
         service: document.getElementById('formService').value.trim(),
         solution: document.getElementById('formSolution').value.trim(),
         userId: currentUser.uid,
-        userEmail: currentUser.email,
+        employeeName: currentUserProfile.name || currentUser.email,
+        employeeDept: currentUserProfile.department || 'تقنية المعلومات',
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -608,7 +615,7 @@
         }
         closeRecordModal();
       } catch (err) {
-        alert("حدث خطأ أثناء حفظ الإنجاز: " + err.message);
+        alert("حدث خطأ: " + err.message);
       }
     });
 
@@ -629,112 +636,119 @@
 
     window.deleteRecord = async function(id) {
       if (confirm("هل أنت متأكد من حذف هذا الإنجاز؟")) {
-        try {
-          await db.collection('achievements').doc(id).delete();
-        } catch (err) {
-          alert("تعذر الحذف: " + err.message);
-        }
+        await db.collection('achievements').doc(id).delete();
       }
     };
 
-    // ==========================================
-    // 5. نافذة إدارة الصلاحيات (Admin Panel)
-    // ==========================================
+    // إدارة الموظفين والصلاحيات
     const permissionsModal = document.getElementById('permissionsModal');
-    window.openPermissionsModal = async function() {
-      if (currentUserRole !== 'admin') {
-        alert("هذه الصفحة مخصصة لمدير النظام فقط.");
-        return;
-      }
+    window.openPermissionsModal = function() {
+      if (currentUserProfile.role !== 'admin') return;
       permissionsModal.classList.remove('hidden');
-      loadUsersPermissionsList();
+      loadUsersList();
     };
-
     window.closePermissionsModal = function() {
       permissionsModal.classList.add('hidden');
     };
 
-    async function loadUsersPermissionsList() {
+    async function loadUsersList() {
       const tbody = document.getElementById('usersPermissionsTableBody');
-      tbody.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-slate-400"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب المستخدمين...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-slate-400"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</td></tr>`;
 
-      try {
-        const snap = await db.collection('users').get();
-        if (snap.empty) {
-          tbody.innerHTML = `<tr><td colspan="3" class="text-center py-3 text-slate-400">لا يوجد مستخدمون مسجلون بعد.</td></tr>`;
-          return;
-        }
-
-        let html = '';
-        snap.forEach(doc => {
-          const u = doc.data();
-          const uid = doc.id;
-          const isAdmin = u.role === 'admin';
-          html += `
-            <tr class="hover:bg-slate-50">
-              <td class="p-2.5 font-bold text-slate-800">${u.email}</td>
-              <td class="p-2.5">
-                <span class="px-2 py-0.5 rounded-md font-bold ${isAdmin ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
-                  ${isAdmin ? 'مدير نظام' : 'موظف'}
-                </span>
-              </td>
-              <td class="p-2.5 text-center">
-                <button onclick="toggleUserRole('${uid}', '${u.role || 'employee'}')" 
-                        class="px-2.5 py-1 text-[11px] font-bold rounded-lg border transition ${isAdmin ? 'border-blue-600 text-blue-600 hover:bg-blue-50' : 'border-amber-600 text-amber-600 hover:bg-amber-50'}">
-                  ${isAdmin ? 'تحويل لموظف' : 'ترقية لمدير'}
-                </button>
-              </td>
-            </tr>
-          `;
-        });
-        tbody.innerHTML = html;
-      } catch (err) {
-        tbody.innerHTML = `<tr><td colspan="3" class="text-center py-3 text-red-500">حدث خطأ: ${err.message}</td></tr>`;
+      const snap = await db.collection('users').get();
+      if (snap.empty) {
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-3 text-slate-400">لا يوجد موظفون مسجلون</td></tr>`;
+        return;
       }
+
+      let html = '';
+      snap.forEach(doc => {
+        const u = doc.data();
+        const uid = doc.id;
+        const isAdmin = u.role === 'admin';
+        html += `
+          <tr class="hover:bg-slate-50">
+            <td class="p-2.5 font-bold text-slate-800">${u.name || 'بدون اسم'}</td>
+            <td class="p-2.5 text-slate-600 font-mono text-[11px]">${u.email || '-'}</td>
+            <td class="p-2.5 text-slate-700">${u.department || '-'}</td>
+            <td class="p-2.5">
+              <span class="px-2 py-0.5 rounded-md font-bold ${isAdmin ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
+                ${isAdmin ? 'مدير نظام' : 'موظف'}
+              </span>
+            </td>
+            <td class="p-2.5 text-center">
+              <button onclick="toggleRole('${uid}', '${u.role}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-300 hover:bg-slate-100">
+                ${isAdmin ? 'تحويل لموظف' : 'ترقية لمدير'}
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
     }
 
-    window.toggleUserRole = async function(uid, currentRole) {
+    window.toggleRole = async function(uid, currentRole) {
       const newRole = currentRole === 'admin' ? 'employee' : 'admin';
-      if (confirm(`هل أنت متأكد من تغيير صلاحية هذا المستخدم إلى (${newRole === 'admin' ? 'مدير' : 'موظف'})؟`)) {
-        try {
-          await db.collection('users').doc(uid).update({ role: newRole });
-          loadUsersPermissionsList();
-        } catch (e) {
-          alert("فشل تحديث الصلاحية: " + e.message);
-        }
-      }
+      await db.collection('users').doc(uid).update({ role: newRole });
+      loadUsersList();
     };
 
-    // ==========================================
-    // 6. التصدير (Excel & Word & Print)
-    // ==========================================
-    document.getElementById('exportExcelBtn').addEventListener('click', () => {
-      if (achievements.length === 0) return alert("لا توجد بيانات للتصدير.");
-      const rows = achievements.map((item, idx) => ({
-        "م": idx + 1,
-        "رقم التذكرة": item.ticketNo || '',
-        "التاريخ": item.date || '',
-        "اسم المستفيد": item.beneficiary || '',
-        "الإدارة / القسم": item.department || '',
-        "النظام": item.system || '',
-        "الخدمة المطلوبة": item.service || '',
-        "الإجراء المنفذ": item.solution || ''
-      }));
-      const ws = XLSX.utils.json_to_sheet(rows);
-      ws['!dir'] = "rtl";
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "الإنجازات");
-      XLSX.writeFile(wb, `سجل_الانجازات_${new Date().toISOString().split('T')[0]}.xlsx`);
+    // إنشاء موظف جديد من داخل النظام مباشرة
+    document.getElementById('createEmployeeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('newEmpName').value.trim();
+      const dept = document.getElementById('newEmpDept').value.trim();
+      const email = document.getElementById('newEmpEmail').value.trim();
+      const pass = document.getElementById('newEmpPass').value.trim();
+      const msg = document.getElementById('createEmpMsg');
+      const btn = document.getElementById('createEmpBtn');
+
+      btn.disabled = true;
+      msg.className = "text-xs p-2 rounded-lg font-semibold bg-blue-50 text-blue-700 block";
+      msg.textContent = "جاري إنشاء الحساب وتفعيله...";
+
+      try {
+        // استخدام تطبيق ثانوي مؤقت حتى لا يتم تسجيل خروج المدير الحالي
+        const secondaryApp = firebase.initializeApp(firebaseConfig, "Secondary");
+        const newUserCred = await secondaryApp.auth().createUserWithEmailAndPassword(email, pass);
+        
+        await db.collection('users').doc(newUserCred.user.uid).set({
+          name: name,
+          department: dept,
+          email: email,
+          role: 'employee',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        await secondaryApp.auth().signOut();
+        secondaryApp.delete();
+
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
+        msg.textContent = `✅ تم إنشاء حساب الموظف بنجاح! يمكنه الدخول ببريده وكلمة المرور المسجلة.`;
+        document.getElementById('createEmployeeForm').reset();
+        loadUsersList();
+      } catch (err) {
+        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
+        msg.textContent = `فشل إنشاء الحساب: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+      }
     });
 
+    // تصدير Word الرسمي مع ترويسة بيانات الموظف والجهة
     document.getElementById('exportWordBtn').addEventListener('click', () => {
-      if (achievements.length === 0) return alert("لا توجد بيانات للتصدير.");
+      if (achievements.length === 0) return alert("لا توجد إنجازات للتصدير.");
+      const printDate = new Date().toISOString().split('T')[0];
+      const empName = currentUserProfile.name || 'الموظف المختص';
+      const empDept = currentUserProfile.department || 'الإدارة العامة';
+
       let rowsHtml = achievements.map((item, idx) => `
         <tr>
           <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${idx + 1}</td>
-          <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${item.ticketNo || '-'}</td>
+          <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${item.ticketNo || '-'}</td>
           <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${item.date || ''}</td>
-          <td style="border: 1px solid #000; font-size:14pt; padding:6px; font-weight:bold;">${item.beneficiary || ''}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px; font-weight:bold;">${item.employeeName || empName}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.beneficiary || ''}</td>
           <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.department || ''}</td>
           <td style="border: 1px solid #000; font-size:14pt; padding:6px; text-align:center;">${item.system || ''}</td>
           <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.service || ''}</td>
@@ -750,36 +764,89 @@
           div.Section1 { page: Section1; }
           body { font-family: Arial, sans-serif; direction: rtl; text-align: right; font-size: 14pt; }
           table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-          th { border: 1px solid #000; padding: 6px; background-color: #f1f5f9; font-size: 14pt; }
+          th { border: 1.5px solid #000; padding: 6px; background-color: #f1f5f9; font-size: 14pt; }
         </style>
         </head>
         <body>
           <div class="Section1">
-            <h2 style="text-align:center; font-size: 20pt; font-family: Arial;">تقرير الإنجازات اليومية المعتمد</h2>
+            <h2 style="text-align:center; font-size: 20pt; font-family: Arial; margin:0 0 10px 0;">تقرير الإنجازات والمهام اليومية</h2>
+            <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 12px; font-size: 14pt;">
+              <tr>
+                <td style="padding: 6px; border: 1px solid #000; width: 33%;"><b>الموظف:</b> ${empName}</td>
+                <td style="padding: 6px; border: 1px solid #000; width: 33%;"><b>الإدارة:</b> ${empDept}</td>
+                <td style="padding: 6px; border: 1px solid #000; width: 34%;"><b>تاريخ التقرير:</b> ${printDate}</td>
+              </tr>
+            </table>
+
             <table>
               <thead>
                 <tr>
-                  <th>م</th><th>التذكرة</th><th>التاريخ</th><th>المستفيد</th><th>الإدارة</th><th>النظام</th><th>الخدمة</th><th>الإجراء</th>
+                  <th style="width: 4%;">م</th>
+                  <th style="width: 12%;">التذكرة</th>
+                  <th style="width: 10%;">التاريخ</th>
+                  <th style="width: 13%;">الموظف</th>
+                  <th style="width: 13%;">المستفيد</th>
+                  <th style="width: 12%;">الإدارة</th>
+                  <th style="width: 10%;">النظام</th>
+                  <th style="width: 13%;">الخدمة</th>
+                  <th style="width: 13%;">الإجراء المنفذ</th>
                 </tr>
               </thead>
               <tbody>${rowsHtml}</tbody>
             </table>
+
+            <div style="margin-top: 35px; width: 100%;">
+              <table style="width: 100%; border: none;">
+                <tr>
+                  <td style="text-align: center; border: none; width: 50%; font-size: 14pt;">
+                    <b>الموظف المختص</b><br><br>${empName}<br><br>التوقيع: ...................................
+                  </td>
+                  <td style="text-align: center; border: none; width: 50%; font-size: 14pt;">
+                    <b>اعتماد المشرف / مدير الإدارة</b><br><br>الاسم: ...................................<br><br>التوقيع: ...................................
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
         </body></html>
       `;
+
       const blob = new Blob(['\ufeff' + wordDoc], { type: 'application/msword' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `تقرير_الانجازات_${new Date().toISOString().split('T')[0]}.doc`;
+      a.download = `تقرير_الانجازات_${empName.replace(/\s+/g, '_')}_${printDate}.doc`;
       a.click();
     });
 
+    // تصدير إكسل
+    document.getElementById('exportExcelBtn').addEventListener('click', () => {
+      if (achievements.length === 0) return alert("لا توجد بيانات للتصدير.");
+      const rows = achievements.map((item, idx) => ({
+        "م": idx + 1,
+        "رقم التذكرة": item.ticketNo || '',
+        "التاريخ": item.date || '',
+        "اسم الموظف": item.employeeName || '',
+        "إدارة الموظف": item.employeeDept || '',
+        "اسم المستفيد": item.beneficiary || '',
+        "الإدارة المستفيدة": item.department || '',
+        "النظام": item.system || '',
+        "الخدمة المطلوبة": item.service || '',
+        "الإجراء المنفذ": item.solution || ''
+      }));
+      const ws = XLSX.utils.json_to_sheet(rows);
+      ws['!dir'] = "rtl";
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "الإنجازات");
+      XLSX.writeFile(wb, `سجل_الانجازات_${new Date().toISOString().split('T')[0]}.xlsx`);
+    });
+
+    // طباعة
     document.getElementById('printBtn').addEventListener('click', () => {
       if (achievements.length === 0) return alert("لا توجد إنجازات للطباعة.");
-      document.getElementById('printEmployeeName').textContent = currentUser.email;
-      document.getElementById('printEmployeeDept').textContent = "تقنية المعلومات";
-      document.getElementById('printDatePeriod').textContent = `تاريخ الطباعة: ${new Date().toISOString().split('T')[0]}`;
-      document.getElementById('printFooterEmpName').textContent = currentUser.email;
+      document.getElementById('printEmployeeName').textContent = currentUserProfile.name || currentUser.email;
+      document.getElementById('printEmployeeDept').textContent = currentUserProfile.department || 'تقنية المعلومات';
+      document.getElementById('printDatePeriod').textContent = `بتاريخ: ${new Date().toISOString().split('T')[0]}`;
+      document.getElementById('printFooterEmpName').textContent = currentUserProfile.name || currentUser.email;
       setTimeout(() => window.print(), 150);
     });
   </script>
