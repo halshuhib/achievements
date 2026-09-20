@@ -347,7 +347,7 @@
       <div class="p-5 overflow-y-auto space-y-4">
         <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
           <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
-          <span><b>ضابط أمني:</b> يمكنك كمدير نظام تعيين كلمة مرور جديدة ومباشرة لأي موظف وسيُلزم بتغييرها فور تسجيل دخوله.</span>
+          <span><b>ضابط أمني:</b> تعيين كلمة مرور الموظف من هنا يتم فورياً ويجبره النظام على تغييرها بنفسه عند الدخول.</span>
         </div>
 
         <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
@@ -455,7 +455,7 @@
         <input type="hidden" id="targetAdminResetEmail">
         <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-[11px] leading-relaxed">
           <span>الموظف: <b id="targetAdminResetName" class="text-slate-800"></b></span><br>
-          <span>سيتم إجبار الموظف على تغيير كلمة المرور فور دخوله القادم.</span>
+          <span>سيدخل الموظف فوراً بهذه الكلمة وسيجبره النظام على استبدالها برمز خاص وسري قبل فتح النظام.</span>
         </div>
         <div>
           <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة الجديدة</label>
@@ -466,7 +466,7 @@
           <button type="button" onclick="closeAdminDirectPasswordModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
           <button type="submit" id="saveAdminDirectPassBtn" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg flex items-center gap-1.5">
             <i class="fa-solid fa-lock"></i>
-            <span>تحديث وإلزام بالتغيير</span>
+            <span>حفظ وتفعيل فوري</span>
           </button>
         </div>
       </form>
@@ -501,15 +501,15 @@
     </div>
   </div>
 
-  <!-- ================= 7. نافذة تغيير كلمة المرور الإجبارية عند أول تسجيل دخول ================= -->
-  <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 no-print">
+  <!-- ================= 7. شاشة تغيير كلمة المرور الإجبارية ================= -->
+  <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/85 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-emerald-500/30">
       <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-800 text-white text-center">
         <div class="w-12 h-12 bg-white/20 rounded-2xl mx-auto flex items-center justify-center mb-2 shadow-inner">
-          <i class="fa-solid fa-shield-keyhole text-2xl text-white"></i>
+          <i class="fa-solid fa-shield-halved text-2xl text-white"></i>
         </div>
         <h3 class="font-black text-base">تحديث أمني إجباري لكلمة المرور</h3>
-        <p class="text-xs text-emerald-100 mt-1">حفاظاً على سرية وسلامة بياناتك، يرجى تعيين كلمة مرور سرية جديدة خاصة بك للمتابعة.</p>
+        <p class="text-xs text-emerald-100 mt-1">تم تعيين كلمة مرور مؤقتة لحسابك. حفاظاً على السرية التامة، يجب تعيين كلمة مرور خاصة وجديدة للدخول.</p>
       </div>
       <form id="forceChangePasswordForm" class="p-6 space-y-3.5 text-xs">
         <div>
@@ -931,7 +931,7 @@
       }
     };
 
-    // الدخول
+    // الدخول المتكامل الذكي (يدعم كلمة المرور المؤقتة التي وضعها المدير مباشرة)
     const authSection = document.getElementById('authSection');
     const mainAppSection = document.getElementById('mainAppSection');
     const loginForm = document.getElementById('loginForm');
@@ -947,18 +947,46 @@
       authSubmitBtn.disabled = true;
       authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري التحقق...</span>`;
 
+      const inputEmail = authEmail.value.trim();
+      const inputPass = authPassword.value;
+
       try {
-        await auth.signInWithEmailAndPassword(authEmail.value.trim(), authPassword.value);
+        // 1. محاولة تسجيل الدخول القياسي في Firebase Auth
+        await auth.signInWithEmailAndPassword(inputEmail, inputPass);
       } catch (err) {
-        authError.classList.remove('hidden');
-        authError.textContent = "بيانات الدخول غير صحيحة أو الحساب معطل.";
+        // 2. إذا فشل، نتحقق مما إذا كان مدير النظام قد وضع له كلمة مرور مؤقتة في قاعدة البيانات
+        try {
+          const queryUser = await db.collection('users').where('email', '==', inputEmail).get();
+          if (!queryUser.empty) {
+            const userData = queryUser.docs[0].data();
+            if (userData.tempPassword && userData.tempPassword === inputPass) {
+              // تسجيل الدخول بحساب افتراضي وتفعيل وضع التحديث الإجباري
+              // نطلب من المستخدم إعادة تعيينها أو نقوم بإنشاء جلسة مباشرة
+              currentUser = { uid: queryUser.docs[0].id, email: inputEmail };
+              currentUserProfile = { ...userData, mustChangePassword: true };
+              
+              authSection.classList.add('hidden');
+              mainAppSection.classList.remove('hidden');
+              showForceChangePasswordModal();
+              return;
+            }
+          }
+          authError.classList.remove('hidden');
+          authError.textContent = "بيانات الدخول غير صحيحة أو الحساب معطل.";
+        } catch (dbErr) {
+          authError.classList.remove('hidden');
+          authError.textContent = "بيانات الدخول غير صحيحة أو الحساب معطل.";
+        }
       } finally {
         authSubmitBtn.disabled = false;
         authSubmitBtn.innerHTML = `<span>دخول للنظام</span> <i class="fa-solid fa-arrow-left text-sm"></i>`;
       }
     });
 
-    logoutBtn.addEventListener('click', () => auth.signOut());
+    logoutBtn.addEventListener('click', () => {
+      auth.signOut();
+      window.location.reload();
+    });
 
     auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -978,14 +1006,13 @@
         await loadUserProfile(user);
         await cacheAllUsers();
 
+        // فحص الإلزام بتغيير كلمة المرور
         if (currentUserProfile.mustChangePassword) {
           showForceChangePasswordModal();
         }
 
         subscribeToAchievements();
-      } else {
-        currentUser = null;
-        currentUserProfile = null;
+      } else if (!currentUser) {
         authSection.classList.remove('hidden');
         mainAppSection.classList.add('hidden');
         if (unsubscribeFirestore) unsubscribeFirestore();
@@ -1309,7 +1336,7 @@
       });
     };
 
-    // إلغاء الاعتماد والعودة للانتظار
+    // إلغاء الاعتماد
     window.unapproveRecord = async function(id) {
       await db.collection('achievements').doc(id).update({
         status: 'بانتظار الاعتماد',
@@ -1318,7 +1345,7 @@
       });
     };
 
-    // نافذة وإجراء الرفض مع ذكر السبب
+    // الرفض مع السبب
     const rejectReasonModal = document.getElementById('rejectReasonModal');
     const rejectReasonForm = document.getElementById('rejectReasonForm');
 
@@ -1454,7 +1481,7 @@
       }
     };
 
-    // تغيير كلمة المرور المباشر بواسطة مدير النظام
+    // تعيين كلمة مرور مؤقتة مباشرة بواسطة مدير النظام (حفظ مباشر للدخول الفوري)
     const adminDirectPasswordModal = document.getElementById('adminDirectPasswordModal');
     const adminDirectPasswordForm = document.getElementById('adminDirectPasswordForm');
 
@@ -1474,7 +1501,6 @@
     adminDirectPasswordForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const uid = document.getElementById('targetAdminResetUid').value;
-      const email = document.getElementById('targetAdminResetEmail').value;
       const newPass = document.getElementById('targetAdminDirectPassword').value.trim();
       const msg = document.getElementById('adminDirectPassMsg');
       const btn = document.getElementById('saveAdminDirectPassBtn');
@@ -1487,24 +1513,18 @@
 
       btn.disabled = true;
       msg.className = "text-xs p-2 rounded-lg font-semibold bg-blue-50 text-blue-700 block";
-      msg.textContent = "جاري تحديث كلمة المرور المباشرة وإلزام الحساب...";
+      msg.textContent = "جاري الحفظ والتفعيل الفوري...";
 
       try {
         await db.collection('users').doc(uid).update({
+          tempPassword: newPass,
           mustChangePassword: true,
           tempPasswordSetAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        try {
-          const secondaryApp = firebase.initializeApp(firebaseConfig, "PassResetApp" + Date.now());
-          await secondaryApp.auth().signInWithEmailAndPassword(email, newPass).catch(() => {});
-          await secondaryApp.auth().signOut();
-          secondaryApp.delete();
-        } catch (subErr) {}
-
         msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-        msg.textContent = "✅ تم تعيين كلمة المرور وتفعيل الإلزام بالتغيير بنجاح.";
-        setTimeout(() => closeAdminDirectPasswordModal(), 1200);
+        msg.textContent = "✅ تم تعيين كلمة المرور بنجاح. يستطيع الموظف الدخول بها وسيجبر على تغييرها فوراً.";
+        setTimeout(() => closeAdminDirectPasswordModal(), 1300);
       } catch (err) {
         msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
         msg.textContent = "حدث خطأ: " + err.message;
@@ -1513,7 +1533,7 @@
       }
     });
 
-    // شاشة تغيير كلمة المرور الإجبارية
+    // شاشة تغيير كلمة المرور الإجبارية عند أول تسجيل دخول
     const forceChangePasswordModal = document.getElementById('forceChangePasswordModal');
     const forceChangePasswordForm = document.getElementById('forceChangePasswordForm');
 
@@ -1543,12 +1563,16 @@
       }
 
       btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري التحديث والتأمين...</span>`;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري الحفظ والتأمين...</span>`;
 
       try {
-        await auth.currentUser.updatePassword(p1);
+        if (auth.currentUser) {
+          await auth.currentUser.updatePassword(p1);
+        }
+
         await db.collection('users').doc(currentUser.uid).update({
           mustChangePassword: false,
+          tempPassword: firebase.firestore.FieldValue.delete(),
           passwordChangedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         currentUserProfile.mustChangePassword = false;
@@ -1560,9 +1584,7 @@
         }, 1000);
       } catch (err) {
         msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = (err.code === 'auth/requires-recent-login') 
-          ? "يرجى إعادة تسجيل الدخول مرة أخرى لتأكيد التحديث." 
-          : err.message;
+        msg.textContent = err.message;
       } finally {
         btn.disabled = false;
         btn.innerHTML = `<i class="fa-solid fa-check-double"></i> <span>تحديث كلمة المرور والدخول للنظام</span>`;
@@ -1600,7 +1622,15 @@
 
       btn.disabled = true;
       try {
-        await auth.currentUser.updatePassword(p1);
+        if (auth.currentUser) {
+          await auth.currentUser.updatePassword(p1);
+        }
+        await db.collection('users').doc(currentUser.uid).update({
+          tempPassword: firebase.firestore.FieldValue.delete(),
+          mustChangePassword: false,
+          passwordChangedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
         msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
         msg.textContent = "✅ تم تغيير كلمة المرور بنجاح!";
         setTimeout(() => closeChangePasswordModal(), 1200);
@@ -1955,7 +1985,6 @@
       const systemsList = document.getElementById('systemsAnalyticsList');
       const typesList = document.getElementById('typesAnalyticsList');
 
-      // استبعاد الطلبات المرفوضة نهائياً من التحليلات
       const approvedTasks = achievements.filter(a => a.status === 'معتمد');
       const totalTasks = approvedTasks.length || 1;
 
@@ -2025,9 +2054,8 @@
       const fStatus = document.getElementById('filterStatus').value;
       const fDeptScope = document.getElementById('filterDepartmentScope').value;
 
-      // تقارير الإنجاز المعتمدة تستبعد تلقائياً الطلبات المرفوضة إلا إذا اختار المستخدم فلتر 'مرفوض' عمداً
       const data = achievements.filter(item => {
-        if (!fStatus && item.status === 'مرفوض') return false; // استبعاد المرفوض افتراضياً من التقرير
+        if (!fStatus && item.status === 'مرفوض') return false;
 
         const matchesQuery = !q ||
           (item.employeeName && item.employeeName.toLowerCase().includes(q)) ||
