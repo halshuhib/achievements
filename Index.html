@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>نظام إدارة وتوثيق الإنجازات اليومية</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- مكتبة SheetJS لتصدير ملفات إكسل مع الحفاظ على الترميز العربي -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <!-- FontAwesome للأيقونات -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+    /* تحسين شكل شريط التمرير */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased selection:bg-blue-500 selection:text-white">
+
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        <!-- الشعار والعنوان -->
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-blue-500/20">
+            <i class="fa-solid fa-clipboard-check text-xl"></i>
+          </div>
+          <div>
+            <h1 class="text-lg sm:text-xl font-bold text-slate-900 tracking-tight">سجل الإنجازات اليومية</h1>
+            <p class="text-xs text-slate-500 hidden sm:block">توثيق ومتابعة الخدمات المقدمة وتصدير التقارير</p>
+          </div>
+        </div>
+
+        <!-- أزرار الإجراءات السريعة في الهيدر -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- زر إدارة النسخ الاحتياطي -->
+          <button id="backupBtn" title="نسخ احتياطي واستيراد" class="flex items-center gap-1.5 px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-sm font-semibold transition border border-slate-200">
+            <i class="fa-solid fa-cloud-arrow-down text-slate-500"></i>
+            <span class="hidden md:inline">النسخ الاحتياطي</span>
+          </button>
+          <button id="exportExcelBtn" class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white rounded-xl text-sm font-semibold transition shadow-sm shadow-emerald-600/20">
+            <i class="fa-solid fa-file-excel text-base"></i>
+            <span class="hidden sm:inline">تصدير إكسل</span>
+            <span class="sm:hidden">إكسل</span>
+          </button>
+          <button id="openAddModalBtn" class="flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white rounded-xl text-sm font-semibold transition shadow-sm shadow-blue-600/20">
+            <i class="fa-solid fa-plus text-sm"></i>
+            <span>إضافة إنجاز</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <!-- إجمالي الإنجازات -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-list-check"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">إجمالي الإنجازات</p>
+          <h3 id="statTotal" class="text-xl sm:text-2xl font-bold text-slate-800">0</h3>
+        </div>
+      </div>
+
+      <!-- إنجازات اليوم -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-lg">
+          <i class="fa-regular fa-calendar-check"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">إنجازات اليوم</p>
+          <h3 id="statToday" class="text-xl sm:text-2xl font-bold text-emerald-600">0</h3>
+        </div>
+      </div>
+
+      <!-- المستفيدين المنفصلين -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-users"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">المستفيدون</p>
+          <h3 id="statBeneficiaries" class="text-xl sm:text-2xl font-bold text-purple-600">0</h3>
+        </div>
+      </div>
+
+      <!-- الإدارات المخدومة -->
+      <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-lg">
+          <i class="fa-solid fa-building-user"></i>
+        </div>
+        <div>
+          <p class="text-xs text-slate-500 font-medium">الإدارات المخدومة</p>
+          <h3 id="statDepartments" class="text-xl sm:text-2xl font-bold text-amber-600">0</h3>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
+      <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+        <!-- حقل البحث العام -->
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="searchInput" placeholder="بحث باسم المستفيد، الإدارة، الخدمة، أو الحل..."
+                 class="w-full pr-10 pl-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition">
+        </div>
+
+        <!-- تصفية حسب التاريخ والإدارة -->
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- فلتر الإدارة -->
+          <select id="departmentFilter" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">جميع الإدارات</option>
+          </select>
+
+          <!-- فلتر التاريخ المحدد -->
+          <input type="date" id="dateFilter" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+          <!-- إعادة تعيين -->
+          <button id="resetFiltersBtn" title="إلغاء التصفية" class="px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-sm transition">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span>
+          <h2 class="font-bold text-slate-800 text-base">قائمة الإنجازات المسجلة</h2>
+          <span id="recordsCounter" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-0.5 rounded-full font-semibold">0 سجل</span>
+        </div>
+      </div>
+
+      <!-- جدول البيانات المتجاوب -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-right text-sm">
+          <thead class="bg-slate-50/80 text-slate-600 text-xs uppercase tracking-wider font-semibold border-b border-slate-200">
+            <tr>
+              <th scope="col" class="py-3.5 px-4">#</th>
+              <th scope="col" class="py-3.5 px-4 min-w-[110px]">التاريخ</th>
+              <th scope="col" class="py-3.5 px-4 min-w-[140px]">اسم المستفيد</th>
+              <th scope="col" class="py-3.5 px-4 min-w-[130px]">الإدارة</th>
+              <th scope="col" class="py-3.5 px-4 min-w-[180px]">الخدمة المطلوبة</th>
+              <th scope="col" class="py-3.5 px-4 min-w-[200px]">الحل / الإجراء</th>
+              <th scope="col" class="py-3.5 px-4 text-center min-w-[100px]">خيارات</th>
+            </tr>
+          </thead>
+          <tbody id="achievementsTableBody" class="divide-y divide-slate-100 text-slate-700">
+            <!-- سيتم حقن الصفوف بواسطة الجافاسكربت -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- حالة عند عدم وجود نتائج -->
+      <div id="emptyState" class="hidden py-16 flex-col items-center justify-center text-center px-4">
+        <div class="w-16 h-16 rounded-2xl bg-blue-50 text-blue-500 flex items-center justify-center text-2xl mb-3">
+          <i class="fa-regular fa-folder-open"></i>
+        </div>
+        <h3 class="text-base font-bold text-slate-700 mb-1">لا توجد إنجازات مدونة حتى الآن</h3>
+        <p class="text-sm text-slate-400 max-w-sm mb-4">ابدأ بإضافة أول إنجاز مسجل، أو قم بتعديل خيارات البحث والتصفية.</p>
+        <button id="emptyAddBtn" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm font-semibold transition">
+          إضافة أول إنجاز
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <div id="achievementModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-xl rounded-2xl shadow-xl overflow-hidden transform transition-all flex flex-col max-h-[90vh]">
+      <!-- رأس المودال -->
+      <div class="p-4 sm:p-5 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center text-sm">
+            <i class="fa-solid fa-pen-nib"></i>
+          </div>
+          <h3 id="modalTitle" class="text-base sm:text-lg font-bold text-slate-900">إضافة إنجاز جديد</h3>
+        </div>
+        <button id="closeModalBtn" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- نموذج البيانات -->
+      <form id="achievementForm" class="p-5 overflow-y-auto space-y-4 flex-1">
+        <input type="hidden" id="editIndex" value="">
+
+        <!-- حقل التاريخ -->
+        <div>
+          <label for="formDate" class="block text-xs font-bold text-slate-700 mb-1.5">التاريخ <span class="text-red-500">*</span></label>
+          <input type="date" id="formDate" required
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- حقل اسم المستفيد -->
+        <div>
+          <label for="formBeneficiary" class="block text-xs font-bold text-slate-700 mb-1.5">اسم المستفيد <span class="text-red-500">*</span></label>
+          <input type="text" id="formBeneficiary" placeholder="مثال: د. محمد السعيد أو مراجع خارجي" required
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- حقل الإدارة -->
+        <div>
+          <label for="formDepartment" class="block text-xs font-bold text-slate-700 mb-1.5">الإدارة / القسم <span class="text-red-500">*</span></label>
+          <input type="text" id="formDepartment" placeholder="مثال: تقنية المعلومات، الموارد البشرية، الشؤون القانونية" list="deptSuggestions" required
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <datalist id="deptSuggestions">
+            <option value="تقنية المعلومات"></option>
+            <option value="الموارد البشرية"></option>
+            <option value="الشؤون المالية"></option>
+            <option value="خدمة العملاء"></option>
+            <option value="الشؤون القانونية"></option>
+            <option value="التطوير الإداري"></option>
+          </datalist>
+        </div>
+
+        <!-- حقل الخدمة المطلوبة -->
+        <div>
+          <label for="formService" class="block text-xs font-bold text-slate-700 mb-1.5">الخدمة المطلوبة <span class="text-red-500">*</span></label>
+          <input type="text" id="formService" placeholder="مثال: منح صلاحيات بريد إلكتروني، استخراج شهادة، صيانة حاسب" required
+                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- حقل الحل أو الإجراء المتخذ -->
+        <div>
+          <label for="formSolution" class="block text-xs font-bold text-slate-700 mb-1.5">الحل / الإجراء المنفّذ <span class="text-red-500">*</span></label>
+          <textarea id="formSolution" rows="3" placeholder="اكتب بالتفصيل ما تم عمله لإنهاء المعاملة وحل المشكلة..." required
+                    class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+        </div>
+
+        <!-- أزرار الإرسال والإلغاء -->
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" id="cancelModalBtn" class="px-4 py-2.5 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">
+            إلغاء
+          </button>
+          <button type="submit" class="px-5 py-2.5 text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition">
+            حفظ الإنجاز
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="viewModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col">
+      <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+        <h3 class="font-bold text-slate-800 text-base">تفاصيل الإنجاز</h3>
+        <button id="closeViewModalBtn" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
+  <!-- نافذة النسخ الاحتياطي والاستعادة -->
+  <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden flex flex-col">
+      <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-database text-blue-600"></i>
+          <h3 class="font-bold text-slate-800 text-base">إدارة النسخ الاحتياطي للبيانات</h3>
+        </div>
+        <button id="closeBackupModalBtn" class="w-8 h-8 rounded-lg hover:bg-slate-200 text-slate-400 hover:text-slate-600 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <div class="p-5 space-y-4 text-sm text-slate-600">
+        <p class="text-xs text-slate-500 leading-relaxed">
+          تُحفظ البيانات في متصفحك الحالي. لحمايتها من الضياع أو نقلها لجهاز أو متصفح آخر، يمكنك تصدير نسخة احتياطية أو استيرادها في أي وقت.
+        </p>
+
+        <div class="space-y-2.5">
+          <button id="downloadBackupBtn" class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded-xl border border-blue-200 transition">
+            <i class="fa-solid fa-download"></i>
+            <span>تنزيل نسخة احتياطية (ملف JSON)</span>
+          </button>
+
+          <label class="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-slate-50 hover:bg-slate-100 text-slate-700 font-semibold rounded-xl border border-slate-200 transition cursor-pointer">
+            <i class="fa-solid fa-upload"></i>
+            <span>استعادة البيانات من ملف</span>
+            <input type="file" id="importBackupInput" accept=".json" class="hidden">
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="fixed bottom-5 left-5 z-50 transform translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-lg flex items-center gap-3 text-sm">
+    <i id="toastIcon" class="fa-solid fa-check text-emerald-400 text-base"></i>
+    <span id="toastMessage">تمت العملية بنجاح</span>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'daily_achievements_data_v1';
+    
+    // بيانات افتراضية توضيحية أولية لتبدأ الشاشة بمحتوى مفيد
+    const initialSampleData = [
+      {
+        id: '1',
+        date: new Date().toISOString().split('T')[0],
+        beneficiary: 'أحمد بن عبد الله',
+        department: 'تقنية المعلومات',
+        service: 'إعداد حساب بريد وصلاحيات النظام السحابي',
+        solution: 'تم إنشاء الحساب، تفعيل خاصية المصادقة الثنائية (2FA)، وتأكيد تسجيل الدخول بنجاح.'
+      },
+      {
+        id: '2',
+        date: new Date().toISOString().split('T')[0],
+        beneficiary: 'سارة المنصور',
+        department: 'الموارد البشرية',
+        service: 'استخراج تقرير الحضور والانصراف السنوي',
+        solution: 'تم فحص البيانات ومطابقة البصمات وتصدير التقرير المعتمد وإرساله للموظفة.'
+      },
+      {
+        id: '3',
+        date: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+        beneficiary: 'خالد السالم',
+        department: 'الشؤون المالية',
+        service: 'معالجة خطأ في مزامنة الفواتير الإلكترونية',
+        solution: 'تم إعادة تشغيل واجهة الربط البرمجي (API) والتحقق من صحة التوكن واعتماد 14 فاتورة معلقة.'
+      }
+    ];
+
+    let achievements = [];
+
+    // تحميل البيانات من LocalStorage
+    function loadAchievements() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          achievements = JSON.parse(stored);
+        } catch (e) {
+          achievements = [...initialSampleData];
+        }
+      } else {
+        achievements = [...initialSampleData];
+        saveAchievements();
+      }
+    }
+
+    function saveAchievements() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(achievements));
+    }
+
+    function showToast(message, isError = false) {
+      const toast = document.getElementById('toast');
+      const toastMessage = document.getElementById('toastMessage');
+      const toastIcon = document.getElementById('toastIcon');
+
+      toastMessage.textContent = message;
+      if (isError) {
+        toastIcon.className = 'fa-solid fa-circle-exclamation text-rose-400 text-base';
+      } else {
+        toastIcon.className = 'fa-solid fa-check text-emerald-400 text-base';
+      }
+
+      toast.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+
+      setTimeout(() => {
+        toast.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+        toast.classList.remove('translate-y-0', 'opacity-100');
+      }, 3500);
+    }
+
+    function updateStatsAndFilters() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      
+      const totalCount = achievements.length;
+      const todayCount = achievements.filter(a => a.date === todayStr).length;
+      
+      const uniqueBeneficiaries = new Set(achievements.map(a => a.beneficiary.trim())).size;
+      
+      const departments = [...new Set(achievements.map(a => a.department.trim()).filter(Boolean))];
+      const deptCount = departments.length;
+
+      document.getElementById('statTotal').textContent = totalCount;
+      document.getElementById('statToday').textContent = todayCount;
+      document.getElementById('statBeneficiaries').textContent = uniqueBeneficiaries;
+      document.getElementById('statDepartments').textContent = deptCount;
+
+      // تحديث قائمة الإدارات في الفلتر مع الحفاظ على الاختيار الحالي
+      const deptFilter = document.getElementById('departmentFilter');
+      const currentSelected = deptFilter.value;
+      deptFilter.innerHTML = '<option value="">جميع الإدارات</option>';
+      departments.sort().forEach(dept => {
+        const opt = document.createElement('option');
+        opt.value = dept;
+        opt.textContent = dept;
+        if (dept === currentSelected) opt.selected = true;
+        deptFilter.appendChild(opt);
+      });
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('achievementsTableBody');
+      const emptyState = document.getElementById('emptyState');
+      const recordsCounter = document.getElementById('recordsCounter');
+
+      const searchTerm = document.getElementById('searchInput').value.trim().toLowerCase();
+      const selectedDept = document.getElementById('departmentFilter').value;
+      const selectedDate = document.getElementById('dateFilter').value;
+
+      // التصفية
+      const filtered = achievements.filter(item => {
+        const matchesSearch = 
+          (item.beneficiary && item.beneficiary.toLowerCase().includes(searchTerm)) ||
+          (item.department && item.department.toLowerCase().includes(searchTerm)) ||
+          (item.service && item.service.toLowerCase().includes(searchTerm)) ||
+          (item.solution && item.solution.toLowerCase().includes(searchTerm));
+
+        const matchesDept = !selectedDept || item.department === selectedDept;
+        const matchesDate = !selectedDate || item.date === selectedDate;
+
+        return matchesSearch && matchesDept && matchesDate;
+      });
+
+      // ترتيب تنازلي حسب التاريخ ثم المعرّف
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      recordsCounter.textContent = `${filtered.length} سجل`;
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        emptyState.classList.remove('hidden');
+        emptyState.classList.add('flex');
+      } else {
+        emptyState.classList.add('hidden');
+        emptyState.classList.remove('flex');
+
+        filtered.forEach((item, index) => {
+          const tr = document.createElement('tr');
+          tr.className = 'hover:bg-slate-50/80 transition-colors';
+
+          tr.innerHTML = `
+            <td class="py-3.5 px-4 font-medium text-slate-400">${index + 1}</td>
+            <td class="py-3.5 px-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-semibold">
+                <i class="fa-regular fa-calendar text-slate-400 text-[11px]"></i>
+                ${item.date || '-'}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 font-bold text-slate-800">${escapeHtml(item.beneficiary)}</td>
+            <td class="py-3.5 px-4">
+              <span class="inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-100">
+                ${escapeHtml(item.department)}
+              </span>
+            </td>
+            <td class="py-3.5 px-4 max-w-[220px]">
+              <div class="truncate font-medium text-slate-800" title="${escapeHtml(item.service)}">
+                ${escapeHtml(item.service)}
+              </div>
+            </td>
+            <td class="py-3.5 px-4 max-w-[250px]">
+              <div class="truncate text-slate-600 text-xs" title="${escapeHtml(item.solution)}">
+                ${escapeHtml(item.solution)}
+              </div>
+            </td>
+            <td class="py-3.5 px-4 text-center">
+              <div class="flex items-center justify-center gap-1.5">
+                <button onclick="viewItem('${item.id}')" title="عرض التفاصيل" class="w-8 h-8 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition">
+                  <i class="fa-regular fa-eye text-xs"></i>
+                </button>
+                <button onclick="editItem('${item.id}')" title="تعديل" class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 flex items-center justify-center transition">
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button onclick="deleteItem('${item.id}')" title="حذف" class="w-8 h-8 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 flex items-center justify-center transition">
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      }
+
+      updateStatsAndFilters();
+    }
+
+    // تأمين ضد هجمات XSS
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    const modal = document.getElementById('achievementModal');
+    const form = document.getElementById('achievementForm');
+    const openAddBtn = document.getElementById('openAddModalBtn');
+    const emptyAddBtn = document.getElementById('emptyAddBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const cancelModalBtn = document.getElementById('cancelModalBtn');
+
+    function openModal(isEdit = false, item = null) {
+      modal.classList.remove('hidden');
+      if (isEdit && item) {
+        document.getElementById('modalTitle').textContent = 'تعديل الإنجاز';
+        document.getElementById('editIndex').value = item.id;
+        document.getElementById('formDate').value = item.date;
+        document.getElementById('formBeneficiary').value = item.beneficiary;
+        document.getElementById('formDepartment').value = item.department;
+        document.getElementById('formService').value = item.service;
+        document.getElementById('formSolution').value = item.solution;
+      } else {
+        document.getElementById('modalTitle').textContent = 'إضافة إنجاز جديد';
+        form.reset();
+        document.getElementById('editIndex').value = '';
+        document.getElementById('formDate').value = new Date().toISOString().split('T')[0];
+      }
+    }
+
+    function closeModal() {
+      modal.classList.add('hidden');
+      form.reset();
+    }
+
+    openAddBtn.addEventListener('click', () => openModal(false));
+    emptyAddBtn.addEventListener('click', () => openModal(false));
+    closeModalBtn.addEventListener('click', closeModal);
+    cancelModalBtn.addEventListener('click', closeModal);
+
+    // حفظ أو تعديل إنجاز
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      
+      const editId = document.getElementById('editIndex').value;
+      const dateVal = document.getElementById('formDate').value;
+      const beneficiaryVal = document.getElementById('formBeneficiary').value.trim();
+      const departmentVal = document.getElementById('formDepartment').value.trim();
+      const serviceVal = document.getElementById('formService').value.trim();
+      const solutionVal = document.getElementById('formSolution').value.trim();
+
+      if (!dateVal || !beneficiaryVal || !departmentVal || !serviceVal || !solutionVal) {
+        showToast('يرجى ملء جميع الحقول المطلوبة', true);
+        return;
+      }
+
+      if (editId) {
+        // تحديث
+        const index = achievements.findIndex(a => a.id === editId);
+        if (index !== -1) {
+          achievements[index] = {
+            id: editId,
+            date: dateVal,
+            beneficiary: beneficiaryVal,
+            department: departmentVal,
+            service: serviceVal,
+            solution: solutionVal
+          };
+          showToast('تم تحديث بيانات الإنجاز بنجاح');
+        }
+      } else {
+        // إضافة جديدة
+        const newRecord = {
+          id: Date.now().toString(),
+          date: dateVal,
+          beneficiary: beneficiaryVal,
+          department: departmentVal,
+          service: serviceVal,
+          solution: solutionVal
+        };
+        achievements.unshift(newRecord);
+        showToast('تم إضافة الإنجاز بنجاح');
+      }
+
+      saveAchievements();
+      renderTable();
+      closeModal();
+    });
+
+    window.viewItem = function(id) {
+      const item = achievements.find(a => a.id === id);
+      if (!item) return;
+
+      document.getElementById('viewDate').textContent = item.date;
+      document.getElementById('viewBeneficiary').textContent = item.beneficiary;
+      document.getElementById('viewDepartment').textContent = item.department;
+      document.getElementById('viewService').textContent = item.service;
+      document.getElementById('viewSolution').textContent = item.solution;
+
+      document.getElementById('viewModal').classList.remove('hidden');
+    };
+
+    document.getElementById('closeViewModalBtn').addEventListener('click', () => {
+      document.getElementById('viewModal').classList.add('hidden');
+    });
+    document.getElementById('dismissViewBtn').addEventListener('click', () => {
+      document.getElementById('viewModal').classList.add('hidden');
+    });
+
+    window.editItem = function(id) {
+      const item = achievements.find(a => a.id === id);
+      if (item) {
+        openModal(true, item);
+      }
+    };
+
+    window.deleteItem = function(id) {
+      // إشعار بالحذف بدون استخدام confirm()
+      const index = achievements.findIndex(a => a.id === id);
+      if (index !== -1) {
+        achievements.splice(index, 1);
+        saveAchievements();
+        renderTable();
+        showToast('تم حذف الإنجاز بنجاح');
+      }
+    };
+
+    document.getElementById('exportExcelBtn').addEventListener('click', () => {
+      if (achievements.length === 0) {
+        showToast('لا توجد بيانات متاحة للتصدير', true);
+        return;
+      }
+
+      // إعداد البيانات بصيغة عربية منظمة ومفهومة لمسؤولي الأعمال
+      const exportData = achievements.map((item, idx) => ({
+        'م': idx + 1,
+        'التاريخ': item.date,
+        'اسم المستفيد': item.beneficiary,
+        'الإدارة': item.department,
+        'الخدمة المطلوبة': item.service,
+        'الحل / الإجراء المنفذ': item.solution
+      }));
+
+      // إنشاء ورقة العمل (Worksheet)
+      const ws = XLSX.utils.json_to_sheet(exportData);
+
+      // تحديد اتجاه الورقة من اليمين إلى اليسار (RTL)
+      if (!ws['!views']) ws['!views'] = [];
+      ws['!views'].push({ RTL: true });
+
+      // تحديد عرض الأعمدة التقديري لتحسين قراءة ملف الإكسل
+      ws['!cols'] = [
+        { wch: 6 },  // الرقم
+        { wch: 15 }, // التاريخ
+        { wch: 25 }, // اسم المستفيد
+        { wch: 22 }, // الإدارة
+        { wch: 35 }, // الخدمة المطلوبة
+        { wch: 50 }  // الحل
+      ];
+
+      // إنشاء المصنف (Workbook)
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "سجل الإنجازات");
+
+      // تسمية الملف بتاريخ اليوم
+      const today = new Date().toISOString().split('T')[0];
+      const fileName = `تقرير_الإنجازات_اليومية_${today}.xlsx`;
+
+      // التصدير والتنزيل
+      XLSX.writeFile(wb, fileName);
+      showToast(`تم تنزيل ملف الإكسل: ${fileName}`);
+    });
+
+    document.getElementById('searchInput').addEventListener('input', renderTable);
+    document.getElementById('departmentFilter').addEventListener('change', renderTable);
+    document.getElementById('dateFilter').addEventListener('change', renderTable);
+
+    document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('departmentFilter').value = '';
+      document.getElementById('dateFilter').value = '';
+      renderTable();
+      showToast('تمت إعادة ضبط التصفية');
+    });
+
+    // إدارة النسخ الاحتياطي والاستعادة
+    const backupModal = document.getElementById('backupModal');
+    document.getElementById('backupBtn').addEventListener('click', () => backupModal.classList.remove('hidden'));
+    document.getElementById('closeBackupModalBtn').addEventListener('click', () => backupModal.classList.add('hidden'));
+
+    // تنزيل نسخة JSON
+    document.getElementById('downloadBackupBtn').addEventListener('click', () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(achievements, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `achievements_backup_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('تم تنزيل النسخة الاحتياطية');
+    });
+
+    // استيراد نسخة JSON
+    document.getElementById('importBackupInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (Array.isArray(imported)) {
+            achievements = imported;
+            saveAchievements();
+            renderTable();
+            backupModal.classList.add('hidden');
+            showToast(`تمت استعادة ${imported.length} سجل بنجاح!`);
+          } else {
+            showToast('صيغة الملف غير صالحة', true);
+          }
+        } catch (err) {
+          showToast('حدث خطأ أثناء قراءة ملف النسخ الاحتياطي', true);
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    // بدء تشغيل التطبيق
+    window.onload = function() {
+      loadAchievements();
+      renderTable();
+    };
+  </script>
+</body>
+</html>
