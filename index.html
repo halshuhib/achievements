@@ -83,7 +83,7 @@
     <!-- ترويسة الطباعة الرسمية -->
     <div id="printReportHeader" class="mb-4">
       <div class="text-center pb-2 mb-2">
-        <h2 id="printReportTitle" style="font-size: 18pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية</h2>
+        <h2 id="printReportTitle" style="font-size: 18pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية المعتمدة</h2>
         <p style="font-size: 12pt; color: #334155; margin: 3px 0 0 0;">الإدارة العامة لتقنية المعلومات والتحول الرقمي</p>
       </div>
       <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 8px; font-size: 12pt;">
@@ -192,10 +192,10 @@
         </div>
         <div class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-2xs flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-medium">إنجازات اليوم</p>
-            <h3 id="statToday" class="text-xl font-bold text-purple-600 mt-0.5">0</h3>
+            <p class="text-xs text-slate-500 font-medium">الطلبات المرفوضة</p>
+            <h3 id="statRejected" class="text-xl font-bold text-rose-600 mt-0.5">0</h3>
           </div>
-          <div class="w-9 h-9 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center text-sm"><i class="fa-solid fa-calendar-day"></i></div>
+          <div class="w-9 h-9 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center text-sm"><i class="fa-solid fa-circle-xmark"></i></div>
         </div>
       </div>
 
@@ -223,7 +223,7 @@
         <div class="flex flex-col lg:flex-row gap-2 items-center justify-between">
           <div class="relative flex-1 w-full">
             <i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input type="text" id="searchInput" placeholder="بحث شامل: الموظف، المستفيد، الإدارة المستفيدة، الخدمة أو الحل..."
+            <input type="text" id="searchInput" placeholder="بحث شامل: الموظف، المستفيد، الإدارة المستفيدة، الخدمة أو سبب الرفض..."
                    class="w-full pr-8 pl-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs focus:ring-2 focus:ring-emerald-600 outline-none">
           </div>
 
@@ -238,8 +238,9 @@
 
             <select id="filterStatus" class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 outline-none">
               <option value="">كافة الحالات</option>
-              <option value="معتمد">معتمد</option>
+              <option value="معتمد">معتمد فقط</option>
               <option value="بانتظار الاعتماد">بانتظار الاعتماد</option>
+              <option value="مرفوض">مرفوض</option>
             </select>
 
             <select id="filterType" class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 outline-none">
@@ -260,7 +261,7 @@
       <!-- جدول الإنجازات -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-2xs overflow-hidden">
         <div id="tableHeaderControls" class="p-3 border-b border-slate-100 flex items-center justify-between no-print">
-          <h3 class="font-bold text-slate-800 text-xs sm:text-sm">سجل الإنجازات وحالات الاعتماد</h3>
+          <h3 class="font-bold text-slate-800 text-xs sm:text-sm">سجل الإنجازات وحالات الاعتماد / الرفض</h3>
           <span id="recordsCounter" class="bg-slate-100 text-slate-600 text-xs px-2 py-0.5 rounded-full font-semibold">0 سجل</span>
         </div>
         <div class="overflow-x-auto">
@@ -278,7 +279,7 @@
                 <th class="py-2.5 px-2">النظام المرتبط</th>
                 <th class="py-2.5 px-3">الخدمة المطلوبة</th>
                 <th class="py-2.5 px-3">الإجراء المنفذ</th>
-                <th class="py-2.5 px-2 text-center no-print">خيارات / اعتماد</th>
+                <th class="py-2.5 px-2 text-center no-print">خيارات / اعتماد / رفض</th>
               </tr>
             </thead>
             <tbody id="achievementsTableBody" class="divide-y divide-slate-100 text-slate-700">
@@ -300,7 +301,37 @@
     </main>
   </div>
 
-  <!-- ================= 3. نافذة إدارة الهيكل والموظفين ================= -->
+  <!-- ================= 3. نافذة سبب الرفض ================= -->
+  <div id="rejectReasonModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div class="p-4 bg-rose-700 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-circle-xmark text-lg"></i>
+          <h3 class="font-bold text-sm">رفض الطلب مع ذكر السبب</h3>
+        </div>
+        <button onclick="closeRejectReasonModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="rejectReasonForm" class="p-5 space-y-3 text-xs">
+        <input type="hidden" id="rejectRecordDocId">
+        <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-900 leading-relaxed">
+          <span>سيتم رفض الطلب ولن يتم احتسابه ضمن إحصائيات وتقارير الإنجاز، وسيظهر سبب الرفض بوضوح للموظف.</span>
+        </div>
+        <div>
+          <label class="block font-bold text-slate-700 mb-1">سبب الرفض والملاحظات <span class="text-red-500">*</span></label>
+          <textarea id="rejectionReasonText" required rows="3" placeholder="مثال: الإجراء المنفذ غير مكتمل / تم تحويل الطلب لجهة أخرى / نقص في بيانات المستفيد..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
+        </div>
+        <div class="pt-2 flex justify-end gap-2">
+          <button type="button" onclick="closeRejectReasonModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" id="saveRejectBtn" class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg flex items-center gap-1.5">
+            <i class="fa-solid fa-ban"></i>
+            <span>تأكيد الرفض</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 4. نافذة إدارة الهيكل والموظفين ================= -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -409,7 +440,7 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة تعيين كلمة المرور المباشرة بواسطة مدير النظام ================= -->
+  <!-- ================= 5. نافذة تعيين كلمة المرور المباشرة بواسطة مدير النظام ================= -->
   <div id="adminDirectPasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -442,7 +473,7 @@
     </div>
   </div>
 
-  <!-- ================= 5. نافذة تغيير كلمة المرور الاختيارية للمستخدم ================= -->
+  <!-- ================= 6. نافذة تغيير كلمة المرور الاختيارية للمستخدم ================= -->
   <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -470,7 +501,7 @@
     </div>
   </div>
 
-  <!-- ================= 6. نافذة تغيير كلمة المرور الإجبارية عند أول تسجيل دخول ================= -->
+  <!-- ================= 7. نافذة تغيير كلمة المرور الإجبارية عند أول تسجيل دخول ================= -->
   <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-emerald-500/30">
       <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-800 text-white text-center">
@@ -500,7 +531,7 @@
     </div>
   </div>
 
-  <!-- ================= 7. نافذة النسخ الاحتياطي ومسح السجلات ================= -->
+  <!-- ================= 8. نافذة النسخ الاحتياطي ومسح السجلات ================= -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -549,7 +580,7 @@
     </div>
   </div>
 
-  <!-- ================= 8. نافذة تسجيل وتعديل الإنجاز ================= -->
+  <!-- ================= 9. نافذة تسجيل وتعديل الإنجاز ================= -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -621,6 +652,7 @@
           <input type="text" id="formBeneficiary" required placeholder="مثال: علي محمد" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
         </div>
 
+        <!-- حقل الإدارة المستفيدة بالبحث الذكي وفق الهيكل المعتمد والمحافظات الـ 12 -->
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="block font-bold text-slate-700">الإدارة المستفيدة (بحث ذكي)</label>
@@ -746,13 +778,13 @@
     </div>
   </div>
 
-  <!-- ================= 9. نافذة التقارير الإحصائية ================= -->
+  <!-- ================= 10. نافذة التقارير الإحصائية ================= -->
   <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-chart-pie text-lg"></i>
-          <h3 class="font-bold text-base">التقارير الإحصائية ومقارنة أداء الموظفين والإدارات</h3>
+          <h3 class="font-bold text-base">التقارير الإحصائية ومقارنة أداء الموظفين (المهام المعتمدة والمنجزة فقط)</h3>
         </div>
         <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
@@ -761,7 +793,7 @@
         <div>
           <h4 class="text-sm font-extrabold text-slate-800 mb-3 flex items-center gap-2">
             <i class="fa-solid fa-trophy text-amber-500"></i>
-            <span>ترتيب الموظفين حسب الإنجاز الفعلي للمهام</span>
+            <span>ترتيب الموظفين حسب الإنجاز الفعلي المعتمد (المرفوض لا يحسب)</span>
           </h4>
           <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
             <table class="w-full text-right text-xs">
@@ -770,7 +802,7 @@
                   <th class="p-3">الترتيب</th>
                   <th class="p-3">اسم الموظف</th>
                   <th class="p-3">الإدارة والقسم</th>
-                  <th class="p-3 text-center">المهام المنجزة</th>
+                  <th class="p-3 text-center">المهام المعتمدة المنجزة</th>
                   <th class="p-3">نسبة المساهمة</th>
                 </tr>
               </thead>
@@ -791,7 +823,7 @@
           <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
             <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
               <i class="fa-solid fa-layer-group text-purple-600"></i>
-              <span>توزيع أنواع الطلبات:</span>
+              <span>توزيع أنواع الطلبات المنجزة:</span>
             </h5>
             <div id="typesAnalyticsList" class="space-y-2 text-xs"></div>
           </div>
@@ -946,7 +978,6 @@
         await loadUserProfile(user);
         await cacheAllUsers();
 
-        // فحص ما إذا كان المستخدم مجبراً على تغيير كلمة المرور
         if (currentUserProfile.mustChangePassword) {
           showForceChangePasswordModal();
         }
@@ -1077,6 +1108,8 @@
             id: doc.id,
             ...item,
             status: item.status || 'معتمد',
+            rejectionReason: item.rejectionReason || '',
+            rejectedBy: item.rejectedBy || '',
             employeeName: item.employeeName || (item.userId === currentUser.uid ? currentUserProfile.name : 'غير محدد')
           });
         });
@@ -1165,6 +1198,7 @@
           (item.system && item.system.toLowerCase().includes(q)) ||
           (item.service && item.service.toLowerCase().includes(q)) ||
           (item.type && item.type.toLowerCase().includes(q)) ||
+          (item.rejectionReason && item.rejectionReason.toLowerCase().includes(q)) ||
           (item.solution && item.solution.toLowerCase().includes(q));
 
         let matchesDate = true;
@@ -1189,13 +1223,26 @@
       const isSupervisor = (currentUserProfile.role === 'admin' || currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager' || currentUserProfile.role === 'section_head');
 
       tbody.innerHTML = filtered.map((item, idx) => {
-        const isApproved = item.status === 'معتمد';
-        const statusBadge = isApproved 
-          ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1 justify-center"><i class="fa-solid fa-check"></i> معتمد</span>'
-          : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 flex items-center gap-1 justify-center"><i class="fa-solid fa-hourglass-half"></i> بالانتظار</span>';
+        let statusBadge = '';
+        if (item.status === 'معتمد') {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1 justify-center"><i class="fa-solid fa-check"></i> معتمد</span>';
+        } else if (item.status === 'مرفوض') {
+          statusBadge = `
+            <div class="flex flex-col items-center">
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 flex items-center gap-1 justify-center">
+                <i class="fa-solid fa-xmark"></i> مرفوض
+              </span>
+              <button onclick="viewRejectionDetail('${item.rejectionReason?.replace(/'/g, "\\'")}', '${item.rejectedBy || 'المسؤول'}')" class="text-[9px] text-rose-600 hover:underline mt-0.5 flex items-center gap-0.5" title="عرض سبب الرفض">
+                <i class="fa-solid fa-circle-info"></i> سبب الرفض
+              </button>
+            </div>
+          `;
+        } else {
+          statusBadge = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 flex items-center gap-1 justify-center"><i class="fa-solid fa-hourglass-half"></i> بالانتظار</span>';
+        }
 
         return `
-          <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+          <tr class="hover:bg-slate-50 transition border-b border-slate-100 ${item.status === 'مرفوض' ? 'bg-rose-50/20' : ''}">
             <td class="py-2.5 px-2 text-center text-slate-400 font-mono">${idx + 1}</td>
             <td class="py-2.5 px-2 text-center font-mono font-bold text-blue-700 whitespace-nowrap">${item.ticketNo || '-'}</td>
             <td class="py-2.5 px-2 text-center font-semibold whitespace-nowrap">${item.date || '-'}</td>
@@ -1214,13 +1261,27 @@
             <td class="py-2.5 px-3 text-slate-600 max-w-[180px] truncate" title="${item.solution}">${item.solution || '-'}</td>
             <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
               ${isSupervisor ? `
-                <button onclick="toggleApproval('${item.id}', '${item.status}')" class="px-2 py-1 text-[10px] font-bold rounded-lg ${isApproved ? 'bg-amber-50 text-amber-700 border border-amber-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'} mr-1">
-                  ${isApproved ? 'إلغاء الاعتماد' : 'اعتماد'}
-                </button>
+                <div class="inline-flex items-center gap-1">
+                  ${item.status !== 'معتمد' ? `
+                    <button onclick="approveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition" title="اعتماد الإنجاز">
+                      اعتماد
+                    </button>
+                  ` : `
+                    <button onclick="unapproveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100 transition" title="إلغاء الاعتماد">
+                      إلغاء الاعتماد
+                    </button>
+                  `}
+
+                  ${item.status !== 'مرفوض' ? `
+                    <button onclick="openRejectReasonModal('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition" title="رفض الإنجاز مع ذكر السبب">
+                      رفض
+                    </button>
+                  ` : ''}
+                </div>
               ` : ''}
 
-              ${(currentUserProfile.role === 'admin' || (!isApproved && item.userId === currentUser.uid)) ? `
-                <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+              ${(currentUserProfile.role === 'admin' || (item.status !== 'معتمد' && item.userId === currentUser.uid)) ? `
+                <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 mr-1" title="تعديل"><i class="fa-solid fa-pen"></i></button>
                 <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1" title="حذف"><i class="fa-solid fa-trash"></i></button>
               ` : `<span class="text-slate-300 text-[10px] mr-1">محمي</span>`}
             </td>
@@ -1230,20 +1291,71 @@
     }
 
     function updateStats() {
-      const today = new Date().toISOString().split('T')[0];
+      const validCompleted = achievements.filter(x => x.status === 'معتمد');
       document.getElementById('statTotal').textContent = achievements.length;
       document.getElementById('statPending').textContent = achievements.filter(x => x.status === 'بانتظار الاعتماد').length;
-      document.getElementById('statApproved').textContent = achievements.filter(x => x.status === 'معتمد').length;
-      document.getElementById('statToday').textContent = achievements.filter(x => x.date === today).length;
+      document.getElementById('statApproved').textContent = validCompleted.length;
+      document.getElementById('statRejected').textContent = achievements.filter(x => x.status === 'مرفوض').length;
     }
 
-    window.toggleApproval = async function(id, curStatus) {
-      const newStatus = curStatus === 'معتمد' ? 'بانتظار الاعتماد' : 'معتمد';
+    // الاعتماد
+    window.approveRecord = async function(id) {
       await db.collection('achievements').doc(id).update({
-        status: newStatus,
-        approvedBy: newStatus === 'معتمد' ? currentUserProfile.name : null,
-        approvedAt: newStatus === 'معتمد' ? firebase.firestore.FieldValue.serverTimestamp() : null
+        status: 'معتمد',
+        approvedBy: currentUserProfile.name,
+        approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        rejectionReason: '',
+        rejectedBy: ''
       });
+    };
+
+    // إلغاء الاعتماد والعودة للانتظار
+    window.unapproveRecord = async function(id) {
+      await db.collection('achievements').doc(id).update({
+        status: 'بانتظار الاعتماد',
+        approvedBy: null,
+        approvedAt: null
+      });
+    };
+
+    // نافذة وإجراء الرفض مع ذكر السبب
+    const rejectReasonModal = document.getElementById('rejectReasonModal');
+    const rejectReasonForm = document.getElementById('rejectReasonForm');
+
+    window.openRejectReasonModal = function(id) {
+      document.getElementById('rejectRecordDocId').value = id;
+      document.getElementById('rejectionReasonText').value = '';
+      rejectReasonModal.classList.remove('hidden');
+    };
+
+    window.closeRejectReasonModal = function() {
+      rejectReasonModal.classList.add('hidden');
+    };
+
+    rejectReasonForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = document.getElementById('rejectRecordDocId').value;
+      const reason = document.getElementById('rejectionReasonText').value.trim();
+
+      if (!reason) {
+        alert("يرجى كتابة سبب الرفض لتوضيحه للموظف.");
+        return;
+      }
+
+      await db.collection('achievements').doc(id).update({
+        status: 'مرفوض',
+        rejectionReason: reason,
+        rejectedBy: currentUserProfile.name,
+        rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        approvedBy: null,
+        approvedAt: null
+      });
+
+      closeRejectReasonModal();
+    });
+
+    window.viewRejectionDetail = function(reason, rejectedBy) {
+      alert(`تفاصيل سبب رفض الطلب:\n\nالسبب والملاحظات: ${reason || 'لم يتم ذكر سبب محدد'}\nبواسطة المسؤول: ${rejectedBy}`);
     };
 
     document.getElementById('searchInput').addEventListener('input', renderTable);
@@ -1294,6 +1406,8 @@
         solution: document.getElementById('formSolution').value.trim(),
         requiresApproval: requiresApproval,
         status: requiresApproval ? 'بانتظار الاعتماد' : 'معتمد',
+        rejectionReason: '',
+        rejectedBy: '',
         userId: currentUser.uid,
         employeeName: currentUserProfile.name || currentUser.email,
         employeeDept: currentUserProfile.department || 'إدارة الأنظمة والبرامج',
@@ -1340,9 +1454,7 @@
       }
     };
 
-    // ==========================================================
-    // 1. تغيير كلمة المرور المباشر بواسطة مدير النظام مع الإلزام
-    // ==========================================================
+    // تغيير كلمة المرور المباشر بواسطة مدير النظام
     const adminDirectPasswordModal = document.getElementById('adminDirectPasswordModal');
     const adminDirectPasswordForm = document.getElementById('adminDirectPasswordForm');
 
@@ -1378,25 +1490,17 @@
       msg.textContent = "جاري تحديث كلمة المرور المباشرة وإلزام الحساب...";
 
       try {
-        // تحديث كلمة المرور في قاعدة البيانات وتفعيل وسم الإلزام بالتغيير
         await db.collection('users').doc(uid).update({
           mustChangePassword: true,
           tempPasswordSetAt: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        // لتحديث كلمة المرور في Firebase Auth يتم استخدام تطبيق ثانوي لتسجيل الدخول كالمستخدم وتغيير الرمز دون التأثير على جلسة مدير النظام الحالية
         try {
-          // محاولة محاكاة تغييرها عبر تطبيق ثانوي
           const secondaryApp = firebase.initializeApp(firebaseConfig, "PassResetApp" + Date.now());
-          // إذا كان للمستخدم كلمة مرور قديمة أو يتم استدعاؤه
-          await secondaryApp.auth().signInWithEmailAndPassword(email, newPass).catch(async () => {
-            // إن لم تكن هي نفسها، سيتم استخدامها لتسجيل الدخول التالي
-          });
+          await secondaryApp.auth().signInWithEmailAndPassword(email, newPass).catch(() => {});
           await secondaryApp.auth().signOut();
           secondaryApp.delete();
-        } catch (subErr) {
-          console.warn("Secondary app pass verification notice:", subErr);
-        }
+        } catch (subErr) {}
 
         msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
         msg.textContent = "✅ تم تعيين كلمة المرور وتفعيل الإلزام بالتغيير بنجاح.";
@@ -1409,9 +1513,7 @@
       }
     });
 
-    // ==========================================================
-    // 2. شاشة تغيير كلمة المرور الإجبارية عند أول تسجيل دخول للموظف
-    // ==========================================================
+    // شاشة تغيير كلمة المرور الإجبارية
     const forceChangePasswordModal = document.getElementById('forceChangePasswordModal');
     const forceChangePasswordForm = document.getElementById('forceChangePasswordForm');
 
@@ -1467,9 +1569,7 @@
       }
     });
 
-    // ==========================================================
-    // 3. نافذة تغيير كلمة المرور الاختيارية للمستخدم
-    // ==========================================================
+    // تغيير كلمة المرور الاختيارية
     const changePasswordModal = document.getElementById('changePasswordModal');
     window.openChangePasswordModal = function() {
       document.getElementById('changePasswordForm').reset();
@@ -1713,7 +1813,7 @@
             email: email,
             role: role,
             isArchived: false,
-            mustChangePassword: true, // إلزام بتغيير الرمز عند أول دخول
+            mustChangePassword: true,
             createdAt: firebase.firestore.FieldValue.serverTimestamp()
           });
 
@@ -1842,7 +1942,7 @@
       reader.readAsText(fileInp.files[0]);
     };
 
-    // التحليلات
+    // التحليلات (استبعاد المرفوض كلياً من حساب الإنجاز)
     const analyticsModal = document.getElementById('analyticsModal');
     window.openAnalyticsModal = function() {
       analyticsModal.classList.remove('hidden');
@@ -1854,10 +1954,13 @@
       const empRankingTbody = document.getElementById('empRankingTableBody');
       const systemsList = document.getElementById('systemsAnalyticsList');
       const typesList = document.getElementById('typesAnalyticsList');
-      const totalTasks = achievements.length || 1;
+
+      // استبعاد الطلبات المرفوضة نهائياً من التحليلات
+      const approvedTasks = achievements.filter(a => a.status === 'معتمد');
+      const totalTasks = approvedTasks.length || 1;
 
       const empStats = {};
-      achievements.forEach(a => {
+      approvedTasks.forEach(a => {
         const emp = a.employeeName || 'غير محدد';
         if (!empStats[emp]) empStats[emp] = { count: 0, dept: `${a.employeeDept || '-'} / ${a.employeeSection || '-'}` };
         empStats[emp].count++;
@@ -1886,7 +1989,7 @@
       }).join('');
 
       const sysCount = {};
-      achievements.forEach(a => {
+      approvedTasks.forEach(a => {
         const s = a.system || 'أخرى';
         sysCount[s] = (sysCount[s] || 0) + 1;
       });
@@ -1894,12 +1997,12 @@
       systemsList.innerHTML = sortedSys.map(([sys, cnt]) => `
         <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100">
           <span class="font-bold text-slate-700">${sys}</span>
-          <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-lg text-xs">${cnt} طلب</span>
+          <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-lg text-xs">${cnt} طلب منجز</span>
         </div>
       `).join('');
 
       const typeCount = {};
-      achievements.forEach(a => {
+      approvedTasks.forEach(a => {
         const t = a.type || 'دعم فني';
         typeCount[t] = (typeCount[t] || 0) + 1;
       });
@@ -1907,12 +2010,12 @@
       typesList.innerHTML = sortedTypes.map(([typ, cnt]) => `
         <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100">
           <span class="font-bold text-slate-700">${typ}</span>
-          <span class="px-2 py-0.5 bg-purple-50 text-purple-700 font-bold rounded-lg text-xs">${cnt} معاملة</span>
+          <span class="px-2 py-0.5 bg-purple-50 text-purple-700 font-bold rounded-lg text-xs">${cnt} معاملة معتمدة</span>
         </div>
       `).join('');
     }
 
-    // تصدير Word والطباعة الرسمية
+    // منطق تصدير Word والطباعة الرسمية (استبعاد المرفوض تلقائياً من تقارير الإنجاز)
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1922,7 +2025,10 @@
       const fStatus = document.getElementById('filterStatus').value;
       const fDeptScope = document.getElementById('filterDepartmentScope').value;
 
+      // تقارير الإنجاز المعتمدة تستبعد تلقائياً الطلبات المرفوضة إلا إذا اختار المستخدم فلتر 'مرفوض' عمداً
       const data = achievements.filter(item => {
+        if (!fStatus && item.status === 'مرفوض') return false; // استبعاد المرفوض افتراضياً من التقرير
+
         const matchesQuery = !q ||
           (item.employeeName && item.employeeName.toLowerCase().includes(q)) ||
           (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
@@ -1976,7 +2082,7 @@
     // تصدير Word
     document.getElementById('exportWordBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle } = getExportScope();
-      if (data.length === 0) return alert("لا توجد إنجازات للتصدير.");
+      if (data.length === 0) return alert("لا توجد إنجازات معتمدة للتصدير.");
       const printDate = new Date().toISOString().split('T')[0];
 
       let tableHeaders = '';
@@ -2075,7 +2181,7 @@
           <div class="Section1">
             <h2 style="text-align:center; font-size: 18pt; font-family: Arial; margin:0 0 4px 0;">الإدارة العامة لتقنية المعلومات والتحول الرقمي</h2>
             <h3 style="text-align:center; font-size: 15pt; font-family: Arial; margin:0 0 10px 0; color:#334155;">
-              ${isIndividual ? 'تقرير الإنجازات والمهام اليومية' : 'تقرير الإنجازات المجمع للإدارات التابعة'}
+              ${isIndividual ? 'تقرير الإنجازات والمهام اليومية المعتمدة' : 'تقرير الإنجازات المجمع للإدارات التابعة (المهام المعتمدة)'}
             </h3>
             <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 10px; font-size: 12pt;">
               <tr>
@@ -2124,7 +2230,8 @@
         "الإدارة المستفيدة": item.department || '',
         "النظام المرتبط": item.system || '',
         "الخدمة المطلوبة": item.service || '',
-        "الإجراء المنفذ": item.solution || ''
+        "الإجراء المنفذ": item.solution || '',
+        "سبب الرفض (إن وجد)": item.rejectionReason || ''
       }));
       const ws = XLSX.utils.json_to_sheet(rows);
       ws['!dir'] = "rtl";
@@ -2137,11 +2244,11 @@
     // الطباعة الرسمية
     document.getElementById('printBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle } = getExportScope();
-      if (data.length === 0) return alert("لا توجد إنجازات للطباعة.");
+      if (data.length === 0) return alert("لا توجد إنجازات معتمدة للطباعة.");
 
       document.getElementById('printReportTitle').textContent = isIndividual 
-        ? 'تقرير الإنجازات والمهام اليومية' 
-        : 'تقرير الإنجازات المجمع لمنسوبي الهيكل';
+        ? 'تقرير الإنجازات والمهام اليومية المعتمدة' 
+        : 'تقرير الإنجازات المجمع لمنسوبي الهيكل (المهام المعتمدة)';
 
       document.getElementById('printEmployeeName').textContent = targetEmpName;
       document.getElementById('printEmployeeDept').textContent = targetEmpDept;
