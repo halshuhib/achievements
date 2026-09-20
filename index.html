@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>نظام إدارة وتوثيق الإنجازات اليومية</title>
+  <title>نظام إدارة وتوثيق الإنجازات اليومية - الإدارة العامة لتقنية المعلومات والتحول الرقمي</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,8 +32,8 @@
       header, nav, footer, .no-print, #statsSection, #searchFilterSection, #tableHeaderControls, .modal-backdrop, .fixed { display: none !important; }
       main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
       table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #000 !important; }
-      thead th { border: 1px solid #000 !important; padding: 6px !important; font-size: 13pt !important; background: #f1f5f9 !important; font-family: Arial, sans-serif !important; }
-      tbody td { border: 1px solid #000 !important; padding: 6px !important; font-size: 13pt !important; line-height: 1.3 !important; font-family: Arial, sans-serif !important; }
+      thead th { border: 1px solid #000 !important; padding: 5px !important; font-size: 12pt !important; background: #f1f5f9 !important; font-family: Arial, sans-serif !important; }
+      tbody td { border: 1px solid #000 !important; padding: 5px !important; font-size: 12pt !important; line-height: 1.25 !important; font-family: Arial, sans-serif !important; }
       th:last-child, td:last-child { display: none !important; }
       #printReportHeader, #printReportFooter { display: block !important; font-family: Arial, sans-serif !important; }
     }
@@ -48,29 +48,29 @@
   <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 w-full max-w-md">
       <div class="text-center mb-6">
-        <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-2xl mb-3 shadow-md shadow-blue-600/30">
-          <i class="fa-solid fa-clipboard-check text-2xl"></i>
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-emerald-700 text-white rounded-2xl mb-3 shadow-md shadow-emerald-700/30">
+          <i class="fa-solid fa-sitemap text-2xl"></i>
         </div>
-        <h2 class="text-2xl font-black text-slate-800">بوابة الإنجازات المؤسسية</h2>
-        <p class="text-slate-500 text-xs mt-1">سجل الدخول بحسابك لمتابعة الأعمال والتقارير</p>
+        <h2 class="text-xl font-black text-slate-800">بوابة توثيق الإنجازات اليومية</h2>
+        <p class="text-slate-500 text-xs mt-1">الإدارة العامة لتقنية المعلومات والتحول الرقمي</p>
       </div>
 
       <form id="loginForm" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">البريد الإلكتروني</label>
-          <input type="email" id="authEmail" required placeholder="name@domain.com"
-                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
+          <input type="email" id="authEmail" required placeholder="name@domain.gov.sa"
+                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
         </div>
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">كلمة المرور</label>
           <input type="password" id="authPassword" required placeholder="••••••••"
-                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
+                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
         </div>
 
         <div id="authError" class="hidden p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl font-medium text-center"></div>
 
         <button type="submit" id="authSubmitBtn"
-                class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-2">
+                class="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-lg shadow-emerald-700/20 transition flex items-center justify-center gap-2">
           <span>دخول للنظام</span>
           <i class="fa-solid fa-arrow-left text-sm"></i>
         </button>
@@ -83,14 +83,14 @@
     <!-- ترويسة الطباعة الرسمية -->
     <div id="printReportHeader" class="mb-4">
       <div class="text-center pb-2 mb-2">
-        <h2 id="printReportTitle" style="font-size: 20pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية</h2>
-        <p style="font-size: 13pt; color: #475569; margin: 4px 0 0 0;">سجل إنجاز رسمي معتمد يوثق الخدمات والمهام المنفذة</p>
+        <h2 id="printReportTitle" style="font-size: 18pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية</h2>
+        <p style="font-size: 12pt; color: #334155; margin: 3px 0 0 0;">الإدارة العامة لتقنية المعلومات والتحول الرقمي</p>
       </div>
-      <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 10px; font-size: 13pt;">
+      <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 8px; font-size: 12pt;">
         <tr>
-          <td style="padding: 6px; width: 33%;"><b>الموظف / النطاق:</b> <span id="printEmployeeName">-</span></td>
-          <td style="padding: 6px; width: 33%;"><b>الإدارة:</b> <span id="printEmployeeDept">-</span></td>
-          <td style="padding: 6px; width: 34%;"><b>فترة التقرير:</b> <span id="printDatePeriod">-</span></td>
+          <td style="padding: 5px; width: 33%;"><b>الموظف / النطاق:</b> <span id="printEmployeeName">-</span></td>
+          <td style="padding: 5px; width: 33%;"><b>الإدارة / القسم:</b> <span id="printEmployeeDept">-</span></td>
+          <td style="padding: 5px; width: 34%;"><b>فترة التقرير:</b> <span id="printDatePeriod">-</span></td>
         </tr>
       </table>
     </div>
@@ -99,15 +99,15 @@
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs no-print">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20">
+          <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-md shadow-emerald-700/20">
             <i class="fa-solid fa-clipboard-list text-lg"></i>
           </div>
           <div>
-            <h1 class="text-base sm:text-lg font-bold text-slate-900">سجل الإنجازات اليومية</h1>
+            <h1 class="text-base sm:text-lg font-bold text-slate-900 leading-tight">سجل الإنجازات اليومية</h1>
             <div class="flex items-center gap-2 text-xs text-slate-500">
               <span id="userBadgeName" class="font-bold text-slate-800"></span>
               <span class="text-slate-300">|</span>
-              <span id="userBadgeDept" class="text-slate-600"></span>
+              <span id="userBadgeDept" class="text-emerald-700 font-semibold"></span>
               <span id="userRoleBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold"></span>
             </div>
           </div>
@@ -120,13 +120,13 @@
             <span>التحليلات المقارنة</span>
           </button>
 
-          <!-- إدارة الموظفين -->
+          <!-- إدارة الموظفين والأدوار (المدير العام ومدير النظام) -->
           <button id="adminUsersBtn" onclick="openPermissionsModal()" class="hidden items-center gap-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
             <i class="fa-solid fa-users-gear"></i>
-            <span>الموظفون والأدوار</span>
+            <span>الهيكل والموظفون</span>
           </button>
 
-          <!-- النسخ الاحتياطي (Admin) -->
+          <!-- النسخ الاحتياطي -->
           <button id="backupBtn" onclick="openBackupModal()" class="hidden items-center gap-1.5 px-2.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 rounded-xl text-xs sm:text-sm font-bold transition">
             <i class="fa-solid fa-database text-slate-600"></i>
             <span class="hidden md:inline">النسخ الاحتياطي</span>
@@ -147,7 +147,7 @@
             <span>طباعة</span>
           </button>
 
-          <button id="openAddModalBtn" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition">
+          <button id="openAddModalBtn" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs sm:text-sm font-semibold transition">
             <i class="fa-solid fa-plus"></i>
             <span>إضافة إنجاز</span>
           </button>
@@ -160,47 +160,46 @@
     </header>
 
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-5">
-      <!-- الإحصائيات -->
+      <!-- بطاقات الإحصائيات -->
       <div id="statsSection" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 no-print">
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-medium">إجمالي الإنجازات المعروضة</p>
+            <p class="text-xs text-slate-500 font-medium">إجمالي الإنجازات</p>
             <h3 id="statTotal" class="text-xl sm:text-2xl font-bold text-slate-800 mt-0.5">0</h3>
           </div>
           <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base"><i class="fa-solid fa-layer-group"></i></div>
         </div>
         <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
+            <p class="text-xs text-slate-500 font-medium">بانتظار الاعتماد</p>
+            <h3 id="statPending" class="text-xl sm:text-2xl font-bold text-amber-600 mt-0.5">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base"><i class="fa-solid fa-clock-rotate-left"></i></div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+          <div>
+            <p class="text-xs text-slate-500 font-medium">المهام المعتمدة</p>
+            <h3 id="statApproved" class="text-xl sm:text-2xl font-bold text-emerald-600 mt-0.5">0</h3>
+          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base"><i class="fa-solid fa-circle-check"></i></div>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+          <div>
             <p class="text-xs text-slate-500 font-medium">إنجازات اليوم</p>
-            <h3 id="statToday" class="text-xl sm:text-2xl font-bold text-emerald-600 mt-0.5">0</h3>
+            <h3 id="statToday" class="text-xl sm:text-2xl font-bold text-purple-600 mt-0.5">0</h3>
           </div>
-          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base"><i class="fa-solid fa-calendar-check"></i></div>
-        </div>
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
-          <div>
-            <p class="text-xs text-slate-500 font-medium">المستفيدون</p>
-            <h3 id="statBeneficiaries" class="text-xl sm:text-2xl font-bold text-purple-600 mt-0.5">0</h3>
-          </div>
-          <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-base"><i class="fa-solid fa-users"></i></div>
-        </div>
-        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
-          <div>
-            <p class="text-xs text-slate-500 font-medium">الإدارات المخدومة</p>
-            <h3 id="statDepartments" class="text-xl sm:text-2xl font-bold text-amber-600 mt-0.5">0</h3>
-          </div>
-          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base"><i class="fa-solid fa-building"></i></div>
+          <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-base"><i class="fa-solid fa-calendar-day"></i></div>
         </div>
       </div>
 
-      <!-- قسم الفلترة والبحث المتقدم مع أزرار الفترات الزمنية -->
+      <!-- قسم الفلترة والبحث المتقدم -->
       <div id="searchFilterSection" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs space-y-3 no-print">
-        <!-- أزرار الفترات السريعة -->
         <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100 text-xs">
           <div class="flex items-center gap-1.5 font-bold text-slate-700">
-            <i class="fa-solid fa-calendar-days text-blue-600"></i>
+            <i class="fa-solid fa-calendar-days text-emerald-700"></i>
             <span>فترة العرض:</span>
             <div class="inline-flex rounded-xl bg-slate-100 p-1 gap-1">
-              <button onclick="setPeriodFilter('all')" id="btnPeriodAll" class="px-2.5 py-1 rounded-lg font-semibold bg-white text-blue-700 shadow-xs">كامل الفترة</button>
+              <button onclick="setPeriodFilter('all')" id="btnPeriodAll" class="px-2.5 py-1 rounded-lg font-semibold bg-white text-emerald-800 shadow-xs">كامل الفترة</button>
               <button onclick="setPeriodFilter('today')" id="btnPeriodToday" class="px-2.5 py-1 rounded-lg font-semibold text-slate-600 hover:text-slate-900">اليوم</button>
               <button onclick="setPeriodFilter('week')" id="btnPeriodWeek" class="px-2.5 py-1 rounded-lg font-semibold text-slate-600 hover:text-slate-900">هذا الأسبوع</button>
               <button onclick="setPeriodFilter('month')" id="btnPeriodMonth" class="px-2.5 py-1 rounded-lg font-semibold text-slate-600 hover:text-slate-900">هذا الشهر</button>
@@ -214,18 +213,29 @@
           </div>
         </div>
 
-        <!-- فلاتر النصوص والقوائم المنسدلة -->
         <div class="flex flex-col lg:flex-row gap-2.5 items-center justify-between">
           <div class="relative flex-1 w-full">
             <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
-            <input type="text" id="searchInput" placeholder="بحث شامل: الموظف، المستفيد، الإدارة، تفاصيل الخدمة أو الحل..."
-                   class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-blue-600 outline-none">
+            <input type="text" id="searchInput" placeholder="بحث شامل: الموظف، المستفيد، الإدارة المستفيدة، الخدمة أو الإجراء..."
+                   class="w-full pr-9 pl-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:ring-2 focus:ring-emerald-600 outline-none">
           </div>
 
           <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+            <!-- فلتر الإدارات (يظهر للمدير العام فقط) -->
+            <select id="filterDepartmentScope" class="hidden bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-700 outline-none">
+              <option value="">كافة إدارات الهيكل</option>
+            </select>
+
             <!-- فلتر الموظفين -->
             <select id="employeeFilter" class="hidden bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-700 outline-none">
               <option value="">كافة الموظفين</option>
+            </select>
+
+            <!-- فلتر حالة الاعتماد -->
+            <select id="filterStatus" class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-700 outline-none">
+              <option value="">كافة الحالات</option>
+              <option value="معتمد">معتمد فقط</option>
+              <option value="بانتظار الاعتماد">بانتظار الاعتماد</option>
             </select>
 
             <!-- فلتر نوع الطلب -->
@@ -239,17 +249,6 @@
               <option value="تصحيح مسار">تصحيح مسار</option>
             </select>
 
-            <!-- فلتر النظام -->
-            <select id="filterSystem" class="bg-slate-50 border border-slate-200 rounded-xl px-2.5 py-2 text-xs font-semibold text-slate-700 outline-none">
-              <option value="">كافة الأنظمة</option>
-              <option value="نظام موارد">نظام موارد</option>
-              <option value="نظام تسهيل">نظام تسهيل</option>
-              <option value="نظام الرسائل النصية">نظام الرسائل النصية</option>
-              <option value="نظام التصديق الرقمي">نظام التصديق الرقمي</option>
-              <option value="نظام الشاشات">نظام الشاشات</option>
-              <option value="أخرى">أنظمة أخرى</option>
-            </select>
-
             <button id="resetFilterBtn" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition">إعادة تعيين</button>
           </div>
         </div>
@@ -258,7 +257,7 @@
       <!-- جدول الإنجازات -->
       <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
         <div id="tableHeaderControls" class="p-3.5 border-b border-slate-100 flex items-center justify-between no-print">
-          <h3 class="font-bold text-slate-800 text-sm">سجل الإنجازات المسجلة</h3>
+          <h3 class="font-bold text-slate-800 text-sm">سجل الإنجازات وحالات الاعتماد</h3>
           <span id="recordsCounter" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-0.5 rounded-full font-semibold">0 سجل</span>
         </div>
         <div class="overflow-x-auto">
@@ -268,21 +267,22 @@
                 <th class="py-3 px-2 text-center w-8">م</th>
                 <th class="py-3 px-2 text-center">التذكرة</th>
                 <th class="py-3 px-2 text-center">التاريخ</th>
-                <th class="py-3 px-2.5">نوع الطلب</th>
+                <th class="py-3 px-2 text-center">حالة الاعتماد</th>
                 <th class="py-3 px-2.5">الموظف المنفّذ</th>
+                <th class="py-3 px-2.5">إدارة / قسم الموظف</th>
+                <th class="py-3 px-2.5">نوع الطلب</th>
                 <th class="py-3 px-3">المستفيد</th>
-                <th class="py-3 px-3">الإدارة المستفيدة</th>
                 <th class="py-3 px-2.5">النظام المرتبط</th>
                 <th class="py-3 px-3">الخدمة المطلوبة</th>
                 <th class="py-3 px-3">الإجراء المنفذ</th>
-                <th class="py-3 px-2 text-center no-print">خيارات</th>
+                <th class="py-3 px-2 text-center no-print">خيارات / اعتماد</th>
               </tr>
             </thead>
             <tbody id="achievementsTableBody" class="divide-y divide-slate-100 text-slate-700">
               <tr>
-                <td colspan="11" class="text-center py-12 text-slate-400">
+                <td colspan="12" class="text-center py-12 text-slate-400">
                   <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
-                  <p>جاري مزامنة السجلات...</p>
+                  <p>جاري مزامنة السجلات وفق الهيكل الإداري...</p>
                 </td>
               </tr>
             </tbody>
@@ -292,18 +292,18 @@
 
       <!-- تذييل الطباعة المعتمد -->
       <div id="printReportFooter" class="mt-8 pt-4 border-t-2 border-slate-900">
-        <div id="printFooterBoxes" style="display: flex; justify-content: space-between; text-align: center; font-size: 13pt;"></div>
+        <div id="printFooterBoxes" style="display: flex; justify-content: space-between; text-align: center; font-size: 12pt;"></div>
       </div>
     </main>
   </div>
 
-  <!-- ================= 3. نافذة إدارة الموظفين وتعديل بياناتهم وأرشفتهم ================= -->
+  <!-- ================= 3. نافذة إدارة الهيكل، الموظفين، والأدوار ================= -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-      <div class="p-4 bg-amber-500 text-white flex items-center justify-between">
+      <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-users-gear text-lg"></i>
-          <h3 class="font-bold text-base">إدارة حسابات الموظفين، التعديل، والأرشفة</h3>
+          <i class="fa-solid fa-sitemap text-lg"></i>
+          <h3 class="font-bold text-base">إدارة الهيكل التنظيمي والموظفين وقيد مدراء الإدارات</h3>
         </div>
         <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -311,11 +311,17 @@
       </div>
 
       <div class="p-5 overflow-y-auto space-y-5">
+        <!-- تنبيه القاعدة التنظيمية -->
+        <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
+          <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
+          <span><b>ضابط أمني وتنظيمي:</b> لا يمكن تعيين أكثر من مدير واحد للإدارة الواحدة. يجب تغيير دور المدير الحالي قبل تعيين مدير جديد لها.</span>
+        </div>
+
         <!-- نموذج إضافة/تعديل موظف -->
-        <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-3">
-          <h4 id="empFormHeading" class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
-            <i class="fa-solid fa-user-plus"></i>
-            <span>إضافة وتعيين موظف جديد بالنظام</span>
+        <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
+          <h4 id="empFormHeading" class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-user-plus text-emerald-700"></i>
+            <span>إضافة وتعيين موظف جديد وفق الهيكل الإداري</span>
           </h4>
           <form id="createEmployeeForm" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
             <input type="hidden" id="editingEmpUid">
@@ -324,28 +330,47 @@
               <input type="text" id="newEmpName" required placeholder="مثال: فهد محمد الدوسري" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
             </div>
             <div>
-              <label class="block font-bold text-slate-700 mb-1">الإدارة / القسم التابع لها</label>
-              <input type="text" id="newEmpDept" required placeholder="مثال: الأنظمة والبرامج" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
-            </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">البريد الإلكتروني للدخول</label>
+              <label class="block font-bold text-slate-700 mb-1">البريد الإلكتروني الرسمي للدخول</label>
               <input type="email" id="newEmpEmail" required placeholder="emp@domain.gov.sa" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
             </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">الإدارة التابع لها</label>
+              <select id="newEmpDept" required onchange="updateSectionDropdown(this.value)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-semibold">
+                <option value="">اختر الإدارة من الهيكل...</option>
+                <option value="الإدارة العامة لتقنية المعلومات والتحول الرقمي">الإدارة العامة لتقنية المعلومات والتحول الرقمي</option>
+                <option value="إدارة الأنظمة والبرامج">إدارة الأنظمة والبرامج</option>
+                <option value="إدارة الدعم الفني">إدارة الدعم الفني</option>
+                <option value="إدارة البنية التحتية">إدارة البنية التحتية</option>
+                <option value="إدارة التحول الرقمي">إدارة التحول الرقمي</option>
+                <option value="إدارة التخطيط التقني">إدارة التخطيط التقني</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-bold text-slate-700 mb-1">القسم التابع له</label>
+              <select id="newEmpSection" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
+                <option value="عام الإدارة">عام الإدارة</option>
+              </select>
+            </div>
+
             <div id="passContainer">
               <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة</label>
               <input type="text" id="newEmpPass" placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
             </div>
-            <div class="sm:col-span-2">
+
+            <div>
               <label class="block font-bold text-slate-700 mb-1">الدور والصلاحية</label>
               <select id="newEmpRole" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-bold">
-                <option value="employee">موظف (يسجل ويدير إنجازاته الخاصة فقط)</option>
-                <option value="manager">مدير إدارة (يطلع على إنجازات الموظفين والتقارير)</option>
-                <option value="admin">مدير نظام (تحكم كامل بالنظام والصلاحيات والنسخ الاحتياطي)</option>
+                <option value="employee">موظف (يسجل ويدير إنجازاته الخاصة)</option>
+                <option value="manager">مدير إدارة (يدير ويعتمد إنجازات إدارته فقط)</option>
+                <option value="admin">مدير عام / مدير نظام (إشراف شامل على كافة الإدارات)</option>
               </select>
             </div>
+
             <div class="sm:col-span-2 flex justify-end gap-2 pt-1">
               <button type="button" id="cancelEditEmpBtn" onclick="resetEmpForm()" class="hidden px-3 py-2 bg-slate-200 text-slate-700 font-bold rounded-lg transition">إلغاء التعديل</button>
-              <button type="submit" id="createEmpBtn" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg transition flex items-center gap-1">
+              <button type="submit" id="createEmpBtn" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg transition flex items-center gap-1">
                 <i class="fa-solid fa-check"></i>
                 <span id="createEmpBtnText">إنشاء وتفعيل الحساب</span>
               </button>
@@ -354,23 +379,24 @@
           <div id="createEmpMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         </div>
 
-        <!-- قائمة الحسابات -->
+        <!-- قائمة الموظفين -->
         <div>
-          <h4 class="text-xs font-bold text-slate-700 mb-2">قائمة حسابات الموظفين والأرشيف:</h4>
+          <h4 class="text-xs font-bold text-slate-700 mb-2">قائمة منسوبي الإدارة العامة وحساباتهم:</h4>
           <div class="overflow-x-auto border border-slate-200 rounded-xl">
             <table class="w-full text-right text-xs">
               <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
                 <tr>
                   <th class="p-2.5">اسم الموظف</th>
                   <th class="p-2.5">البريد</th>
-                  <th class="p-2.5">الإدارة</th>
+                  <th class="p-2.5">الإدارة التابع لها</th>
+                  <th class="p-2.5">القسم</th>
                   <th class="p-2.5">الدور</th>
                   <th class="p-2.5 text-center">الحالة</th>
                   <th class="p-2.5 text-center">خيارات التحكم</th>
                 </tr>
               </thead>
               <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100">
-                <tr><td colspan="6" class="text-center py-4 text-slate-400">جاري تحميل قائمة المستخدمين...</td></tr>
+                <tr><td colspan="7" class="text-center py-4 text-slate-400">جاري تحميل القائمة...</td></tr>
               </tbody>
             </table>
           </div>
@@ -382,7 +408,7 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة النسخ الاحتياطي والاستعادة ================= -->
+  <!-- ================= 4. نافذة النسخ الاحتياطي ================= -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -394,8 +420,8 @@
       </div>
       <div class="p-5 space-y-4 text-xs">
         <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl">
-          <h4 class="font-bold text-blue-900 mb-1"><i class="fa-solid fa-cloud-arrow-down ml-1"></i> تصدير نسخة احتياطية سحابية:</h4>
-          <p class="text-slate-600 mb-2.5">تنزيل ملف JSON يحتوي على كامل سجلات الإنجازات والمستخدمين لحفظها بأمان.</p>
+          <h4 class="font-bold text-blue-900 mb-1"><i class="fa-solid fa-cloud-arrow-down ml-1"></i> تصدير نسخة شاملة:</h4>
+          <p class="text-slate-600 mb-2.5">تنزيل ملف JSON يحتوي على كامل الهيكل وسجلات الإنجازات والمستخدمين.</p>
           <button onclick="exportBackupData()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
             <i class="fa-solid fa-download"></i>
             <span>تنزيل ملف النسخة الاحتياطية (JSON)</span>
@@ -403,8 +429,8 @@
         </div>
 
         <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl">
-          <h4 class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-cloud-arrow-up ml-1"></i> استعادة نسخة سابقة:</h4>
-          <p class="text-slate-600 mb-2.5">استرجاع السجلات من ملف نسخة احتياطية محفوظ لديك.</p>
+          <h4 class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-cloud-arrow-up ml-1"></i> استعادة نسخة:</h4>
+          <p class="text-slate-600 mb-2.5">استرجاع السجلات والهيكل من ملف محفوظ.</p>
           <input type="file" id="restoreFileInput" accept=".json" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white file:font-semibold">
           <button onclick="importBackupData()" class="mt-3 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
             <i class="fa-solid fa-rotate-left"></i>
@@ -476,12 +502,12 @@
 
         <div>
           <label class="block font-bold text-slate-700 mb-1">الإدارة المستفيدة</label>
-          <input type="text" id="formDepartment" required placeholder="مثال: الأنظمة والبرامج" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
+          <input type="text" id="formDepartment" required placeholder="مثال: إدارة الموارد البشرية" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
         </div>
 
         <div>
           <label class="block font-bold text-slate-700 mb-1">الخدمة المطلوبة</label>
-          <input type="text" id="formService" required placeholder="مثال: تعديل صلاحية على شاشة التكليفات" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
+          <input type="text" id="formService" required placeholder="مثال: معالجة صلاحيات التكليف" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
         </div>
 
         <div>
@@ -491,7 +517,7 @@
 
         <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
           <button type="button" id="cancelRecordModalBtn" class="px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">إلغاء</button>
-          <button type="submit" class="px-5 py-2 font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-xs transition">حفظ الإنجاز</button>
+          <button type="submit" class="px-5 py-2 font-bold bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl shadow-xs transition">حفظ الإنجاز</button>
         </div>
       </form>
     </div>
@@ -500,10 +526,10 @@
   <!-- ================= 6. نافذة التقارير الإحصائية ================= -->
   <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-      <div class="p-4 bg-gradient-to-r from-indigo-700 to-blue-700 text-white flex items-center justify-between">
+      <div class="p-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
-          <i class="fa-solid fa-chart-line text-lg"></i>
-          <h3 class="font-bold text-base">التقارير الإحصائية ومقارنة إنتاجية الموظفين</h3>
+          <i class="fa-solid fa-chart-pie text-lg"></i>
+          <h3 class="font-bold text-base">التقارير الإحصائية ومقارنة أداء الموظفين والإدارات</h3>
         </div>
         <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
@@ -512,7 +538,7 @@
         <div>
           <h4 class="text-sm font-extrabold text-slate-800 mb-3 flex items-center gap-2">
             <i class="fa-solid fa-trophy text-amber-500"></i>
-            <span>ترتيب الموظفين حسب الإنجاز الفعلي للمهام</span>
+            <span>ترتيب الموظفين حسب الإنجاز الفعلي للمهام المعتمدة</span>
           </h4>
           <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
             <table class="w-full text-right text-xs">
@@ -520,9 +546,9 @@
                 <tr>
                   <th class="p-3">الترتيب</th>
                   <th class="p-3">اسم الموظف</th>
-                  <th class="p-3">الإدارة / القسم</th>
+                  <th class="p-3">الإدارة والقسم</th>
                   <th class="p-3 text-center">المهام المنجزة</th>
-                  <th class="p-3">نسبة المساهمة في العمل</th>
+                  <th class="p-3">نسبة المساهمة</th>
                 </tr>
               </thead>
               <tbody id="empRankingTableBody" class="divide-y divide-slate-100"></tbody>
@@ -533,7 +559,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
             <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
-              <i class="fa-solid fa-server text-blue-600"></i>
+              <i class="fa-solid fa-server text-emerald-700"></i>
               <span>أكثر الأنظمة التقنية طلباً للدعم:</span>
             </h5>
             <div id="systemsAnalyticsList" class="space-y-2 text-xs"></div>
@@ -542,7 +568,7 @@
           <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
             <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
               <i class="fa-solid fa-layer-group text-purple-600"></i>
-              <span>توزيع أنواع الطلبات المنفذة:</span>
+              <span>توزيع أنواع الطلبات:</span>
             </h5>
             <div id="typesAnalyticsList" class="space-y-2 text-xs"></div>
           </div>
@@ -555,6 +581,39 @@
   </div>
 
   <script>
+    // الهيكل التنظيمي المعتمد مع الإدارات والأقسام التابعة
+    const ORG_STRUCTURE = {
+      "الإدارة العامة لتقنية المعلومات والتحول الرقمي": [
+        "قسم الجودة التقنية",
+        "مكتب المدير العام"
+      ],
+      "إدارة الأنظمة والبرامج": [
+        "قسم تطور الأنظمة والبرامج",
+        "قسم الاختبار وجودة الأنظمة والبرامج"
+      ],
+      "إدارة الدعم الفني": [
+        "قسم خدمات المستفيدين",
+        "قسم الصيانة والتشغيل",
+        "قسم التمويل الفني"
+      ],
+      "إدارة البنية التحتية": [
+        "قسم الشبكات",
+        "قسم الحوسبة السحابية ومركز البيانات",
+        "قسم المخاطر واستمرارية الأعمال",
+        "قسم أمن وحماية البنية التحتية"
+      ],
+      "إدارة التحول الرقمي": [
+        "قسم تحليل الأعمال",
+        "قسم تمكين التحول الرقمي",
+        "قسم الإبتكار والذكاء الاصطناعي"
+      ],
+      "إدارة التخطيط التقني": [
+        "قسم التخطيط والدراسات",
+        "قسم البنية المؤسسية",
+        "مكتب إدارة المشاريع"
+      ]
+    };
+
     const firebaseConfig = {
       apiKey: "AIzaSyCdAJbhASinCo7gX7JjhNUDyftsZ8-CI9I",
       authDomain: "achievements-portal.firebaseapp.com",
@@ -584,7 +643,22 @@
       document.getElementById('formTicketNo').value = generateTicketNo();
     };
 
-    // عناصر الدخول
+    window.updateSectionDropdown = function(deptName) {
+      const secSelect = document.getElementById('newEmpSection');
+      secSelect.innerHTML = '';
+      if (ORG_STRUCTURE[deptName]) {
+        ORG_STRUCTURE[deptName].forEach(sec => {
+          const opt = document.createElement('option');
+          opt.value = sec;
+          opt.textContent = sec;
+          secSelect.appendChild(opt);
+        });
+      } else {
+        secSelect.innerHTML = '<option value="عام الإدارة">عام الإدارة</option>';
+      }
+    };
+
+    // الدخول
     const authSection = document.getElementById('authSection');
     const mainAppSection = document.getElementById('mainAppSection');
     const loginForm = document.getElementById('loginForm');
@@ -620,7 +694,7 @@
         const doc = await userRef.get();
 
         if (doc.exists && doc.data().isArchived) {
-          alert("هذا الحساب تم أرشفته وتعطيل الدخول إليه من قِبل الإدارة.");
+          alert("هذا الحساب مؤرشف حالياً.");
           await auth.signOut();
           return;
         }
@@ -650,6 +724,7 @@
           name: user.email.split('@')[0],
           email: user.email,
           department: 'الإدارة العامة لتقنية المعلومات والتحول الرقمي',
+          section: 'مكتب المدير العام',
           role: role,
           isArchived: false
         };
@@ -659,32 +734,37 @@
         if (!currentUserProfile.name) currentUserProfile.name = user.email.split('@')[0];
         if (!currentUserProfile.email) currentUserProfile.email = user.email;
         if (!currentUserProfile.department) currentUserProfile.department = 'الإدارة العامة لتقنية المعلومات والتحول الرقمي';
+        if (!currentUserProfile.section) currentUserProfile.section = 'عام';
         if (!currentUserProfile.role) currentUserProfile.role = 'employee';
       }
 
       document.getElementById('userBadgeName').textContent = currentUserProfile.name;
-      document.getElementById('userBadgeDept').textContent = currentUserProfile.department;
+      document.getElementById('userBadgeDept').textContent = `${currentUserProfile.department} (${currentUserProfile.section || ''})`;
 
       const roleBadge = document.getElementById('userRoleBadge');
       const adminBtn = document.getElementById('adminUsersBtn');
       const analyticsBtn = document.getElementById('analyticsBtn');
       const backupBtn = document.getElementById('backupBtn');
       const empFilter = document.getElementById('employeeFilter');
+      const deptFilter = document.getElementById('filterDepartmentScope');
 
       if (currentUserProfile.role === 'admin') {
-        roleBadge.textContent = 'مدير نظام';
+        roleBadge.textContent = 'مدير عام / مدير نظام';
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
         adminBtn.classList.remove('hidden'); adminBtn.classList.add('flex');
         analyticsBtn.classList.remove('hidden'); analyticsBtn.classList.add('flex');
         backupBtn.classList.remove('hidden'); backupBtn.classList.add('flex');
         empFilter.classList.remove('hidden');
+        deptFilter.classList.remove('hidden');
+        populateDepartmentScopeFilter();
       } else if (currentUserProfile.role === 'manager') {
-        roleBadge.textContent = 'مدير إدارة';
+        roleBadge.textContent = `مدير: ${currentUserProfile.department}`;
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800';
         adminBtn.classList.add('hidden'); adminBtn.classList.remove('flex');
         analyticsBtn.classList.remove('hidden'); analyticsBtn.classList.add('flex');
         backupBtn.classList.add('hidden'); backupBtn.classList.remove('flex');
         empFilter.classList.remove('hidden');
+        deptFilter.classList.add('hidden');
       } else {
         roleBadge.textContent = 'موظف';
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800';
@@ -692,14 +772,32 @@
         analyticsBtn.classList.add('hidden'); analyticsBtn.classList.remove('flex');
         backupBtn.classList.add('hidden'); backupBtn.classList.remove('flex');
         empFilter.classList.add('hidden');
+        deptFilter.classList.add('hidden');
       }
     }
 
+    function populateDepartmentScopeFilter() {
+      const deptFilter = document.getElementById('filterDepartmentScope');
+      deptFilter.innerHTML = '<option value="">كافة إدارات الهيكل</option>';
+      Object.keys(ORG_STRUCTURE).forEach(d => {
+        const opt = document.createElement('option');
+        opt.value = d;
+        opt.textContent = d;
+        deptFilter.appendChild(opt);
+      });
+    }
+
+    // مزامنة الإنجازات مع العزل الإداري التام
     function subscribeToAchievements() {
       let query = db.collection('achievements');
+
       if (currentUserProfile.role === 'employee') {
         query = query.where('userId', '==', currentUser.uid);
+      } else if (currentUserProfile.role === 'manager') {
+        // مدير الإدارة يرى موظفي إدارته فقط
+        query = query.where('employeeDept', '==', currentUserProfile.department);
       }
+      // المدير العام ومدير النظام يشاهدان كافة الإدارات
 
       unsubscribeFirestore = query.onSnapshot((snapshot) => {
         achievements = [];
@@ -708,6 +806,7 @@
           achievements.push({
             id: doc.id,
             ...item,
+            status: item.status || 'بانتظار الاعتماد',
             employeeName: item.employeeName || (item.userId === currentUser.uid ? currentUserProfile.name : 'غير محدد')
           });
         });
@@ -724,7 +823,7 @@
       const empFilter = document.getElementById('employeeFilter');
       const curVal = empFilter.value;
       const emps = [...new Set(achievements.map(a => a.employeeName).filter(Boolean))];
-      empFilter.innerHTML = '<option value="">كافة الموظفين (تقرير جماعي)</option>';
+      empFilter.innerHTML = '<option value="">كافة الموظفين</option>';
       emps.forEach(name => {
         const opt = document.createElement('option');
         opt.value = name;
@@ -734,9 +833,7 @@
       });
     }
 
-    // ==========================================
-    // محرك الفلترة والبحث المتقدم
-    // ==========================================
+    // فلترة الفترات
     window.setPeriodFilter = function(type) {
       const startInp = document.getElementById('filterStartDate');
       const endInp = document.getElementById('filterEndDate');
@@ -748,14 +845,12 @@
         if (btn) btn.className = 'px-2.5 py-1 rounded-lg font-semibold text-slate-600 hover:text-slate-900';
       });
       const activeBtn = document.getElementById('btnPeriod' + type.charAt(0).toUpperCase() + type.slice(1));
-      if (activeBtn) activeBtn.className = 'px-2.5 py-1 rounded-lg font-semibold bg-white text-blue-700 shadow-xs';
+      if (activeBtn) activeBtn.className = 'px-2.5 py-1 rounded-lg font-semibold bg-white text-emerald-800 shadow-xs';
 
       if (type === 'all') {
-        startInp.value = '';
-        endInp.value = '';
+        startInp.value = ''; endInp.value = '';
       } else if (type === 'today') {
-        startInp.value = todayStr;
-        endInp.value = todayStr;
+        startInp.value = todayStr; endInp.value = todayStr;
       } else if (type === 'week') {
         const firstDay = new Date(now.setDate(now.getDate() - now.getDay()));
         startInp.value = firstDay.toISOString().split('T')[0];
@@ -775,13 +870,15 @@
       const eDate = document.getElementById('filterEndDate').value;
       const fEmp = document.getElementById('employeeFilter').value;
       const fType = document.getElementById('filterType').value;
-      const fSys = document.getElementById('filterSystem').value;
+      const fStatus = document.getElementById('filterStatus').value;
+      const fDeptScope = document.getElementById('filterDepartmentScope').value;
 
       const filtered = achievements.filter(item => {
         const matchesQuery = !q ||
           (item.employeeName && item.employeeName.toLowerCase().includes(q)) ||
           (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
           (item.department && item.department.toLowerCase().includes(q)) ||
+          (item.employeeDept && item.employeeDept.toLowerCase().includes(q)) ||
           (item.system && item.system.toLowerCase().includes(q)) ||
           (item.service && item.service.toLowerCase().includes(q)) ||
           (item.type && item.type.toLowerCase().includes(q)) ||
@@ -793,70 +890,97 @@
 
         const matchesEmp = !fEmp || item.employeeName === fEmp;
         const matchesType = !fType || item.type === fType;
-        const matchesSys = !fSys || item.system === fSys;
+        const matchesStatus = !fStatus || item.status === fStatus;
+        const matchesDeptScope = !fDeptScope || item.employeeDept === fDeptScope;
 
-        return matchesQuery && matchesDate && matchesEmp && matchesType && matchesSys;
+        return matchesQuery && matchesDate && matchesEmp && matchesType && matchesStatus && matchesDeptScope;
       });
 
       document.getElementById('recordsCounter').textContent = `${filtered.length} سجل`;
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" class="text-center py-8 text-slate-400">لا توجد إنجازات مطابقة لمعايير البحث</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="12" class="text-center py-8 text-slate-400">لا توجد إنجازات مطابقة</td></tr>`;
         return;
       }
 
-      tbody.innerHTML = filtered.map((item, idx) => `
-        <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-          <td class="py-2.5 px-2 text-center text-slate-400 font-mono">${idx + 1}</td>
-          <td class="py-2.5 px-2 text-center font-mono font-bold text-blue-700 whitespace-nowrap">${item.ticketNo || '-'}</td>
-          <td class="py-2.5 px-2 text-center font-semibold whitespace-nowrap">${item.date || '-'}</td>
-          <td class="py-2.5 px-2.5 whitespace-nowrap">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${item.type || 'دعم فني'}</span>
-          </td>
-          <td class="py-2.5 px-2.5 font-bold text-slate-800">
-            ${item.employeeName}
-            <span class="block text-[10px] text-slate-400 font-normal">${item.employeeDept || ''}</span>
-          </td>
-          <td class="py-2.5 px-3 font-bold text-blue-900">${item.beneficiary || '-'}</td>
-          <td class="py-2.5 px-3 text-slate-600">${item.department || '-'}</td>
-          <td class="py-2.5 px-2.5 font-semibold text-emerald-800 whitespace-nowrap">${item.system || '-'}</td>
-          <td class="py-2.5 px-3 text-slate-700 max-w-[200px] truncate" title="${item.service}">${item.service || '-'}</td>
-          <td class="py-2.5 px-3 text-slate-600 max-w-[200px] truncate" title="${item.solution}">${item.solution || '-'}</td>
-          <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
-            ${(currentUserProfile.role === 'admin' || item.userId === currentUser.uid) ? `
-              <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 mx-0.5" title="تعديل"><i class="fa-solid fa-pen"></i></button>
-              <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 mx-0.5" title="حذف"><i class="fa-solid fa-trash"></i></button>
-            ` : `<span class="text-slate-300">للاطلاع</span>`}
-          </td>
-        </tr>
-      `).join('');
+      const isManagerOrAdmin = (currentUserProfile.role === 'admin' || currentUserProfile.role === 'manager');
+
+      tbody.innerHTML = filtered.map((item, idx) => {
+        const isApproved = item.status === 'معتمد';
+        const statusBadge = isApproved 
+          ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 flex items-center gap-1 justify-center"><i class="fa-solid fa-check"></i> معتمد</span>'
+          : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 flex items-center gap-1 justify-center"><i class="fa-solid fa-hourglass-half"></i> بالانتظار</span>';
+
+        return `
+          <tr class="hover:bg-slate-50 transition border-b border-slate-100">
+            <td class="py-2.5 px-2 text-center text-slate-400 font-mono">${idx + 1}</td>
+            <td class="py-2.5 px-2 text-center font-mono font-bold text-blue-700 whitespace-nowrap">${item.ticketNo || '-'}</td>
+            <td class="py-2.5 px-2 text-center font-semibold whitespace-nowrap">${item.date || '-'}</td>
+            <td class="py-2.5 px-2 text-center whitespace-nowrap">${statusBadge}</td>
+            <td class="py-2.5 px-2.5 font-bold text-slate-800 whitespace-nowrap">${item.employeeName}</td>
+            <td class="py-2.5 px-2.5 text-[11px] text-slate-600">
+              <span class="font-bold text-slate-700 block">${item.employeeDept || '-'}</span>
+              <span class="text-slate-400 text-[10px]">${item.employeeSection || ''}</span>
+            </td>
+            <td class="py-2.5 px-2 whitespace-nowrap">
+              <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 text-slate-700 border border-slate-200">${item.type || 'دعم فني'}</span>
+            </td>
+            <td class="py-2.5 px-3 font-bold text-blue-900">${item.beneficiary || '-'}</td>
+            <td class="py-2.5 px-2.5 font-semibold text-emerald-800 whitespace-nowrap">${item.system || '-'}</td>
+            <td class="py-2.5 px-3 text-slate-700 max-w-[180px] truncate" title="${item.service}">${item.service || '-'}</td>
+            <td class="py-2.5 px-3 text-slate-600 max-w-[180px] truncate" title="${item.solution}">${item.solution || '-'}</td>
+            <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
+              ${isManagerOrAdmin ? `
+                <button onclick="toggleApproval('${item.id}', '${item.status}')" class="px-2 py-1 text-[10px] font-bold rounded-lg ${isApproved ? 'bg-amber-50 text-amber-700 border border-amber-300' : 'bg-emerald-600 text-white hover:bg-emerald-700'} mr-1">
+                  ${isApproved ? 'إلغاء الاعتماد' : 'اعتماد'}
+                </button>
+              ` : ''}
+
+              ${(currentUserProfile.role === 'admin' || (!isApproved && item.userId === currentUser.uid)) ? `
+                <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1" title="تعديل"><i class="fa-solid fa-pen"></i></button>
+                <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1" title="حذف"><i class="fa-solid fa-trash"></i></button>
+              ` : `<span class="text-slate-300 text-[10px] mr-1">محمي</span>`}
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
     function updateStats() {
       const today = new Date().toISOString().split('T')[0];
       document.getElementById('statTotal').textContent = achievements.length;
+      document.getElementById('statPending').textContent = achievements.filter(x => x.status === 'بانتظار الاعتماد').length;
+      document.getElementById('statApproved').textContent = achievements.filter(x => x.status === 'معتمد').length;
       document.getElementById('statToday').textContent = achievements.filter(x => x.date === today).length;
-      document.getElementById('statBeneficiaries').textContent = new Set(achievements.map(x => x.beneficiary).filter(Boolean)).size;
-      document.getElementById('statDepartments').textContent = new Set(achievements.map(x => x.department).filter(Boolean)).size;
     }
+
+    // تغيير حالة الاعتماد
+    window.toggleApproval = async function(id, curStatus) {
+      const newStatus = curStatus === 'معتمد' ? 'بانتظار الاعتماد' : 'معتمد';
+      await db.collection('achievements').doc(id).update({
+        status: newStatus,
+        approvedBy: newStatus === 'معتمد' ? currentUserProfile.name : null,
+        approvedAt: newStatus === 'معتمد' ? firebase.firestore.FieldValue.serverTimestamp() : null
+      });
+    };
 
     document.getElementById('searchInput').addEventListener('input', renderTable);
     document.getElementById('filterStartDate').addEventListener('change', renderTable);
     document.getElementById('filterEndDate').addEventListener('change', renderTable);
     document.getElementById('employeeFilter').addEventListener('change', renderTable);
     document.getElementById('filterType').addEventListener('change', renderTable);
-    document.getElementById('filterSystem').addEventListener('change', renderTable);
+    document.getElementById('filterStatus').addEventListener('change', renderTable);
+    document.getElementById('filterDepartmentScope').addEventListener('change', renderTable);
     document.getElementById('resetFilterBtn').addEventListener('click', () => {
       document.getElementById('searchInput').value = '';
       document.getElementById('employeeFilter').value = '';
       document.getElementById('filterType').value = '';
-      document.getElementById('filterSystem').value = '';
+      document.getElementById('filterStatus').value = '';
+      document.getElementById('filterDepartmentScope').value = '';
       setPeriodFilter('all');
     });
 
-    // ==========================================
-    // تسجيل وتعديل الإنجاز
-    // ==========================================
+    // إضافة وتعديل إنجاز
     const recordModal = document.getElementById('recordModal');
     const recordForm = document.getElementById('recordForm');
     document.getElementById('openAddModalBtn').addEventListener('click', () => {
@@ -886,7 +1010,8 @@
         solution: document.getElementById('formSolution').value.trim(),
         userId: currentUser.uid,
         employeeName: currentUserProfile.name || currentUser.email,
-        employeeDept: currentUserProfile.department || 'الإدارة العامة لتقنية المعلومات والتحول الرقمي',
+        employeeDept: currentUserProfile.department || 'إدارة الأنظمة والبرامج',
+        employeeSection: currentUserProfile.section || 'عام',
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -894,6 +1019,7 @@
         if (id) {
           await db.collection('achievements').doc(id).update(data);
         } else {
+          data.status = 'بانتظار الاعتماد';
           data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
           await db.collection('achievements').add(data);
         }
@@ -925,9 +1051,9 @@
       }
     };
 
-    // ==========================================
-    // إدارة الموظفين، التعديل، والأرشفة
-    // ==========================================
+    // ==========================================================
+    // إدارة الهيكل وقيد مدراء الإدارات (قاعدة المدير الواحد)
+    // ==========================================================
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -941,11 +1067,11 @@
 
     async function loadUsersList() {
       const tbody = document.getElementById('usersPermissionsTableBody');
-      tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-slate-400"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-slate-400"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</td></tr>`;
 
       const snap = await db.collection('users').get();
       if (snap.empty) {
-        tbody.innerHTML = `<tr><td colspan="6" class="text-center py-3 text-slate-400">لا يوجد موظفون مسجلون</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3 text-slate-400">لا يوجد موظفون مسجلون</td></tr>`;
         return;
       }
 
@@ -957,8 +1083,8 @@
         allUsersCache.push({ uid, ...u });
 
         let badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-blue-100 text-blue-800">موظف</span>';
-        if (u.role === 'admin') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-amber-100 text-amber-800">مدير نظام</span>';
-        if (u.role === 'manager') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-purple-100 text-purple-800">مدير</span>';
+        if (u.role === 'admin') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-amber-100 text-amber-800">مدير عام / نظام</span>';
+        if (u.role === 'manager') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-purple-100 text-purple-800">مدير إدارة</span>';
 
         const isSelf = (currentUser && currentUser.uid === uid);
         const isArchived = !!u.isArchived;
@@ -967,10 +1093,11 @@
           <tr class="hover:bg-slate-50 ${isArchived ? 'bg-slate-100/70 opacity-60' : ''}">
             <td class="p-2.5 font-bold text-slate-800">
               ${u.name || 'بدون اسم'}
-              ${isSelf ? '<span class="text-[10px] text-blue-600 font-bold mr-1">(حسابك)</span>' : ''}
+              ${isSelf ? '<span class="text-[10px] text-emerald-700 font-bold mr-1">(حسابك)</span>' : ''}
             </td>
             <td class="p-2.5 text-slate-600 font-mono text-[11px]">${u.email || '-'}</td>
-            <td class="p-2.5 text-slate-700">${u.department || '-'}</td>
+            <td class="p-2.5 text-slate-800 font-semibold">${u.department || '-'}</td>
+            <td class="p-2.5 text-slate-600">${u.section || '-'}</td>
             <td class="p-2.5">${badge}</td>
             <td class="p-2.5 text-center">
               ${isArchived 
@@ -978,14 +1105,14 @@
                 : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">نشط</span>'}
             </td>
             <td class="p-2.5 text-center whitespace-nowrap">
-              <button onclick="startEditUser('${uid}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-300 hover:bg-slate-100 ml-1" title="تعديل البيانات">
+              <button onclick="startEditUser('${uid}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-300 hover:bg-slate-100 ml-1" title="تعديل">
                 <i class="fa-solid fa-user-pen"></i>
               </button>
               ${isSelf ? `
                 <span class="text-[10px] text-slate-400 italic">محمي</span>
               ` : `
                 <button onclick="toggleArchiveUser('${uid}',${isArchived})" class="px-2 py-1 text-[11px] font-bold rounded-lg ${isArchived ? 'bg-emerald-600 text-white' : 'bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100'}">
-                  ${isArchived ? 'إلغاء الأرشفة' : 'أرشفة'}
+                  ${isArchived ? 'تفعيل' : 'أرشفة'}
                 </button>
               `}
             </td>
@@ -1000,11 +1127,13 @@
       if (!u) return;
       document.getElementById('editingEmpUid').value = uid;
       document.getElementById('newEmpName').value = u.name || '';
-      document.getElementById('newEmpDept').value = u.department || '';
       document.getElementById('newEmpEmail').value = u.email || '';
+      document.getElementById('newEmpDept').value = u.department || '';
+      updateSectionDropdown(u.department || '');
+      document.getElementById('newEmpSection').value = u.section || 'عام الإدارة';
       document.getElementById('newEmpRole').value = u.role || 'employee';
       document.getElementById('passContainer').classList.add('hidden');
-      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-pen text-amber-700"></i> <span>تعديل بيانات الموظف: ${u.name}</span>`;
+      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-pen text-emerald-700"></i> <span>تعديل الموظف: ${u.name}</span>`;
       document.getElementById('createEmpBtnText').textContent = 'حفظ التعديلات';
       document.getElementById('cancelEditEmpBtn').classList.remove('hidden');
     };
@@ -1013,7 +1142,7 @@
       document.getElementById('editingEmpUid').value = '';
       document.getElementById('createEmployeeForm').reset();
       document.getElementById('passContainer').classList.remove('hidden');
-      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-plus text-amber-700"></i> <span>إضافة وتعيين موظف جديد بالنظام</span>`;
+      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-plus text-emerald-700"></i> <span>إضافة وتعيين موظف جديد بالنظام</span>`;
       document.getElementById('createEmpBtnText').textContent = 'إنشاء وتفعيل الحساب';
       document.getElementById('cancelEditEmpBtn').classList.add('hidden');
       document.getElementById('createEmpMsg').classList.add('hidden');
@@ -1021,36 +1150,60 @@
 
     window.toggleArchiveUser = async function(uid, isCurrentlyArchived) {
       const u = allUsersCache.find(x => x.uid === uid);
-      const action = isCurrentlyArchived ? "إلغاء أرشفة وتفعيل" : "أرشفة وتعطيل دخول";
+      const action = isCurrentlyArchived ? "إلغاء أرشفة" : "أرشفة وتعطيل";
       if (confirm(`هل أنت متأكد من ${action} الموظف (${u.name})؟`)) {
         await db.collection('users').doc(uid).update({ isArchived: !isCurrentlyArchived });
         loadUsersList();
       }
     };
 
+    // التحقق من قاعدة: لا يمكن تعيين أكثر من مدير للإدارة الواحدة
+    function validateSingleManagerRule(targetDept, targetRole, excludeUid = null) {
+      if (targetRole !== 'manager') return true;
+
+      const existingManager = allUsersCache.find(u => 
+        u.department === targetDept && 
+        u.role === 'manager' && 
+        !u.isArchived && 
+        u.uid !== excludeUid
+      );
+
+      if (existingManager) {
+        alert(`مخالفة لقواعد الهيكل الإداري:\nيوجد مدير معين بالفعل لـ (${targetDept}) وهو الموظف: (${existingManager.name}).\nلا يمكن تعيين أكثر من مدير للإدارة الواحدة.`);
+        return false;
+      }
+      return true;
+    }
+
     document.getElementById('createEmployeeForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const editUid = document.getElementById('editingEmpUid').value;
       const name = document.getElementById('newEmpName').value.trim();
-      const dept = document.getElementById('newEmpDept').value.trim();
+      const dept = document.getElementById('newEmpDept').value;
+      const sec = document.getElementById('newEmpSection').value;
       const email = document.getElementById('newEmpEmail').value.trim();
       const role = document.getElementById('newEmpRole').value;
       const msg = document.getElementById('createEmpMsg');
       const btn = document.getElementById('createEmpBtn');
 
+      // فحص قيد المدير الواحد
+      if (!validateSingleManagerRule(dept, role, editUid)) {
+        return;
+      }
+
       btn.disabled = true;
 
       if (editUid) {
-        // تعديل بيانات مستخدم موجود
         try {
           await db.collection('users').doc(editUid).update({
             name: name,
             department: dept,
+            section: sec,
             email: email,
             role: role
           });
           msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-          msg.textContent = "✅ تم تحديث بيانات الموظف بنجاح.";
+          msg.textContent = "✅ تم تحديث بيانات الموظف ودوره بالهيكل بنجاح.";
           resetEmpForm();
           loadUsersList();
         } catch (err) {
@@ -1060,7 +1213,6 @@
           btn.disabled = false;
         }
       } else {
-        // إنشاء مستخدم جديد
         const pass = document.getElementById('newEmpPass').value.trim();
         if (!pass || pass.length < 6) {
           alert("كلمة المرور يجب ألا تقل عن 6 خانات.");
@@ -1077,6 +1229,7 @@
           await db.collection('users').doc(newUserCred.user.uid).set({
             name: name,
             department: dept,
+            section: sec,
             email: email,
             role: role,
             isArchived: false,
@@ -1087,7 +1240,7 @@
           secondaryApp.delete();
 
           msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-          msg.textContent = `✅ تم إنشاء وتفعيل حساب الموظف بنجاح.`;
+          msg.textContent = `✅ تم تعيين الموظف بنجاح ضمن (${dept}).`;
           resetEmpForm();
           loadUsersList();
         } catch (err) {
@@ -1099,9 +1252,7 @@
       }
     });
 
-    // ==========================================
-    // النسخ الاحتياطي والاستعادة السحابية
-    // ==========================================
+    // النسخ الاحتياطي
     const backupModal = document.getElementById('backupModal');
     window.openBackupModal = function() { backupModal.classList.remove('hidden'); };
     window.closeBackupModal = function() { backupModal.classList.add('hidden'); };
@@ -1110,15 +1261,10 @@
       try {
         const achSnap = await db.collection('achievements').get();
         const usrSnap = await db.collection('users').get();
-
-        const achList = [];
-        achSnap.forEach(d => achList.push({ id: d.id, ...d.data() }));
-
-        const usrList = [];
-        usrSnap.forEach(d => usrList.push({ id: d.id, ...d.data() }));
+        const achList = []; achSnap.forEach(d => achList.push({ id: d.id, ...d.data() }));
+        const usrList = []; usrSnap.forEach(d => usrList.push({ id: d.id, ...d.data() }));
 
         const backupData = {
-          version: "2.0",
           exportDate: new Date().toISOString(),
           achievements: achList,
           users: usrList
@@ -1127,26 +1273,21 @@
         const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `نسخة_احتياطية_شاملة_${new Date().toISOString().split('T')[0]}.json`;
+        a.download = `نسخة_شاملة_الإدارة_العامة_${new Date().toISOString().split('T')[0]}.json`;
         a.click();
-      } catch (e) {
-        alert("فشل التصدير: " + e.message);
-      }
+      } catch (e) { alert("فشل التصدير: " + e.message); }
     };
 
     window.importBackupData = function() {
       const fileInp = document.getElementById('restoreFileInput');
       const statusMsg = document.getElementById('restoreStatusMsg');
-      if (!fileInp.files || fileInp.files.length === 0) {
-        alert("يرجى اختيار ملف النسخة الاحتياطية JSON أولاً.");
-        return;
-      }
+      if (!fileInp.files || fileInp.files.length === 0) return alert("اختر ملف JSON أولاً.");
 
       const reader = new FileReader();
       reader.onload = async function(e) {
         try {
           statusMsg.className = "text-blue-600 block";
-          statusMsg.textContent = "جاري قراءة واستعادة البيانات سحابياً...";
+          statusMsg.textContent = "جاري استعادة البيانات...";
           const data = JSON.parse(e.target.result);
 
           if (data.achievements && Array.isArray(data.achievements)) {
@@ -1160,27 +1301,23 @@
           }
 
           statusMsg.className = "text-emerald-700 block";
-          statusMsg.textContent = "✅ تمت استعادة السجلات بنجاح تام إلى قاعدة البيانات.";
+          statusMsg.textContent = "✅ تمت استعادة السجلات بنجاح.";
           fileInp.value = '';
         } catch (err) {
           statusMsg.className = "text-rose-700 block";
-          statusMsg.textContent = "فشلت الاستعادة: الملف غير صالح أو تالف.";
+          statusMsg.textContent = "فشلت الاستعادة: الملف غير صالح.";
         }
       };
       reader.readAsText(fileInp.files[0]);
     };
 
-    // ==========================================
-    // التقارير الإحصائية
-    // ==========================================
+    // التحليلات
     const analyticsModal = document.getElementById('analyticsModal');
     window.openAnalyticsModal = function() {
       analyticsModal.classList.remove('hidden');
       buildAnalyticsReport();
     };
-    window.closeAnalyticsModal = function() {
-      analyticsModal.classList.add('hidden');
-    };
+    window.closeAnalyticsModal = function() { analyticsModal.classList.add('hidden'); };
 
     function buildAnalyticsReport() {
       const empRankingTbody = document.getElementById('empRankingTableBody');
@@ -1191,7 +1328,7 @@
       const empStats = {};
       achievements.forEach(a => {
         const emp = a.employeeName || 'غير محدد';
-        if (!empStats[emp]) empStats[emp] = { count: 0, dept: a.employeeDept || '-' };
+        if (!empStats[emp]) empStats[emp] = { count: 0, dept: `${a.employeeDept || '-'} / ${a.employeeSection || '-'}` };
         empStats[emp].count++;
       });
 
@@ -1204,11 +1341,11 @@
             <td class="p-3 font-bold text-slate-500">${index + 1}</td>
             <td class="p-3 font-extrabold text-slate-800">${empName}</td>
             <td class="p-3 text-slate-600">${data.dept}</td>
-            <td class="p-3 text-center font-bold text-blue-700 text-sm">${data.count}</td>
+            <td class="p-3 text-center font-bold text-emerald-700 text-sm">${data.count}</td>
             <td class="p-3">
               <div class="flex items-center gap-2">
                 <div class="w-full bg-slate-100 rounded-full h-2">
-                  <div class="bg-blue-600 h-2 rounded-full" style="width: ${pct}%"></div>
+                  <div class="bg-emerald-600 h-2 rounded-full" style="width: ${pct}%"></div>
                 </div>
                 <span class="text-[11px] font-bold text-slate-600">${pct}%</span>
               </div>
@@ -1217,7 +1354,6 @@
         `;
       }).join('');
 
-      // الأنظمة
       const sysCount = {};
       achievements.forEach(a => {
         const s = a.system || 'أخرى';
@@ -1227,11 +1363,10 @@
       systemsList.innerHTML = sortedSys.map(([sys, cnt]) => `
         <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100">
           <span class="font-bold text-slate-700">${sys}</span>
-          <span class="px-2 py-0.5 bg-blue-50 text-blue-700 font-bold rounded-lg text-xs">${cnt} طلب</span>
+          <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-lg text-xs">${cnt} طلب</span>
         </div>
       `).join('');
 
-      // أنواع الطلبات
       const typeCount = {};
       achievements.forEach(a => {
         const t = a.type || 'دعم فني';
@@ -1247,7 +1382,7 @@
     }
 
     // ==========================================================
-    // منطق توليد وتصدير التقارير (فردي vs جماعي شامل)
+    // منطق التقرير وتصدير Word والطباعة الرسمية
     // ==========================================================
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
@@ -1255,13 +1390,15 @@
       const sDate = document.getElementById('filterStartDate').value;
       const eDate = document.getElementById('filterEndDate').value;
       const fType = document.getElementById('filterType').value;
-      const fSys = document.getElementById('filterSystem').value;
+      const fStatus = document.getElementById('filterStatus').value;
+      const fDeptScope = document.getElementById('filterDepartmentScope').value;
 
       const data = achievements.filter(item => {
         const matchesQuery = !q ||
           (item.employeeName && item.employeeName.toLowerCase().includes(q)) ||
           (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
           (item.department && item.department.toLowerCase().includes(q)) ||
+          (item.employeeDept && item.employeeDept.toLowerCase().includes(q)) ||
           (item.system && item.system.toLowerCase().includes(q)) ||
           (item.service && item.service.toLowerCase().includes(q)) ||
           (item.type && item.type.toLowerCase().includes(q)) ||
@@ -1273,18 +1410,21 @@
 
         const matchesEmp = !fEmp || item.employeeName === fEmp;
         const matchesType = !fType || item.type === fType;
-        const matchesSys = !fSys || item.system === fSys;
+        const matchesStatus = !fStatus || item.status === fStatus;
+        const matchesDeptScope = !fDeptScope || item.employeeDept === fDeptScope;
 
-        return matchesQuery && matchesDate && matchesEmp && matchesType && matchesSys;
+        return matchesQuery && matchesDate && matchesEmp && matchesType && matchesStatus && matchesDeptScope;
       });
 
       const isIndividual = (currentUserProfile.role === 'employee') || (fEmp !== '');
-      const targetEmpName = isIndividual ? (fEmp || currentUserProfile.name) : 'تقرير شامل لكافة الموظفين';
+      const targetEmpName = isIndividual ? (fEmp || currentUserProfile.name) : (fDeptScope ? `تقرير منسوبي ${fDeptScope}` : 'تقرير شامل لكافة إدارات الهيكل');
 
       let targetEmpDept = currentUserProfile.department || 'الإدارة العامة لتقنية المعلومات والتحول الرقمي';
       if (isIndividual && fEmp) {
         const matched = achievements.find(a => a.employeeName === fEmp);
         if (matched && matched.employeeDept) targetEmpDept = matched.employeeDept;
+      } else if (fDeptScope) {
+        targetEmpDept = fDeptScope;
       }
 
       let periodText = 'كامل الفترة';
@@ -1308,27 +1448,27 @@
         tableHeaders = `
           <tr>
             <th style="width: 4%;">م</th>
-            <th style="width: 13%;">التذكرة</th>
-            <th style="width: 11%;">التاريخ</th>
+            <th style="width: 12%;">التذكرة</th>
+            <th style="width: 10%;">التاريخ</th>
+            <th style="width: 10%;">الاعتماد</th>
             <th style="width: 12%;">نوع الطلب</th>
-            <th style="width: 14%;">المستفيد</th>
+            <th style="width: 13%;">المستفيد</th>
             <th style="width: 13%;">الإدارة المستفيدة</th>
-            <th style="width: 11%;">النظام</th>
-            <th style="width: 11%;">الخدمة</th>
-            <th style="width: 11%;">الإجراء المنفذ</th>
+            <th style="width: 10%;">النظام</th>
+            <th style="width: 16%;">الخدمة والإجراء</th>
           </tr>
         `;
         tableRows = data.map((item, idx) => `
           <tr>
-            <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${idx + 1}</td>
-            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:6px;">${item.ticketNo || '-'}</td>
-            <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${item.date || ''}</td>
-            <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${item.type || 'دعم فني'}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px; font-weight:bold;">${item.beneficiary || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px;">${item.department || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px; text-align:center;">${item.system || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px;">${item.service || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px;">${item.solution || ''}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${idx + 1}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:11pt; padding:5px;">${item.ticketNo || '-'}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${item.date || ''}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:11pt; padding:5px; font-weight:bold;">${item.status || 'معتمد'}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${item.type || 'دعم فني'}</td>
+            <td style="border: 1px solid #000; font-size:12pt; padding:5px; font-weight:bold;">${item.beneficiary || ''}</td>
+            <td style="border: 1px solid #000; font-size:12pt; padding:5px;">${item.department || ''}</td>
+            <td style="border: 1px solid #000; font-size:12pt; padding:5px; text-align:center;">${item.system || ''}</td>
+            <td style="border: 1px solid #000; font-size:12pt; padding:5px;"><b>${item.service || ''}:</b> ${item.solution || ''}</td>
           </tr>
         `).join('');
       } else {
@@ -1336,28 +1476,28 @@
           <tr>
             <th style="width: 3%;">م</th>
             <th style="width: 11%;">التذكرة</th>
-            <th style="width: 10%;">التاريخ</th>
+            <th style="width: 9%;">التاريخ</th>
+            <th style="width: 8%;">الاعتماد</th>
+            <th style="width: 12%;">الموظف</th>
+            <th style="width: 11%;">الإدارة التابع لها</th>
             <th style="width: 10%;">نوع الطلب</th>
-            <th style="width: 13%;">الموظف المنفّذ</th>
-            <th style="width: 12%;">المستفيد</th>
-            <th style="width: 11%;">الإدارة</th>
-            <th style="width: 10%;">النظام</th>
-            <th style="width: 10%;">الخدمة</th>
-            <th style="width: 10%;">الإجراء المنفذ</th>
+            <th style="width: 11%;">المستفيد</th>
+            <th style="width: 9%;">النظام</th>
+            <th style="width: 16%;">الخدمة والإجراء</th>
           </tr>
         `;
         tableRows = data.map((item, idx) => `
           <tr>
-            <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${idx + 1}</td>
-            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:6px;">${item.ticketNo || '-'}</td>
-            <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${item.date || ''}</td>
-            <td style="border: 1px solid #000; text-align:center; font-size:13pt; padding:6px;">${item.type || 'دعم فني'}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px; font-weight:bold;">${item.employeeName}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px;">${item.beneficiary || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px;">${item.department || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px; text-align:center;">${item.system || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px;">${item.service || ''}</td>
-            <td style="border: 1px solid #000; font-size:13pt; padding:6px;">${item.solution || ''}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${idx + 1}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:11pt; padding:5px;">${item.ticketNo || '-'}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${item.date || ''}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:11pt; padding:5px; font-weight:bold;">${item.status || 'معتمد'}</td>
+            <td style="border: 1px solid #000; font-size:12pt; padding:5px; font-weight:bold;">${item.employeeName}</td>
+            <td style="border: 1px solid #000; font-size:11pt; padding:5px;">${item.employeeDept || ''}</td>
+            <td style="border: 1px solid #000; text-align:center; font-size:12pt; padding:5px;">${item.type || 'دعم فني'}</td>
+            <td style="border: 1px solid #000; font-size:12pt; padding:5px;">${item.beneficiary || ''}</td>
+            <td style="border: 1px solid #000; font-size:11pt; padding:5px; text-align:center;">${item.system || ''}</td>
+            <td style="border: 1px solid #000; font-size:12pt; padding:5px;"><b>${item.service || ''}:</b> ${item.solution || ''}</td>
           </tr>
         `).join('');
       }
@@ -1368,7 +1508,7 @@
             <b>معد التقرير</b><br><br>${targetEmpName}<br><br>التوقيع: ...................................
           </td>
           <td style="text-align: center; border: none; width: 50%; font-size: 13pt;">
-            <b>اعتماد مدير الإدارة</b><br><br>الاسم: هند بنت عبدالعزيز الماضي<br><br>التوقيع: ...................................
+            <b>اعتماد مدير الإدارة المختصة</b><br><br>التوقيع: ...................................
           </td>
         </tr>
       ` : `
@@ -1377,7 +1517,7 @@
             <b>المشرف / مُستخرج التقرير</b><br><br>${currentUserProfile.name}<br><br>التوقيع: ...................................
           </td>
           <td style="text-align: center; border: none; width: 50%; font-size: 13pt;">
-            <b>اعتماد مدير عام الإدارة</b><br><br>الاسم: ...................................<br><br>التوقيع: ...................................
+            <b>اعتماد مدير عام الإدارة العامة لتقنية المعلومات والتحول الرقمي</b><br><br>التوقيع: ...................................
           </td>
         </tr>
       `;
@@ -1388,21 +1528,22 @@
         <style>
           @page Section1 { size: 29.7cm 21.0cm; margin: 3.5cm 1.5cm 1.5cm 1.5cm; mso-page-orientation: landscape; }
           div.Section1 { page: Section1; }
-          body { font-family: Arial, sans-serif; direction: rtl; text-align: right; font-size: 13pt; }
+          body { font-family: Arial, sans-serif; direction: rtl; text-align: right; font-size: 12pt; }
           table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-          th { border: 1.5px solid #000; padding: 6px; background-color: #f1f5f9; font-size: 13pt; }
+          th { border: 1.5px solid #000; padding: 5px; background-color: #f1f5f9; font-size: 12pt; }
         </style>
         </head>
         <body>
           <div class="Section1">
-            <h2 style="text-align:center; font-size: 20pt; font-family: Arial; margin:0 0 10px 0;">
-              ${isIndividual ? 'تقرير الإنجازات والمهام اليومية' : 'تقرير الإنجازات المجمع لكافة موظفي الإدارة'}
-            </h2>
-            <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 12px; font-size: 13pt;">
+            <h2 style="text-align:center; font-size: 18pt; font-family: Arial; margin:0 0 4px 0;">الإدارة العامة لتقنية المعلومات والتحول الرقمي</h2>
+            <h3 style="text-align:center; font-size: 15pt; font-family: Arial; margin:0 0 10px 0; color:#334155;">
+              ${isIndividual ? 'تقرير الإنجازات والمهام اليومية المعتمدة' : 'تقرير الإنجازات المجمع للإدارات التابعة'}
+            </h3>
+            <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 10px; font-size: 12pt;">
               <tr>
-                <td style="padding: 6px; border: 1px solid #000; width: 33%;"><b>${isIndividual ? 'اسم الموظف:' : 'نطاق التقرير:'}</b> ${targetEmpName}</td>
-                <td style="padding: 6px; border: 1px solid #000; width: 33%;"><b>الإدارة:</b> ${targetEmpDept}</td>
-                <td style="padding: 6px; border: 1px solid #000; width: 34%;"><b>فترة التقرير:</b> ${periodText}</td>
+                <td style="padding: 5px; border: 1px solid #000; width: 33%;"><b>${isIndividual ? 'اسم الموظف:' : 'نطاق التقرير:'}</b> ${targetEmpName}</td>
+                <td style="padding: 5px; border: 1px solid #000; width: 33%;"><b>الإدارة:</b> ${targetEmpDept}</td>
+                <td style="padding: 5px; border: 1px solid #000; width: 34%;"><b>فترة التقرير:</b> ${periodText}</td>
               </tr>
             </table>
 
@@ -1411,7 +1552,7 @@
               <tbody>${tableRows}</tbody>
             </table>
 
-            <div style="margin-top: 35px; width: 100%;">
+            <div style="margin-top: 30px; width: 100%;">
               <table style="width: 100%; border: none;">
                 ${signaturesHtml}
               </table>
@@ -1423,7 +1564,7 @@
       const blob = new Blob(['\ufeff' + wordDoc], { type: 'application/msword' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      const safeName = isIndividual ? targetEmpName.replace(/\s+/g, '_') : 'شامل_لكافة_الموظفين';
+      const safeName = isIndividual ? targetEmpName.replace(/\s+/g, '_') : 'شامل_الهيكل';
       a.download = `تقرير_إنجازات_${safeName}_${printDate}.doc`;
       a.click();
     });
@@ -1436,9 +1577,11 @@
         "م": idx + 1,
         "رقم التذكرة": item.ticketNo || '',
         "التاريخ": item.date || '',
+        "حالة الاعتماد": item.status || 'معتمد',
         "نوع الطلب": item.type || 'دعم فني',
         "الموظف المنفذ": item.employeeName,
-        "إدارة الموظف": item.employeeDept || '',
+        "الإدارة التابع لها": item.employeeDept || '',
+        "القسم": item.employeeSection || '',
         "اسم المستفيد": item.beneficiary || '',
         "الإدارة المستفيدة": item.department || '',
         "النظام المرتبط": item.system || '',
@@ -1448,19 +1591,19 @@
       const ws = XLSX.utils.json_to_sheet(rows);
       ws['!dir'] = "rtl";
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "الإنجازات");
-      const safeName = isIndividual ? targetEmpName.replace(/\s+/g, '_') : 'شامل_كافة_الموظفين';
+      XLSX.utils.book_append_sheet(wb, ws, "الإنجازات المعتمدة");
+      const safeName = isIndividual ? targetEmpName.replace(/\s+/g, '_') : 'شامل_الهيكل';
       XLSX.writeFile(wb, `سجل_إنجازات_${safeName}_${new Date().toISOString().split('T')[0]}.xlsx`);
     });
 
-    // معاينة الطباعة
+    // الطباعة
     document.getElementById('printBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText } = getExportScope();
       if (data.length === 0) return alert("لا توجد إنجازات للطباعة.");
 
       document.getElementById('printReportTitle').textContent = isIndividual 
-        ? 'تقرير الإنجازات والمهام اليومية' 
-        : 'تقرير الإنجازات المجمع لكافة موظفي الإدارة';
+        ? 'تقرير الإنجازات والمهام اليومية المعتمدة' 
+        : 'تقرير الإنجازات المجمع لمنسوبي الهيكل';
 
       document.getElementById('printEmployeeName').textContent = targetEmpName;
       document.getElementById('printEmployeeDept').textContent = targetEmpDept;
@@ -1474,8 +1617,7 @@
             التوقيع: ...........................................
           </div>
           <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
-            <b>اعتماد مدير الإدارة:</b><br><br>
-            الاسم: هند بنت عبدالعزيز الماضي<br><br>
+            <b>اعتماد مدير الإدارة المختصة:</b><br><br>
             التوقيع: ...........................................
           </div>
         `;
@@ -1486,7 +1628,7 @@
             التوقيع: ...........................................
           </div>
           <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
-            <b>اعتماد مدير عام الإدارة:</b><br><br>
+            <b>اعتماد مدير عام الإدارة العامة لتقنية المعلومات والتحول الرقمي:</b><br><br>
             التوقيع: ...........................................
           </div>
         `;
