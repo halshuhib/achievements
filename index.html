@@ -150,7 +150,7 @@
 
           <button id="backupBtn" onclick="openBackupModal()" class="hidden h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition items-center gap-1.5 border border-slate-200">
             <i class="fa-solid fa-database text-slate-500"></i>
-            <span class="hidden md:inline">نسخ احتياطي</span>
+            <span class="hidden md:inline">نسخ احتياطي وتصفير</span>
           </button>
 
           <button onclick="openChangePasswordModal()" title="تغيير كلمة المرور الخاصة بي" class="h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition flex items-center gap-1.5 border border-slate-200">
@@ -235,7 +235,6 @@
               <option value="">كافة الموظفين التابعين</option>
             </select>
 
-            <!-- خيارات الفلترة المحدثة للمعتمد والموظف -->
             <select id="filterStatus" class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 outline-none">
               <option value="">كافة الطلبات النشطة (معتمد وبانتظار الاعتماد)</option>
               <option value="معتمد">المعتمدة فقط</option>
@@ -331,7 +330,7 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة التراجع الاستثنائي عن الرفض من المعتمد (بتسبيب رسمي) ================= -->
+  <!-- ================= 4. نافذة التراجع الاستثنائي عن الرفض من المعتمد ================= -->
   <div id="unrejectModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-amber-700 text-white flex items-center justify-between">
@@ -416,7 +415,7 @@
       <div class="p-5 overflow-y-auto space-y-4">
         <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
           <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
-          <span><b>ضابط أمني:</b> تعيين كلمة مرور الموظف من هنا يتم فورياً ويجبره النظام على تغييرها بنفسه عند الدخول.</span>
+          <span><b>ضابط أمني:</b> تعيين كلمة مرور الموظف من هنا يتم فورياً ويجبره النظام على تغييرها بنفسه عند الدخول. يمكنك حذف أي حساب بالنقر على أيقونة الحذف.</span>
         </div>
 
         <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
@@ -600,7 +599,7 @@
     </div>
   </div>
 
-  <!-- ================= 10. نافذة النسخ الاحتياطي ومسح السجلات ================= -->
+  <!-- ================= 10. نافذة النسخ الاحتياطي وتصفير السجلات ================= -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -634,12 +633,12 @@
         <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl">
           <h4 class="font-bold text-rose-900 mb-1 flex items-center gap-1.5">
             <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
-            <span>مسح وتصفير جميع بيانات الإنجازات:</span>
+            <span>مسح وتصفير جميع بيانات الإنجازات والموظفين:</span>
           </h4>
-          <p class="text-slate-600 mb-2.5">سيقوم النظام إجبارياً بتنزيل نسخة احتياطية على جهازك أولاً، ثم مسح كافة سجلات الإنجازات نهائياً مع الإبقاء على حسابات الموظفين والهيكل.</p>
+          <p class="text-slate-600 mb-2.5">سيقوم النظام إجبارياً بتنزيل نسخة احتياطية على جهازك أولاً، ثم مسح كافة سجلات الإنجازات وحسابات الموظفين نهائياً مع الإبقاء على حساب مدير النظام فقط.</p>
           <button onclick="safePurgeAllData()" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
             <i class="fa-solid fa-trash-can"></i>
-            <span>أخذ نسخة وتصفير السجلات الآن</span>
+            <span>أخذ نسخة وتصفير النظام كاملاً</span>
           </button>
         </div>
       </div>
@@ -721,7 +720,6 @@
           <input type="text" id="formBeneficiary" required placeholder="مثال: علي محمد" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
         </div>
 
-        <!-- حقل الإدارة المستفيدة بالبحث الذكي وفق الهيكل والمحافظات الـ 12 -->
         <div>
           <div class="flex items-center justify-between mb-1">
             <label class="block font-bold text-slate-700">الإدارة المستفيدة (بحث ذكي)</label>
@@ -1282,13 +1280,11 @@
 
       const isSupervisor = (currentUserProfile.role === 'admin' || currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager' || currentUserProfile.role === 'section_head');
 
-      // ضبط عنوان الجدول
       document.getElementById('tableTitleText').textContent = (fStatus === 'مرفوض') 
         ? 'أرشيف الطلبات المرفوضة والملاحظات الإدارية' 
         : 'سجل الإنجازات والمهام النشطة';
 
       const filtered = achievements.filter(item => {
-        // القاعدة الذهبية: إخفاء المرفوض تلقائياً من شاشة المعتمد إلا إذا اختار صراحة "أرشيف المرفوضات"
         if (isSupervisor && !fStatus && item.status === 'مرفوض') {
           return false;
         }
@@ -1317,7 +1313,6 @@
         if (fStatus) {
           matchesStatus = (item.status === fStatus);
         } else if (!isSupervisor) {
-          // الموظف يرى جميع حالاته
           matchesStatus = true;
         }
 
@@ -1444,7 +1439,6 @@
 
       const isSupervisor = (currentUserProfile.role === 'admin' || currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager' || currentUserProfile.role === 'section_head');
 
-      // عند المعتمد، إجمالي المهام النشطة = المعتمدة + بالانتظار (دون احتساب المرفوض في الصندوق اليومي)
       document.getElementById('statTotal').textContent = isSupervisor ? (validCompleted.length + pendingTasks.length) : achievements.length;
       document.getElementById('statPending').textContent = pendingTasks.length;
       document.getElementById('statApproved').textContent = validCompleted.length;
@@ -1508,7 +1502,7 @@
       closeRejectReasonModal();
     });
 
-    // التراجع الاستثنائي المسبّب عن الرفض من قبل المعتمد
+    // التراجع الاستثنائي المسبّب عن الرفض
     const unrejectModal = document.getElementById('unrejectModal');
     const unrejectForm = document.getElementById('unrejectForm');
 
@@ -1541,7 +1535,7 @@
       closeUnrejectModal();
     });
 
-    // نافذة معالجة وإعادة رفع الطلب بواسطة الموظف
+    // معالجة وإعادة رفع الطلب بواسطة الموظف
     const resubmitModal = document.getElementById('resubmitModal');
     const resubmitForm = document.getElementById('resubmitForm');
 
@@ -1844,7 +1838,9 @@
       }
     });
 
-    // إدارة الهيكل
+    // ==========================================================
+    // إدارة الهيكل وقيد المسؤولين مع زر الحذف الفردي
+    // ==========================================================
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -1854,6 +1850,26 @@
     };
     window.closePermissionsModal = function() {
       permissionsModal.classList.add('hidden');
+    };
+
+    // دالة حذف الموظف الفردية
+    window.deleteSingleUser = async function(uid, name) {
+      if (uid === currentUser.uid) {
+        alert("لا يمكنك حذف حسابك الشخصي (مدير النظام).");
+        return;
+      }
+
+      if (confirm(`هل أنت متأكد من حذف الموظف (${name}) نهائياً من قاعدة البيانات؟`)) {
+        try {
+          await db.collection('users').doc(uid).delete();
+          alert(`✅ تم حذف حساب الموظف (${name}) بنجاح.`);
+          await cacheAllUsers();
+          loadUsersList();
+          populateEmployeeFilterHierarchy();
+        } catch (err) {
+          alert("حدث خطأ أثناء الحذف: " + err.message);
+        }
+      }
     };
 
     async function loadUsersList() {
@@ -1904,8 +1920,11 @@
               ${isSelf ? `
                 <span class="text-[10px] text-slate-400 italic">محمي</span>
               ` : `
-                <button onclick="toggleArchiveUser('${uid}', ${isArchived})" class="px-2 py-1 text-[11px] font-bold rounded-lg ${isArchived ? 'bg-emerald-600 text-white' : 'bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100'}">
+                <button onclick="toggleArchiveUser('${uid}', ${isArchived})" class="px-2 py-1 text-[11px] font-bold rounded-lg ${isArchived ? 'bg-emerald-600 text-white' : 'bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100'} ml-1">
                   ${isArchived ? 'تفعيل' : 'أرشفة'}
+                </button>
+                <button onclick="deleteSingleUser('${uid}', '${u.name}')" class="px-2 py-1 text-[11px] font-bold rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 border border-rose-300 transition" title="حذف الموظف نهائياً">
+                  <i class="fa-solid fa-trash"></i>
                 </button>
               `}
             </td>
@@ -2065,7 +2084,7 @@
       }
     });
 
-    // النسخ الاحتياطي ومسح السجلات
+    // النسخ الاحتياطي ومسح وتصفير السجلات مع الموظفين
     const backupModal = document.getElementById('backupModal');
     window.openBackupModal = function() { backupModal.classList.remove('hidden'); };
     window.closeBackupModal = function() { backupModal.classList.add('hidden'); };
@@ -2097,47 +2116,43 @@
       } catch (e) { alert("فشل التصدير: " + e.message); }
     };
 
+    // دالة التصفير الشاملة المحدثة
     window.safePurgeAllData = async function() {
       if (currentUserProfile.role !== 'admin') {
         alert("هذا الإجراء متاح لمدير النظام فقط.");
         return;
       }
 
-      const confirmPrompt = prompt("تحذير أمني خطير:\nأنت على وشك مسح وتصفير كافة سجلات الإنجازات نهائياً.\nسيقوم النظام بتنزيل نسخة احتياطية إجبارياً على جهازك قبل البدء.\n\nلتأكيد العملية، اكتب في الخانة أدناه كلمة:\nتأكيد المسح");
+      const confirmText = prompt("تحذير أمني خطير:\nأنت على وشك تصفير النظام بالكامل (مسح كافة الإنجازات وجميع حسابات الموظفين باستثناء حسابك أنت كمدير نظام).\nسيقوم النظام بتنزيل نسخة احتياطية إجبارياً على جهازك قبل البدء.\n\nلتأكيد المسح، اكتب العبارة التالية بدقة:\nتأكيد المسح");
 
-      if (confirmPrompt !== "تأكيد المسح") {
+      if (!confirmText || confirmText.trim() !== "تأكيد المسح") {
         alert("تم إلغاء عملية المسح.");
         return;
       }
 
       try {
-        alert("جاري تنزيل النسخة الاحتياطية لجهازك الآن... انتظر لحظات.");
+        alert("جاري تنزيل النسخة الاحتياطية لجهازك أولاً... انتظر لحظات.");
         await triggerBackupDownload();
 
-        const snap = await db.collection('achievements').get();
-        if (snap.empty) {
-          alert("قاعدة بيانات الإنجازات فارغة بالفعل.");
-          return;
-        }
+        // 1. مسح كافة سجلات الإنجازات
+        const achSnap = await db.collection('achievements').get();
+        const deleteAchPromises = achSnap.docs.map(doc => doc.ref.delete());
+        await Promise.all(deleteAchPromises);
 
-        const batchSize = 400;
-        let batch = db.batch();
-        let counter = 0;
+        // 2. مسح جميع المستخدمين باستثناء مدير النظام الحالي
+        const usersSnap = await db.collection('users').get();
+        const deleteUsersPromises = usersSnap.docs
+          .filter(doc => doc.id !== currentUser.uid)
+          .map(doc => doc.ref.delete());
+        await Promise.all(deleteUsersPromises);
 
-        for (const doc of snap.docs) {
-          batch.delete(doc.ref);
-          counter++;
-          if (counter % batchSize === 0) {
-            await batch.commit();
-            batch = db.batch();
-          }
-        }
-        await batch.commit();
-
-        alert("✅ تم تنزيل النسخة الاحتياطية بنجاح ومسح جميع سجلات الإنجازات وتصفير النظام بالكامل.");
+        alert("✅ تم تصفير النظام بالكامل بنجاح؛ حُذفت جميع السجلات والموظفين مع الحفاظ على حساب مدير النظام فقط.");
         closeBackupModal();
+        await cacheAllUsers();
+        loadUsersList();
+        populateEmployeeFilterHierarchy();
       } catch (err) {
-        alert("حدث خطأ أثناء المسح: " + err.message);
+        alert("حدث خطأ أثناء التصفير: " + err.message);
       }
     };
 
