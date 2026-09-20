@@ -415,7 +415,7 @@
       <div class="p-5 overflow-y-auto space-y-4">
         <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
           <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
-          <span><b>ضابط أمني:</b> تعيين كلمة مرور الموظف من هنا يتم فورياً ويجبره النظام على تغييرها بنفسه عند الدخول. يمكنك حذف أي حساب بالنقر على أيقونة الحذف.</span>
+          <span><b>ضابط أمني ومؤسسي:</b> تعيين كلمة مرور الموظف من هنا يتم فورياً ويجبره النظام على تغييرها بنفسه. الحذف متاح للموظفين الذين ليس لديهم مهام، أما من لديهم مهام فيلزم استخدام "الأرشفة" لحفظ التاريخ.</span>
         </div>
 
         <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
@@ -1839,7 +1839,7 @@
     });
 
     // ==========================================================
-    // إدارة الهيكل وقيد المسؤولين مع زر الحذف الفردي
+    // إدارة الهيكل وقيد المسؤولين مع تطبيق ضابط الحماية الصارم (الخيار الأول)
     // ==========================================================
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
@@ -1852,23 +1852,32 @@
       permissionsModal.classList.add('hidden');
     };
 
-    // دالة حذف الموظف الفردية
+    // دالة حذف الموظف الفردية مع فحص المنع والحماية المؤسسية
     window.deleteSingleUser = async function(uid, name) {
       if (uid === currentUser.uid) {
         alert("لا يمكنك حذف حسابك الشخصي (مدير النظام).");
         return;
       }
 
-      if (confirm(`هل أنت متأكد من حذف الموظف (${name}) نهائياً من قاعدة البيانات؟`)) {
-        try {
+      try {
+        // فحص المهام المسجلة باسم الموظف
+        const tasksSnap = await db.collection('achievements').where('userId', '==', uid).get();
+        const taskCount = tasksSnap.size;
+
+        if (taskCount > 0) {
+          alert(`🚫 تنبيه مؤسسي لمنع فقدان السجلات:\n\nلا يمكن حذف الموظف (${name}) لوجود (${taskCount}) إنجاز/مهمة مسجلة باسمه في قاعدة البيانات.\n\nلحفظ السجلات وتاريخ الإنجازات المعتمدة، يرجى استخدام زر "الأرشفة" لتعطيل حسابه، أو قم بحذف مهامه يدوياً أولاً إن كان حساباً تجريبياً.`);
+          return;
+        }
+
+        if (confirm(`هل أنت متأكد من حذف حساب الموظف (${name}) نهائياً من قاعدة البيانات؟`)) {
           await db.collection('users').doc(uid).delete();
-          alert(`✅ تم حذف حساب الموظف (${name}) بنجاح.`);
+          alert(`✅ تم حذف حساب (${name}) بنجاح.`);
           await cacheAllUsers();
           loadUsersList();
           populateEmployeeFilterHierarchy();
-        } catch (err) {
-          alert("حدث خطأ أثناء الحذف: " + err.message);
         }
+      } catch (err) {
+        alert("حدث خطأ أثناء فحص أو تنفيذ الحذف: " + err.message);
       }
     };
 
@@ -2116,7 +2125,7 @@
       } catch (e) { alert("فشل التصدير: " + e.message); }
     };
 
-    // دالة التصفير الشاملة المحدثة
+    // دالة التصفير الشاملة
     window.safePurgeAllData = async function() {
       if (currentUserProfile.role !== 'admin') {
         alert("هذا الإجراء متاح لمدير النظام فقط.");
