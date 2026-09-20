@@ -80,7 +80,7 @@
 
   <!-- ================= 2. واجهة التطبيق الرئيسية ================= -->
   <div id="mainAppSection" class="hidden flex-1 flex flex-col">
-    <!-- ترويسة الطباعة الرسمية -->
+    <!-- ترويسة الطباعة الرسمية (Landscape) -->
     <div id="printReportHeader" class="mb-4">
       <div class="text-center pb-2 mb-2">
         <h2 style="font-size: 20pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية</h2>
@@ -276,14 +276,12 @@
       </div>
 
       <div class="p-6 overflow-y-auto space-y-6">
-        <!-- قسم مقارنة إنتاجية الموظفين -->
+        <!-- جدول مقارنة إنتاجية الموظفين -->
         <div>
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="text-sm font-extrabold text-slate-800 flex items-center gap-2">
-              <i class="fa-solid fa-trophy text-amber-500"></i>
-              <span>مقارنة إنتاجية الموظفين (حسب عدد المهام المنجزة)</span>
-            </h4>
-          </div>
+          <h4 class="text-sm font-extrabold text-slate-800 mb-3 flex items-center gap-2">
+            <i class="fa-solid fa-trophy text-amber-500"></i>
+            <span>ترتيب الموظفين حسب الإنجاز الفعلي للمهام</span>
+          </h4>
           <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
             <table class="w-full text-right text-xs">
               <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
@@ -300,7 +298,7 @@
           </div>
         </div>
 
-        <!-- تحليل الأنظمة الأكثر طلباً -->
+        <!-- تحليل الأنظمة والإدارات -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
             <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
@@ -340,7 +338,7 @@
       </div>
 
       <div class="p-5 overflow-y-auto space-y-5">
-        <!-- نموذج إضافة مستخدم وتعيين دوره فوراً -->
+        <!-- نموذج إضافة مستخدم وتعيين دوره -->
         <div class="p-4 bg-amber-50/70 border border-amber-200 rounded-xl space-y-3">
           <h4 class="text-xs font-bold text-amber-900 flex items-center gap-1.5">
             <i class="fa-solid fa-user-plus"></i>
@@ -381,7 +379,7 @@
           <div id="createEmpMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         </div>
 
-        <!-- قائمة الحسابات والتحكم في الأدوار -->
+        <!-- قائمة الحسابات والتحكم في الأدوار مع الحماية الذاتية -->
         <div>
           <h4 class="text-xs font-bold text-slate-700 mb-2">قائمة المستخدمين وتعديل الأدوار:</h4>
           <div class="overflow-x-auto border border-slate-200 rounded-xl">
@@ -601,10 +599,10 @@
       }
     }
 
-    // مزامنة السجلات سحابياً
+    // مزامنة السجلات
     function subscribeToAchievements() {
       let query = db.collection('achievements');
-      // الموظف العادي يرى إنجازاته فقط، أما المدير ومدير النظام فيشاهدان الكل
+      // الموظف يرى إنجازاته فقط، والمدير ومدير النظام يشاهدان كافة الإنجازات
       if (currentUserProfile.role === 'employee') {
         query = query.where('userId', '==', currentUser.uid);
       }
@@ -774,7 +772,7 @@
     };
 
     // ==========================================
-    // إدارة الصلاحيات والأدوار (Admin Only)
+    // إدارة الصلاحيات مع الحماية الذاتية ومنع الإخلاء
     // ==========================================
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
@@ -807,18 +805,27 @@
         if (u.role === 'admin') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-amber-100 text-amber-800">مدير نظام</span>';
         if (u.role === 'manager') badge = '<span class="px-2 py-0.5 rounded-md font-bold bg-purple-100 text-purple-800">مدير</span>';
 
+        const isSelf = (currentUser && currentUser.uid === uid);
+
         html += `
           <tr class="hover:bg-slate-50">
-            <td class="p-2.5 font-bold text-slate-800">${u.name || 'بدون اسم'}</td>
+            <td class="p-2.5 font-bold text-slate-800">
+              ${u.name || 'بدون اسم'}
+              ${isSelf ? '<span class="text-[10px] text-blue-600 font-bold mr-1">(حسابك الحالي)</span>' : ''}
+            </td>
             <td class="p-2.5 text-slate-600 font-mono text-[11px]">${u.email || '-'}</td>
             <td class="p-2.5 text-slate-700">${u.department || '-'}</td>
             <td class="p-2.5">${badge}</td>
             <td class="p-2.5 text-center">
-              <select onchange="updateUserRole('${uid}', this.value)" class="bg-slate-50 border border-slate-300 rounded px-2 py-1 text-xs font-semibold">
-                <option value="employee" ${u.role === 'employee' ? 'selected' : ''}>موظف</option>
-                <option value="manager" ${u.role === 'manager' ? 'selected' : ''}>مدير</option>
-                <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>مدير نظام</option>
-              </select>
+              ${isSelf ? `
+                <span class="text-[11px] text-slate-400 font-semibold italic" title="لا يمكنك تغيير دورك بنفسك؛ يتطلب ذلك مديراً آخر">محمي من التعديل الذاتي</span>
+              ` : `
+                <select onchange="updateUserRole('${uid}', this.value)" class="bg-slate-50 border border-slate-300 rounded px-2 py-1 text-xs font-semibold cursor-pointer">
+                  <option value="employee" ${u.role === 'employee' ? 'selected' : ''}>موظف</option>
+                  <option value="manager" ${u.role === 'manager' ? 'selected' : ''}>مدير</option>
+                  <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>مدير نظام</option>
+                </select>
+              `}
             </td>
           </tr>
         `;
@@ -827,6 +834,21 @@
     }
 
     window.updateUserRole = async function(uid, newRole) {
+      if (currentUser && currentUser.uid === uid) {
+        alert("حماية أمنية: لا يمكن لمدير النظام تغيير دوره بنفسه. يجب أن يقوم بذلك مدير نظام آخر لإجراءات التسليم والاستلام.");
+        loadUsersList();
+        return;
+      }
+
+      const totalAdmins = allUsersCache.filter(u => u.role === 'admin').length;
+      const targetUser = allUsersCache.find(u => u.uid === uid);
+
+      if (targetUser && targetUser.role === 'admin' && newRole !== 'admin' && totalAdmins <= 1) {
+        alert("تنبيه أمني: لا يمكن سحب دور مدير النظام من هذا الحساب لأنه المدير الوحيد المتبقي في النظام!");
+        loadUsersList();
+        return;
+      }
+
       const roleNames = { admin: 'مدير نظام', manager: 'مدير', employee: 'موظف' };
       if (confirm(`هل أنت متأكد من تغيير دور هذا المستخدم إلى (${roleNames[newRole]})؟`)) {
         try {
@@ -840,7 +862,7 @@
       }
     };
 
-    // إنشاء مستخدم جديد وتعيين دوره فوراً
+    // إنشاء مستخدم جديد
     document.getElementById('createEmployeeForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('newEmpName').value.trim();
@@ -946,7 +968,7 @@
         </div>
       `).join('');
 
-      // 3. إحصاء الإدارات المستفيدة الأكثر طلباً
+      // 3. إحصاء الإدارات المستفيدة
       const deptCount = {};
       achievements.forEach(a => {
         const d = a.department || 'أخرى';
