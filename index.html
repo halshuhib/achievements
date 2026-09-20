@@ -3,20 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>بوابة إدارة وتوثيق الإنجازات اليومية</title>
-  
-  <!-- Tailwind CSS -->
+  <title>نظام إدارة وتوثيق الإنجازات اليومية</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts Cairo -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <!-- SheetJS لتصدير ملفات إكسل -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- SheetJS لتصدير إكسل -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-  <!-- FontAwesome Icons -->
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-  <!-- Firebase App & Services (Compat SDK) -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js"></script>
@@ -25,227 +22,349 @@
     body {
       font-family: 'Cairo', sans-serif;
     }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f5f9; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+    @page {
+      size: A4 landscape;
+      margin-top: 3.5cm !important;
+      margin-bottom: 1.5cm !important;
+      margin-left: 1.2cm !important;
+      margin-right: 1.2cm !important;
+    }
+
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #000000 !important;
+        font-family: Arial, sans-serif !important;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      header, nav, footer, .no-print, #statsSection, #searchFilterSection, 
+      #tableHeaderControls, .modal-backdrop, .fixed {
+        display: none !important;
+      }
+      main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+      table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #000 !important; }
+      thead th { border: 1px solid #000 !important; padding: 6px !important; font-size: 14pt !important; background: #f1f5f9 !important; font-family: Arial, sans-serif !important; }
+      tbody td { border: 1px solid #000 !important; padding: 6px !important; font-size: 14pt !important; line-height: 1.3 !important; font-family: Arial, sans-serif !important; }
+      th:last-child, td:last-child { display: none !important; }
+      #printReportHeader, #printReportFooter { display: block !important; font-family: Arial, sans-serif !important; }
+    }
+
+    @media screen {
+      #printReportHeader, #printReportFooter { display: none; }
+    }
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- ================= شاشة تسجيل الدخول ================= -->
-  <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
+  <!-- ================= 1. شاشة تسجيل الدخول ================= -->
+  <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 w-full max-w-md">
-      <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl mb-4 shadow-sm">
-          <i class="fa-solid fa-briefcase text-2xl"></i>
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-14 h-14 bg-blue-600 text-white rounded-2xl mb-3 shadow-md shadow-blue-600/30">
+          <i class="fa-solid fa-shield-halved text-2xl"></i>
         </div>
-        <h1 class="text-2xl font-extrabold text-slate-800">بوابة الإنجازات المؤسسية</h1>
-        <p class="text-slate-500 text-sm mt-1">سجّل الدخول للوصول إلى لوحة التحكم والتقارير</p>
+        <h2 class="text-2xl font-black text-slate-800">بوابة الإنجازات اليومية</h2>
+        <p class="text-slate-500 text-xs mt-1">سجل الدخول بحسابك للوصول إلى قاعدة البيانات</p>
       </div>
 
       <form id="loginForm" class="space-y-4">
         <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1">البريد الإلكتروني</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
-              <i class="fa-regular fa-envelope"></i>
-            </span>
-            <input type="email" id="loginEmail" required placeholder="name@example.com"
-                   class="w-full pr-10 pl-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition text-sm">
-          </div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">البريد الإلكتروني</label>
+          <input type="email" id="authEmail" required placeholder="user@domain.com"
+                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
         </div>
-
         <div>
-          <label class="block text-sm font-semibold text-slate-700 mb-1">كلمة المرور</label>
-          <div class="relative">
-            <span class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none text-slate-400">
-              <i class="fa-solid fa-lock"></i>
-            </span>
-            <input type="password" id="loginPassword" required placeholder="••••••••"
-                   class="w-full pr-10 pl-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-600 focus:border-blue-600 outline-none transition text-sm">
-          </div>
+          <label class="block text-xs font-bold text-slate-700 mb-1">كلمة المرور</label>
+          <input type="password" id="authPassword" required placeholder="••••••••"
+                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
         </div>
 
-        <div id="loginError" class="hidden p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl font-medium text-center leading-relaxed"></div>
+        <div id="authError" class="hidden p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl font-medium text-center"></div>
 
-        <button type="submit" id="loginBtn"
-                class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 transition duration-150 flex items-center justify-center gap-2">
+        <button type="submit" id="authSubmitBtn"
+                class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-600/20 transition flex items-center justify-center gap-2">
           <span>دخول للنظام</span>
-          <i class="fa-solid fa-arrow-left"></i>
+          <i class="fa-solid fa-arrow-left text-sm"></i>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- ================= لوحة التحكم الرئيسية (تظهر بعد الدخول) ================= -->
-  <div id="appSection" class="hidden flex-1 flex flex-col">
-    <!-- شريط علوي -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+  <!-- ================= 2. واجهة التطبيق الرئيسية ================= -->
+  <div id="mainAppSection" class="hidden flex-1 flex flex-col">
+    <!-- الترويسة المطبوعة (A4 Landscape) -->
+    <div id="printReportHeader" class="mb-4">
+      <div class="text-center pb-2 mb-2">
+        <h2 style="font-size: 20pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية</h2>
+        <p style="font-size: 14pt; color: #475569; margin: 4px 0 0 0;">سجل إنجاز رسمي معتمد يوثق الخدمات والأعمال المنفذة</p>
+      </div>
+      <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 10px; font-size: 14pt;">
+        <tr>
+          <td style="padding: 6px; width: 33%;"><b>الموظف:</b> <span id="printEmployeeName">-</span></td>
+          <td style="padding: 6px; width: 33%;"><b>الإدارة:</b> <span id="printEmployeeDept">-</span></td>
+          <td style="padding: 6px; width: 34%;"><b>الفترة:</b> <span id="printDatePeriod">-</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- هيدر التطبيق العلوي -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
         <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-blue-600 text-white rounded-xl flex items-center justify-center font-bold shadow-md shadow-blue-600/20">
-            <i class="fa-solid fa-list-check"></i>
+          <div class="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-md shadow-blue-600/20">
+            <i class="fa-solid fa-clipboard-check text-lg"></i>
           </div>
           <div>
-            <h2 class="font-bold text-slate-800 text-base sm:text-lg">نظام توثيق الإنجازات اليومية</h2>
-            <p id="userDisplay" class="text-xs text-slate-500"></p>
+            <h1 class="text-base sm:text-lg font-bold text-slate-900">سجل الإنجازات اليومية</h1>
+            <div class="flex items-center gap-2 text-xs text-slate-500">
+              <span id="userBadgeEmail" class="font-semibold text-slate-700"></span>
+              <span id="userRoleBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-200 text-slate-700">موظف</span>
+            </div>
           </div>
         </div>
 
-        <div class="flex items-center gap-2">
-          <button id="openAddModalBtn" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-sm transition">
-            <i class="fa-solid fa-plus"></i>
-            <span class="hidden sm:inline">إضافة إنجاز</span>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <!-- زر إدارة الصلاحيات (يظهر للمدير فقط) -->
+          <button id="adminUsersBtn" onclick="openPermissionsModal()" class="hidden items-center gap-1.5 px-3 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
+            <i class="fa-solid fa-users-gear"></i>
+            <span>إدارة الصلاحيات</span>
           </button>
-          <button id="exportExcelBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold flex items-center gap-2 shadow-sm transition">
+
+          <!-- زر تصدير Excel -->
+          <button id="exportExcelBtn" class="flex items-center gap-1.5 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs sm:text-sm font-bold transition shadow-xs">
             <i class="fa-solid fa-file-excel"></i>
-            <span class="hidden sm:inline">تصدير إكسل</span>
+            <span class="hidden sm:inline">تصدير Excel</span>
           </button>
-          <button id="logoutBtn" title="تسجيل الخروج" class="p-2 text-slate-500 hover:text-red-600 hover:bg-red-50 rounded-xl transition">
-            <i class="fa-solid fa-right-from-bracket text-lg"></i>
+
+          <!-- زر Word بالعرض -->
+          <button id="exportWordBtn" class="flex items-center gap-1.5 px-2.5 py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-300 rounded-xl text-xs sm:text-sm font-bold transition">
+            <i class="fa-solid fa-file-word text-sky-600"></i>
+            <span class="hidden md:inline">Word</span>
+          </button>
+
+          <!-- زر الطباعة -->
+          <button id="printBtn" class="flex items-center gap-1.5 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs sm:text-sm font-bold transition">
+            <i class="fa-solid fa-print"></i>
+            <span>طباعة</span>
+          </button>
+
+          <!-- زر إضافة إنجاز -->
+          <button id="openAddModalBtn" class="flex items-center gap-1.5 px-3 sm:px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs sm:text-sm font-semibold transition">
+            <i class="fa-solid fa-plus"></i>
+            <span>إضافة إنجاز</span>
+          </button>
+
+          <!-- زر خروج -->
+          <button id="logoutBtn" title="تسجيل الخروج" class="p-2 text-slate-400 hover:text-red-600 rounded-xl hover:bg-red-50 transition">
+            <i class="fa-solid fa-power-off text-base"></i>
           </button>
         </div>
       </div>
     </header>
 
-    <!-- المحتوى -->
-    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
       <!-- بطاقات الإحصائيات -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+      <div id="statsSection" class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 no-print">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-semibold">إجمالي الإنجازات</p>
-            <h3 id="statTotal" class="text-2xl font-black text-slate-800 mt-1">0</h3>
+            <p class="text-xs text-slate-500 font-medium">إجمالي الإنجازات</p>
+            <h3 id="statTotal" class="text-xl sm:text-2xl font-bold text-slate-800 mt-0.5">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-layer-group"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base"><i class="fa-solid fa-layer-group"></i></div>
         </div>
-
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-semibold">إنجازات اليوم</p>
-            <h3 id="statToday" class="text-2xl font-black text-emerald-600 mt-1">0</h3>
+            <p class="text-xs text-slate-500 font-medium">إنجازات اليوم</p>
+            <h3 id="statToday" class="text-xl sm:text-2xl font-bold text-emerald-600 mt-0.5">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-calendar-day"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base"><i class="fa-solid fa-calendar-check"></i></div>
         </div>
-
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-semibold">المستفيدون</p>
-            <h3 id="statBeneficiaries" class="text-2xl font-black text-purple-600 mt-1">0</h3>
+            <p class="text-xs text-slate-500 font-medium">المستفيدون</p>
+            <h3 id="statBeneficiaries" class="text-xl sm:text-2xl font-bold text-purple-600 mt-0.5">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-users"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-base"><i class="fa-solid fa-users"></i></div>
         </div>
-
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
           <div>
-            <p class="text-xs text-slate-500 font-semibold">الإدارات المخدومة</p>
-            <h3 id="statDepts" class="text-2xl font-black text-amber-600 mt-1">0</h3>
+            <p class="text-xs text-slate-500 font-medium">الإدارات المخدومة</p>
+            <h3 id="statDepartments" class="text-xl sm:text-2xl font-bold text-amber-600 mt-0.5">0</h3>
           </div>
-          <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-building"></i>
-          </div>
+          <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base"><i class="fa-solid fa-building"></i></div>
         </div>
       </div>
 
-      <!-- فلترة وبحث -->
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row gap-3 items-center justify-between">
-        <div class="relative w-full md:w-96">
-          <span class="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </span>
-          <input type="text" id="searchInput" placeholder="بحث بالاسم، الإدارة، الخدمة، أو الحل..."
+      <!-- البحث والفلترة -->
+      <div id="searchFilterSection" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex flex-col md:flex-row gap-3 items-center justify-between no-print">
+        <div class="relative flex-1 w-full">
+          <i class="fa-solid fa-magnifying-glass absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="searchInput" placeholder="بحث بالمستفيد، الإدارة، النظام، التذكرة، أو الإجراء..."
                  class="w-full pr-10 pl-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-600">
         </div>
-
         <div class="flex items-center gap-2 w-full md:w-auto">
-          <input type="date" id="filterDate" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm text-slate-700 outline-none">
-          <button id="resetFilterBtn" class="px-3 py-2 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition">
-            إعادة تعيين
-          </button>
+          <input type="date" id="filterDate" class="bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-700 outline-none">
+          <button id="resetFilterBtn" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-semibold transition">إعادة تعيين</button>
         </div>
       </div>
 
       <!-- جدول الإنجازات -->
-      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-xs overflow-hidden">
+        <div id="tableHeaderControls" class="p-3.5 border-b border-slate-100 flex items-center justify-between no-print">
+          <h3 class="font-bold text-slate-800 text-sm">سجل الإنجازات</h3>
+          <span id="recordsCounter" class="bg-slate-100 text-slate-600 text-xs px-2.5 py-0.5 rounded-full font-semibold">0 سجل</span>
+        </div>
         <div class="overflow-x-auto">
-          <table class="w-full text-right border-collapse text-sm">
-            <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-bold">
+          <table id="mainDataTable" class="w-full text-right text-sm">
+            <thead class="bg-slate-50 text-slate-700 text-xs font-bold border-b border-slate-200">
               <tr>
-                <th class="py-3 px-4">#</th>
-                <th class="py-3 px-4">التاريخ</th>
-                <th class="py-3 px-4">اسم المستفيد</th>
-                <th class="py-3 px-4">الإدارة</th>
-                <th class="py-3 px-4">الخدمة المطلوبة</th>
-                <th class="py-3 px-4">الحل والإجراء</th>
-                <th class="py-3 px-4 text-center">إجراءات</th>
+                <th class="py-3 px-2 text-center w-10">م</th>
+                <th class="py-3 px-2 text-center">التذكرة</th>
+                <th class="py-3 px-2.5 text-center">التاريخ</th>
+                <th class="py-3 px-3">المستفيد</th>
+                <th class="py-3 px-3">الإدارة</th>
+                <th class="py-3 px-2.5">النظام</th>
+                <th class="py-3 px-3">الخدمة المطلوبة</th>
+                <th class="py-3 px-3">الإجراء المنفذ</th>
+                <th class="py-3 px-2 text-center no-print">خيارات</th>
               </tr>
             </thead>
             <tbody id="achievementsTableBody" class="divide-y divide-slate-100 text-slate-700">
               <tr>
-                <td colspan="7" class="text-center py-10 text-slate-400">
+                <td colspan="9" class="text-center py-12 text-slate-400">
                   <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
-                  <p>جاري تحميل البيانات...</p>
+                  <p>جاري مزامنة السجلات سحابياً...</p>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+
+      <!-- التذييل المعتمد للطباعة -->
+      <div id="printReportFooter" class="mt-8 pt-4 border-t-2 border-slate-900">
+        <div style="display: flex; justify-content: space-between; text-align: center; font-size: 14pt;">
+          <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
+            <b>الموظف المختص:</b> <span id="printFooterEmpName">-</span><br><br>
+            التوقيع: ...........................................
+          </div>
+          <div style="width: 45%; border: 1px solid #94a3b8; padding: 10px;">
+            <b>اعتماد المشرف المباشر / المدير:</b><br><br>
+            التوقيع: ...........................................
+          </div>
+        </div>
+      </div>
     </main>
   </div>
 
-  <!-- ================= نافذة إضافة / تعديل إنجاز ================= -->
-  <div id="recordModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-lg overflow-hidden">
-      <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-        <h3 id="modalTitle" class="font-bold text-slate-800 text-lg">إضافة إنجاز جديد</h3>
-        <button id="closeModalBtn" class="text-slate-400 hover:text-slate-600">
+  <!-- ================= 3. نافذة إدارة الصلاحيات للمدير (Permissions Modal) ================= -->
+  <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 bg-amber-500 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-users-gear text-lg"></i>
+          <h3 class="font-bold text-base">إدارة صلاحيات المستخدمين (RBAC)</h3>
+        </div>
+        <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
         </button>
       </div>
 
-      <form id="recordForm" class="p-6 space-y-4">
+      <div class="p-5 overflow-y-auto space-y-4">
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 leading-relaxed">
+          <i class="fa-solid fa-circle-info ml-1"></i>
+          يمكن للمدير تحديد دور كل مستخدم؛ <b>المدير (Admin)</b> يمكنه إدارة كافة الإنجازات والصلاحيات، بينما <b>الموظف (Employee)</b> يدير إنجازاته الخاصة فقط.
+        </div>
+
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+          <table class="w-full text-right text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-2.5">المستخدم</th>
+                <th class="p-2.5">الدور الحالي</th>
+                <th class="p-2.5 text-center">تغيير الصلاحية</th>
+              </tr>
+            </thead>
+            <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100">
+              <tr><td colspan="3" class="text-center py-4 text-slate-400">جاري تحميل قائمة المستخدمين...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="closePermissionsModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl transition">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. نافذة إضافة وتعديل إنجاز ================= -->
+  <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+        <h3 id="recordModalTitle" class="text-base font-bold text-slate-800">إضافة إنجاز جديد</h3>
+        <button id="closeRecordModalBtn" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+      </div>
+
+      <form id="recordForm" class="p-5 space-y-3.5 overflow-y-auto">
         <input type="hidden" id="editDocId">
         
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">التاريخ</label>
-          <input type="date" id="formDate" required class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="block text-xs font-bold text-slate-700">رقم التذكرة</label>
+              <button type="button" onclick="generateTicketInput()" class="text-[10px] text-blue-600 hover:underline">تجديد</button>
+            </div>
+            <input type="text" id="formTicketNo" required class="w-full px-3 py-2 bg-slate-100 font-mono font-bold text-xs rounded-xl border border-slate-200 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">التاريخ</label>
+            <input type="date" id="formDate" required class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
+          </div>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">اسم المستفيد</label>
-          <input type="text" id="formBeneficiary" required placeholder="أدخل اسم المستفيد" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
+          <input type="text" id="formBeneficiary" required placeholder="مثال: نايف حسن" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
         </div>
 
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">الإدارة / القسم</label>
-          <input type="text" id="formDepartment" required placeholder="مثال: إدارة تقنية المعلومات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">الإدارة / القسم</label>
+            <input type="text" id="formDepartment" required placeholder="مثال: محافظة النعيرية" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">اسم النظام</label>
+            <input type="text" id="formSystem" required placeholder="مثال: موارد" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
+          </div>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">الخدمة المطلوبة</label>
-          <textarea id="formService" required rows="2" placeholder="وصف موجز للمشكلة أو الطلب..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none resize-none"></textarea>
+          <input type="text" id="formService" required placeholder="مثال: إضافة اسم مستخدم وكلمة مرور" class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none">
         </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">الحل والإجراء المتخذ</label>
-          <textarea id="formResolution" required rows="3" placeholder="تفاصيل المعالجة والإنجاز..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-blue-600 outline-none resize-none"></textarea>
+          <label class="block text-xs font-bold text-slate-700 mb-1">الإجراء والحل المنفذ</label>
+          <textarea id="formSolution" required rows="3" placeholder="اكتب بالتفصيل ما تم عمله..." class="w-full px-3 py-2 bg-slate-50 text-xs rounded-xl border border-slate-200 outline-none resize-none"></textarea>
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100">
-          <button type="button" id="cancelModalBtn" class="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-xl transition font-medium">إلغاء</button>
-          <button type="submit" id="saveRecordBtn" class="px-5 py-2 text-sm bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition font-bold shadow-md shadow-blue-600/20">حفظ الإنجاز</button>
+        <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
+          <button type="button" id="cancelRecordModalBtn" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">إلغاء</button>
+          <button type="submit" class="px-5 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-xs transition">حفظ الإنجاز</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- ================= السكريبت ================= -->
   <script>
+    // ==========================================
     // 1. إعدادات Firebase الخاصة بك
+    // ==========================================
     const firebaseConfig = {
       apiKey: "AIzaSyCdAJbhASinCo7gX7JjhNUDyftsZ8-CI9I",
       authDomain: "achievements-portal.firebaseapp.com",
@@ -256,139 +375,176 @@
       measurementId: "G-PYPV4ML73X"
     };
 
-    // تهيئة Firebase
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    let achievementsData = [];
+    let currentUser = null;
+    let currentUserRole = 'employee'; // 'admin' أو 'employee'
+    let achievements = [];
     let unsubscribeFirestore = null;
 
-    // عناصر الواجهة
-    const loginSection = document.getElementById('loginSection');
-    const appSection = document.getElementById('appSection');
+    // توليد تذكرة تلقائية
+    function generateTicketNo() {
+      const yr = new Date().getFullYear();
+      const rnd = Math.floor(1000 + Math.random() * 9000);
+      return `TK-${yr}-${rnd}`;
+    }
+    window.generateTicketInput = function() {
+      document.getElementById('formTicketNo').value = generateTicketNo();
+    };
+
+    // عناصر المصادقة
+    const authSection = document.getElementById('authSection');
+    const mainAppSection = document.getElementById('mainAppSection');
     const loginForm = document.getElementById('loginForm');
-    const loginEmail = document.getElementById('loginEmail');
-    const loginPassword = document.getElementById('loginPassword');
-    const loginError = document.getElementById('loginError');
-    const loginBtn = document.getElementById('loginBtn');
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const authError = document.getElementById('authError');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
     const logoutBtn = document.getElementById('logoutBtn');
-    const userDisplay = document.getElementById('userDisplay');
-
-    const tableBody = document.getElementById('achievementsTableBody');
-    const searchInput = document.getElementById('searchInput');
-    const filterDate = document.getElementById('filterDate');
-    const resetFilterBtn = document.getElementById('resetFilterBtn');
-    const exportExcelBtn = document.getElementById('exportExcelBtn');
-
-    const recordModal = document.getElementById('recordModal');
-    const openAddModalBtn = document.getElementById('openAddModalBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    const cancelModalBtn = document.getElementById('cancelModalBtn');
-    const recordForm = document.getElementById('recordForm');
-    const modalTitle = document.getElementById('modalTitle');
-    const editDocId = document.getElementById('editDocId');
-    const formDate = document.getElementById('formDate');
-    const formBeneficiary = document.getElementById('formBeneficiary');
-    const formDepartment = document.getElementById('formDepartment');
-    const formService = document.getElementById('formService');
-    const formResolution = document.getElementById('formResolution');
-
-    // ضبط تاريخ اليوم افتراضياً
-    formDate.value = new Date().toISOString().split('T')[0];
-
-    // مراقبة حالة المصادقة
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        loginSection.classList.add('hidden');
-        appSection.classList.remove('hidden');
-        userDisplay.textContent = `المستخدم: ${user.email}`;
-        subscribeToData();
-      } else {
-        loginSection.classList.remove('hidden');
-        appSection.classList.add('hidden');
-        if (unsubscribeFirestore) unsubscribeFirestore();
-      }
-    });
 
     // تسجيل الدخول
     loginForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      loginError.classList.add('hidden');
-      loginBtn.disabled = true;
-      loginBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري التحقق...</span>`;
+      authError.classList.add('hidden');
+      authSubmitBtn.disabled = true;
+      authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري التحقق...</span>`;
 
       try {
-        await auth.signInWithEmailAndPassword(loginEmail.value.trim(), loginPassword.value);
+        await auth.signInWithEmailAndPassword(authEmail.value.trim(), authPassword.value);
       } catch (err) {
-        loginError.classList.remove('hidden');
-        if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-          loginError.textContent = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
+        authError.classList.remove('hidden');
+        if (err.code === 'auth/invalid-credential' || err.code === 'auth/wrong-password' || err.code === 'auth/user-not-found') {
+          authError.textContent = "بيانات الدخول غير صحيحة.";
         } else if (err.code === 'auth/unauthorized-domain') {
-          loginError.textContent = "النطاق غير مصرح به في Firebase. يرجى إضافة halshuhib.github.io في Authorized Domains.";
+          authError.textContent = "النطاق غير مصرح به في Firebase. أضف halshuhib.github.io في Authorized Domains.";
         } else {
-          loginError.textContent = `خطأ (${err.code}): ${err.message}`;
+          authError.textContent = `خطأ (${err.code}): ${err.message}`;
         }
       } finally {
-        loginBtn.disabled = false;
-        loginBtn.innerHTML = `<span>دخول للنظام</span> <i class="fa-solid fa-arrow-left"></i>`;
+        authSubmitBtn.disabled = false;
+        authSubmitBtn.innerHTML = `<span>دخول للنظام</span> <i class="fa-solid fa-arrow-left text-sm"></i>`;
       }
     });
 
-    // تسجيل الخروج
-    logoutBtn.addEventListener('click', () => {
-      auth.signOut();
+    logoutBtn.addEventListener('click', () => auth.signOut());
+
+    // مراقبة الدخول وتحديد الصلاحيات
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        currentUser = user;
+        authSection.classList.add('hidden');
+        mainAppSection.classList.remove('hidden');
+        document.getElementById('userBadgeEmail').textContent = user.email;
+
+        await initUserProfileAndRole(user);
+        subscribeToAchievements();
+      } else {
+        currentUser = null;
+        currentUserRole = 'employee';
+        authSection.classList.remove('hidden');
+        mainAppSection.classList.add('hidden');
+        if (unsubscribeFirestore) unsubscribeFirestore();
+      }
     });
 
-    // جلب البيانات لحظياً من Firestore
-    function subscribeToData() {
-      unsubscribeFirestore = db.collection('achievements')
-        .orderBy('date', 'desc')
-        .onSnapshot(snapshot => {
-          achievementsData = [];
-          snapshot.forEach(doc => {
-            achievementsData.push({ id: doc.id, ...doc.data() });
-          });
-          renderTable();
-          updateStats();
-        }, err => {
-          console.error("Firestore error:", err);
-          tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-red-500 font-semibold">تعذر قراءة البيانات: تأكد من إعدادات الـ Rules في Firestore</td></tr>`;
+    // إدارة الملف الشخصي والصلاحية في Firestore
+    async function initUserProfileAndRole(user) {
+      const userDocRef = db.collection('users').doc(user.uid);
+      const doc = await userDocRef.get();
+
+      if (!doc.exists) {
+        // إذا كان أول مستخدم يسجل في المنظومة يصبح Admin تلقائياً
+        const usersSnap = await db.collection('users').get();
+        const role = usersSnap.empty ? 'admin' : 'employee';
+        await userDocRef.set({
+          email: user.email,
+          role: role,
+          department: 'تقنية المعلومات',
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
+        currentUserRole = role;
+      } else {
+        currentUserRole = doc.data().role || 'employee';
+      }
+
+      // ضبط الواجهة حسب الصلاحية
+      const roleBadge = document.getElementById('userRoleBadge');
+      const adminBtn = document.getElementById('adminUsersBtn');
+      if (currentUserRole === 'admin') {
+        roleBadge.textContent = 'مدير النظام';
+        roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800';
+        adminBtn.classList.remove('hidden');
+        adminBtn.classList.add('flex');
+      } else {
+        roleBadge.textContent = 'موظف';
+        roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800';
+        adminBtn.classList.add('hidden');
+        adminBtn.classList.remove('flex');
+      }
     }
 
-    // رسم الجدول
-    function renderTable() {
-      const q = searchInput.value.toLowerCase().trim();
-      const fDate = filterDate.value;
+    // مزامنة الإنجازات
+    function subscribeToAchievements() {
+      let query = db.collection('achievements');
+      // إذا كان موظف عادي، يرى إنجازاته فقط. أما المدير فيرى كافة الإنجازات
+      if (currentUserRole !== 'admin') {
+        query = query.where('userId', '==', currentUser.uid);
+      }
 
-      const filtered = achievementsData.filter(item => {
-        const matchesQuery = !q || 
+      unsubscribeFirestore = query.onSnapshot((snapshot) => {
+        achievements = [];
+        snapshot.forEach(doc => {
+          achievements.push({ id: doc.id, ...doc.data() });
+        });
+        achievements.sort((a, b) => new Date(b.date) - new Date(a.date));
+        renderTable();
+        updateStats();
+      }, err => {
+        console.error("Firestore Error:", err);
+      });
+    }
+
+    // عرض الجدول
+    function renderTable() {
+      const tbody = document.getElementById('achievementsTableBody');
+      const q = document.getElementById('searchInput').value.toLowerCase().trim();
+      const fDate = document.getElementById('filterDate').value;
+
+      const filtered = achievements.filter(item => {
+        const matchesQuery = !q ||
+          (item.ticketNo && item.ticketNo.toLowerCase().includes(q)) ||
           (item.beneficiary && item.beneficiary.toLowerCase().includes(q)) ||
           (item.department && item.department.toLowerCase().includes(q)) ||
+          (item.system && item.system.toLowerCase().includes(q)) ||
           (item.service && item.service.toLowerCase().includes(q)) ||
-          (item.resolution && item.resolution.toLowerCase().includes(q));
+          (item.solution && item.solution.toLowerCase().includes(q));
 
         const matchesDate = !fDate || item.date === fDate;
         return matchesQuery && matchesDate;
       });
 
+      document.getElementById('recordsCounter').textContent = `${filtered.length} سجل`;
+
       if (filtered.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-8 text-slate-400">لا توجد إنجازات مطابقة للبحث</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-8 text-slate-400">لا توجد إنجازات مطابقة</td></tr>`;
         return;
       }
 
-      tableBody.innerHTML = filtered.map((item, idx) => `
+      tbody.innerHTML = filtered.map((item, idx) => `
         <tr class="hover:bg-slate-50 transition border-b border-slate-100">
-          <td class="py-3 px-4 font-mono text-xs text-slate-400">${idx + 1}</td>
-          <td class="py-3 px-4 text-xs font-semibold text-slate-600 whitespace-nowrap">${item.date || '-'}</td>
-          <td class="py-3 px-4 font-bold text-slate-800">${item.beneficiary || '-'}</td>
-          <td class="py-3 px-4"><span class="px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-semibold rounded-lg">${item.department || '-'}</span></td>
-          <td class="py-3 px-4 text-xs text-slate-600 max-w-xs truncate" title="${item.service}">${item.service || '-'}</td>
-          <td class="py-3 px-4 text-xs text-slate-600 max-w-xs truncate" title="${item.resolution}">${item.resolution || '-'}</td>
-          <td class="py-3 px-4 text-center whitespace-nowrap">
-            <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 mx-1" title="تعديل"><i class="fa-regular fa-pen-to-square"></i></button>
-            <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 mx-1" title="حذف"><i class="fa-regular fa-trash-can"></i></button>
+          <td class="py-2.5 px-2 text-center text-slate-400 text-xs">${idx + 1}</td>
+          <td class="py-2.5 px-2 text-center font-mono text-[11px] font-bold text-blue-700 whitespace-nowrap">${item.ticketNo || '-'}</td>
+          <td class="py-2.5 px-2.5 text-center text-xs font-semibold whitespace-nowrap">${item.date || '-'}</td>
+          <td class="py-2.5 px-3 font-bold text-slate-800 text-xs">${item.beneficiary || '-'}</td>
+          <td class="py-2.5 px-3 text-xs text-slate-600">${item.department || '-'}</td>
+          <td class="py-2.5 px-2.5 text-xs text-slate-700 font-semibold">${item.system || '-'}</td>
+          <td class="py-2.5 px-3 text-xs text-slate-700 max-w-xs truncate" title="${item.service}">${item.service || '-'}</td>
+          <td class="py-2.5 px-3 text-xs text-slate-600 max-w-xs truncate" title="${item.solution}">${item.solution || '-'}</td>
+          <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
+            <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 mx-0.5" title="تعديل"><i class="fa-solid fa-pen text-xs"></i></button>
+            <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 mx-0.5" title="حذف"><i class="fa-solid fa-trash text-xs"></i></button>
           </td>
         </tr>
       `).join('');
@@ -397,52 +553,49 @@
     // تحديث الإحصائيات
     function updateStats() {
       const today = new Date().toISOString().split('T')[0];
-      document.getElementById('statTotal').textContent = achievementsData.length;
-      document.getElementById('statToday').textContent = achievementsData.filter(x => x.date === today).length;
-      
-      const beneficiaries = new Set(achievementsData.map(x => x.beneficiary).filter(Boolean));
-      document.getElementById('statBeneficiaries').textContent = beneficiaries.size;
-
-      const depts = new Set(achievementsData.map(x => x.department).filter(Boolean));
-      document.getElementById('statDepts').textContent = depts.size;
+      document.getElementById('statTotal').textContent = achievements.length;
+      document.getElementById('statToday').textContent = achievements.filter(x => x.date === today).length;
+      document.getElementById('statBeneficiaries').textContent = new Set(achievements.map(x => x.beneficiary).filter(Boolean)).size;
+      document.getElementById('statDepartments').textContent = new Set(achievements.map(x => x.department).filter(Boolean)).size;
     }
 
-    // التصفية والبحث
-    searchInput.addEventListener('input', renderTable);
-    filterDate.addEventListener('change', renderTable);
-    resetFilterBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      filterDate.value = '';
+    document.getElementById('searchInput').addEventListener('input', renderTable);
+    document.getElementById('filterDate').addEventListener('change', renderTable);
+    document.getElementById('resetFilterBtn').addEventListener('click', () => {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('filterDate').value = '';
       renderTable();
     });
 
-    // التحكم في المودال (إضافة / تعديل)
-    openAddModalBtn.addEventListener('click', () => {
-      modalTitle.textContent = "إضافة إنجاز جديد";
-      editDocId.value = '';
+    // نوافذ إضافة / تعديل الإنجاز
+    const recordModal = document.getElementById('recordModal');
+    const recordForm = document.getElementById('recordForm');
+    document.getElementById('openAddModalBtn').addEventListener('click', () => {
+      document.getElementById('recordModalTitle').textContent = 'إضافة إنجاز جديد';
+      document.getElementById('editDocId').value = '';
       recordForm.reset();
-      formDate.value = new Date().toISOString().split('T')[0];
+      document.getElementById('formDate').value = new Date().toISOString().split('T')[0];
+      generateTicketInput();
       recordModal.classList.remove('hidden');
-      recordModal.classList.add('flex');
     });
 
-    function closeModal() {
-      recordModal.classList.add('hidden');
-      recordModal.classList.remove('flex');
-    }
-    closeModalBtn.addEventListener('click', closeModal);
-    cancelModalBtn.addEventListener('click', closeModal);
+    function closeRecordModal() { recordModal.classList.add('hidden'); }
+    document.getElementById('closeRecordModalBtn').addEventListener('click', closeRecordModal);
+    document.getElementById('cancelRecordModalBtn').addEventListener('click', closeRecordModal);
 
-    // حفظ أو تعديل إنجاز في Firestore
     recordForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const id = editDocId.value;
+      const id = document.getElementById('editDocId').value;
       const data = {
-        date: formDate.value,
-        beneficiary: formBeneficiary.value.trim(),
-        department: formDepartment.value.trim(),
-        service: formService.value.trim(),
-        resolution: formResolution.value.trim(),
+        ticketNo: document.getElementById('formTicketNo').value.trim() || generateTicketNo(),
+        date: document.getElementById('formDate').value,
+        beneficiary: document.getElementById('formBeneficiary').value.trim(),
+        department: document.getElementById('formDepartment').value.trim(),
+        system: document.getElementById('formSystem').value.trim(),
+        service: document.getElementById('formService').value.trim(),
+        solution: document.getElementById('formSolution').value.trim(),
+        userId: currentUser.uid,
+        userEmail: currentUser.email,
         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
@@ -453,30 +606,29 @@
           data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
           await db.collection('achievements').add(data);
         }
-        closeModal();
+        closeRecordModal();
       } catch (err) {
-        alert("حدث خطأ أثناء الحفظ: " + err.message);
+        alert("حدث خطأ أثناء حفظ الإنجاز: " + err.message);
       }
     });
 
-    // تعديل
     window.editRecord = function(id) {
-      const item = achievementsData.find(x => x.id === id);
+      const item = achievements.find(x => x.id === id);
       if (!item) return;
-      modalTitle.textContent = "تعديل الإنجاز";
-      editDocId.value = item.id;
-      formDate.value = item.date || '';
-      formBeneficiary.value = item.beneficiary || '';
-      formDepartment.value = item.department || '';
-      formService.value = item.service || '';
-      formResolution.value = item.resolution || '';
+      document.getElementById('recordModalTitle').textContent = 'تعديل الإنجاز';
+      document.getElementById('editDocId').value = item.id;
+      document.getElementById('formTicketNo').value = item.ticketNo || generateTicketNo();
+      document.getElementById('formDate').value = item.date || '';
+      document.getElementById('formBeneficiary').value = item.beneficiary || '';
+      document.getElementById('formDepartment').value = item.department || '';
+      document.getElementById('formSystem').value = item.system || '';
+      document.getElementById('formService').value = item.service || '';
+      document.getElementById('formSolution').value = item.solution || '';
       recordModal.classList.remove('hidden');
-      recordModal.classList.add('flex');
     };
 
-    // حذف
     window.deleteRecord = async function(id) {
-      if (confirm("هل أنت متأكد من حذف هذا السجل؟")) {
+      if (confirm("هل أنت متأكد من حذف هذا الإنجاز؟")) {
         try {
           await db.collection('achievements').doc(id).delete();
         } catch (err) {
@@ -485,30 +637,150 @@
       }
     };
 
-    // تصدير إكسل بنظام RTL
-    exportExcelBtn.addEventListener('click', () => {
-      if (achievementsData.length === 0) {
-        alert("لا توجد بيانات متاحة للتصدير حالياً.");
+    // ==========================================
+    // 5. نافذة إدارة الصلاحيات (Admin Panel)
+    // ==========================================
+    const permissionsModal = document.getElementById('permissionsModal');
+    window.openPermissionsModal = async function() {
+      if (currentUserRole !== 'admin') {
+        alert("هذه الصفحة مخصصة لمدير النظام فقط.");
         return;
       }
+      permissionsModal.classList.remove('hidden');
+      loadUsersPermissionsList();
+    };
 
-      const rows = achievementsData.map((item, index) => ({
-        "م": index + 1,
+    window.closePermissionsModal = function() {
+      permissionsModal.classList.add('hidden');
+    };
+
+    async function loadUsersPermissionsList() {
+      const tbody = document.getElementById('usersPermissionsTableBody');
+      tbody.innerHTML = `<tr><td colspan="3" class="text-center py-4 text-slate-400"><i class="fa-solid fa-spinner fa-spin"></i> جاري جلب المستخدمين...</td></tr>`;
+
+      try {
+        const snap = await db.collection('users').get();
+        if (snap.empty) {
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center py-3 text-slate-400">لا يوجد مستخدمون مسجلون بعد.</td></tr>`;
+          return;
+        }
+
+        let html = '';
+        snap.forEach(doc => {
+          const u = doc.data();
+          const uid = doc.id;
+          const isAdmin = u.role === 'admin';
+          html += `
+            <tr class="hover:bg-slate-50">
+              <td class="p-2.5 font-bold text-slate-800">${u.email}</td>
+              <td class="p-2.5">
+                <span class="px-2 py-0.5 rounded-md font-bold ${isAdmin ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
+                  ${isAdmin ? 'مدير نظام' : 'موظف'}
+                </span>
+              </td>
+              <td class="p-2.5 text-center">
+                <button onclick="toggleUserRole('${uid}', '${u.role || 'employee'}')" 
+                        class="px-2.5 py-1 text-[11px] font-bold rounded-lg border transition ${isAdmin ? 'border-blue-600 text-blue-600 hover:bg-blue-50' : 'border-amber-600 text-amber-600 hover:bg-amber-50'}">
+                  ${isAdmin ? 'تحويل لموظف' : 'ترقية لمدير'}
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+        tbody.innerHTML = html;
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="3" class="text-center py-3 text-red-500">حدث خطأ: ${err.message}</td></tr>`;
+      }
+    }
+
+    window.toggleUserRole = async function(uid, currentRole) {
+      const newRole = currentRole === 'admin' ? 'employee' : 'admin';
+      if (confirm(`هل أنت متأكد من تغيير صلاحية هذا المستخدم إلى (${newRole === 'admin' ? 'مدير' : 'موظف'})؟`)) {
+        try {
+          await db.collection('users').doc(uid).update({ role: newRole });
+          loadUsersPermissionsList();
+        } catch (e) {
+          alert("فشل تحديث الصلاحية: " + e.message);
+        }
+      }
+    };
+
+    // ==========================================
+    // 6. التصدير (Excel & Word & Print)
+    // ==========================================
+    document.getElementById('exportExcelBtn').addEventListener('click', () => {
+      if (achievements.length === 0) return alert("لا توجد بيانات للتصدير.");
+      const rows = achievements.map((item, idx) => ({
+        "م": idx + 1,
+        "رقم التذكرة": item.ticketNo || '',
         "التاريخ": item.date || '',
         "اسم المستفيد": item.beneficiary || '',
-        "الإدارة": item.department || '',
+        "الإدارة / القسم": item.department || '',
+        "النظام": item.system || '',
         "الخدمة المطلوبة": item.service || '',
-        "الحل والإجراء": item.resolution || ''
+        "الإجراء المنفذ": item.solution || ''
       }));
+      const ws = XLSX.utils.json_to_sheet(rows);
+      ws['!dir'] = "rtl";
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "الإنجازات");
+      XLSX.writeFile(wb, `سجل_الانجازات_${new Date().toISOString().split('T')[0]}.xlsx`);
+    });
 
-      const worksheet = XLSX.utils.json_to_sheet(rows);
-      worksheet['!dir'] = "rtl";
+    document.getElementById('exportWordBtn').addEventListener('click', () => {
+      if (achievements.length === 0) return alert("لا توجد بيانات للتصدير.");
+      let rowsHtml = achievements.map((item, idx) => `
+        <tr>
+          <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${idx + 1}</td>
+          <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${item.ticketNo || '-'}</td>
+          <td style="border: 1px solid #000; text-align:center; font-size:14pt; padding:6px;">${item.date || ''}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px; font-weight:bold;">${item.beneficiary || ''}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.department || ''}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px; text-align:center;">${item.system || ''}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.service || ''}</td>
+          <td style="border: 1px solid #000; font-size:14pt; padding:6px;">${item.solution || ''}</td>
+        </tr>
+      `).join('');
 
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "سجل الإنجازات");
+      const wordDoc = `
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+        <head><meta charset='utf-8'><title>تقرير الإنجازات</title>
+        <style>
+          @page Section1 { size: 29.7cm 21.0cm; margin: 3.5cm 1.5cm 1.5cm 1.5cm; mso-page-orientation: landscape; }
+          div.Section1 { page: Section1; }
+          body { font-family: Arial, sans-serif; direction: rtl; text-align: right; font-size: 14pt; }
+          table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+          th { border: 1px solid #000; padding: 6px; background-color: #f1f5f9; font-size: 14pt; }
+        </style>
+        </head>
+        <body>
+          <div class="Section1">
+            <h2 style="text-align:center; font-size: 20pt; font-family: Arial;">تقرير الإنجازات اليومية المعتمد</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>م</th><th>التذكرة</th><th>التاريخ</th><th>المستفيد</th><th>الإدارة</th><th>النظام</th><th>الخدمة</th><th>الإجراء</th>
+                </tr>
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          </div>
+        </body></html>
+      `;
+      const blob = new Blob(['\ufeff' + wordDoc], { type: 'application/msword' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `تقرير_الانجازات_${new Date().toISOString().split('T')[0]}.doc`;
+      a.click();
+    });
 
-      const today = new Date().toISOString().split('T')[0];
-      XLSX.writeFile(workbook, `تقرير_الانجازات_${today}.xlsx`);
+    document.getElementById('printBtn').addEventListener('click', () => {
+      if (achievements.length === 0) return alert("لا توجد إنجازات للطباعة.");
+      document.getElementById('printEmployeeName').textContent = currentUser.email;
+      document.getElementById('printEmployeeDept').textContent = "تقنية المعلومات";
+      document.getElementById('printDatePeriod').textContent = `تاريخ الطباعة: ${new Date().toISOString().split('T')[0]}`;
+      document.getElementById('printFooterEmpName').textContent = currentUser.email;
+      setTimeout(() => window.print(), 150);
     });
   </script>
 </body>
