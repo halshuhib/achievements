@@ -245,8 +245,6 @@
             <select id="filterType" class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 outline-none">
               <option value="">كافة أنواع الطلبات</option>
               <option value="دعم فني">دعم فني</option>
-              <option value="دعم اداري">دعم اداري</option>
-              <option value="طلب صلاحيات">دطلب صلاحيات</option>
               <option value="إنشاء اسم مستخدم">إنشاء اسم مستخدم</option>
               <option value="خلل تقني">خلل تقني</option>
               <option value="تدريب">تدريب</option>
@@ -302,7 +300,84 @@
     </main>
   </div>
 
-  <!-- ================= 3. نافذة رفض الطلب مع ذكر السبب ================= -->
+  <!-- ================= 3. نافذة عرض تفاصيل المهمة (جديد) ================= -->
+  <div id="viewRecordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-file-invoice text-emerald-400 text-lg"></i>
+          <h3 class="font-bold text-sm">تفاصيل تذكرة الإنجاز</h3>
+        </div>
+        <button onclick="closeViewRecordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="p-5 space-y-3.5 text-xs overflow-y-auto">
+        <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+          <div>
+            <span class="text-slate-400 block text-[11px]">رقم التذكرة:</span>
+            <span id="viewDetailTicket" class="font-mono font-bold text-blue-700 text-sm"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px]">التاريخ:</span>
+            <span id="viewDetailDate" class="font-bold text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px]">الموظف المنفذ:</span>
+            <span id="viewDetailEmployee" class="font-bold text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px]">إدارة وقسم الموظف:</span>
+            <span id="viewDetailEmpDept" class="font-bold text-slate-700"></span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
+          <div>
+            <span class="text-slate-400 block text-[11px]">حالة الاعتماد:</span>
+            <span id="viewDetailStatus" class="inline-block mt-0.5"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px]">نوع الطلب:</span>
+            <span id="viewDetailType" class="font-bold text-slate-800"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px]">اسم المستفيد:</span>
+            <span id="viewDetailBeneficiary" class="font-bold text-blue-900"></span>
+          </div>
+          <div>
+            <span class="text-slate-400 block text-[11px]">النظام التقني:</span>
+            <span id="viewDetailSystem" class="font-bold text-emerald-800"></span>
+          </div>
+        </div>
+
+        <div>
+          <span class="text-slate-400 block text-[11px] mb-1">الإدارة المستفيدة:</span>
+          <div id="viewDetailDepartment" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800"></div>
+        </div>
+
+        <div>
+          <span class="text-slate-400 block text-[11px] mb-1">الخدمة المطلوبة:</span>
+          <div id="viewDetailService" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-800"></div>
+        </div>
+
+        <div>
+          <span class="text-slate-400 block text-[11px] mb-1">الإجراء والحل المنفذ:</span>
+          <div id="viewDetailSolution" class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
+        </div>
+
+        <div id="viewDetailRejectionBox" class="hidden p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-900">
+          <b class="block mb-1"><i class="fa-solid fa-ban ml-1"></i> ملاحظات الرفض:</b>
+          <p id="viewDetailRejectionReason" class="font-semibold"></p>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
+        <button onclick="closeViewRecordModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. نافذة رفض الطلب مع ذكر السبب ================= -->
   <div id="rejectReasonModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-rose-700 text-white flex items-center justify-between">
@@ -332,7 +407,7 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة التراجع الاستثنائي عن الرفض من المعتمد ================= -->
+  <!-- ================= 5. نافذة التراجع الاستثنائي عن الرفض من المعتمد ================= -->
   <div id="unrejectModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-amber-700 text-white flex items-center justify-between">
@@ -362,7 +437,7 @@
     </div>
   </div>
 
-  <!-- ================= 5. نافذة معالجة وإعادة إرسال الطلب المرفوض (للموظف) ================= -->
+  <!-- ================= 6. نافذة معالجة وإعادة إرسال الطلب المرفوض (للموظف) ================= -->
   <div id="resubmitModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -401,7 +476,7 @@
     </div>
   </div>
 
-  <!-- ================= 6. نافذة إدارة الهيكل والموظفين ================= -->
+  <!-- ================= 7. نافذة إدارة الهيكل والموظفين ================= -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -510,7 +585,7 @@
     </div>
   </div>
 
-  <!-- ================= 7. نافذة تعيين كلمة المرور المباشرة بواسطة مدير النظام ================= -->
+  <!-- ================= 8. نافذة تعيين كلمة المرور المباشرة بواسطة مدير النظام ================= -->
   <div id="adminDirectPasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -543,7 +618,7 @@
     </div>
   </div>
 
-  <!-- ================= 8. نافذة تغيير كلمة المرور الاختيارية للمستخدم ================= -->
+  <!-- ================= 9. نافذة تغيير كلمة المرور الاختيارية للمستخدم ================= -->
   <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -571,7 +646,7 @@
     </div>
   </div>
 
-  <!-- ================= 9. شاشة تغيير كلمة المرور الإجبارية ================= -->
+  <!-- ================= 10. شاشة تغيير كلمة المرور الإجبارية ================= -->
   <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/85 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-emerald-500/30">
       <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-800 text-white text-center">
@@ -601,7 +676,7 @@
     </div>
   </div>
 
-  <!-- ================= 10. نافذة النسخ الاحتياطي وتصفير السجلات ================= -->
+  <!-- ================= 11. نافذة النسخ الاحتياطي وتصفير السجلات ================= -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -650,7 +725,7 @@
     </div>
   </div>
 
-  <!-- ================= 11. نافذة تسجيل وتعديل الإنجاز ================= -->
+  <!-- ================= 12. نافذة تسجيل وتعديل الإنجاز ================= -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -746,7 +821,7 @@
             <option value="وكيل الإمارة للشؤون الأمنية - مكتب الوكيل"></option>
             <option value="الإدارة العامة للشؤون القانونية - وحدة حقوق الإنسان"></option>
             <option value="الإدارة العامة للمراجعة الداخلية"></option>
-            <option value="العمليات المشتركة"></option>
+            <option value="العمليات المشترقة"></option>
             <option value="مركز إدارة الأزمات والكوارث"></option>
             <option value="إدارة مراقبة المخزون"></option>
             <option value="الإدارة العامة للإعلام والاتصال المؤسسي"></option>
@@ -847,7 +922,7 @@
     </div>
   </div>
 
-  <!-- ================= 12. نافذة التقارير الإحصائية ================= -->
+  <!-- ================= 13. نافذة التقارير الإحصائية ================= -->
   <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex items-center justify-between">
@@ -1381,9 +1456,14 @@
             <td class="py-2.5 px-3 text-slate-600 max-w-[180px] truncate" title="${item.solution}">${item.solution || '-'}</td>
             
             <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
-              <!-- أزرار المعتمد (المدير / رئيس القسم) -->
-              ${isSupervisor ? `
-                <div class="inline-flex items-center gap-1">
+              <div class="inline-flex items-center gap-1">
+                <!-- زر عرض تفاصيل المهمة (متاح للجميع دائماً) -->
+                <button onclick="viewRecordDetails('${item.id}')" class="text-emerald-700 hover:text-emerald-900 p-1 rounded hover:bg-emerald-50" title="عرض تفاصيل المهمة كاملة">
+                  <i class="fa-solid fa-eye text-sm"></i>
+                </button>
+
+                <!-- أزرار المعتمد (المدير / رئيس القسم) -->
+                ${isSupervisor ? `
                   ${item.status === 'بانتظار الاعتماد' ? `
                     <button onclick="approveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition" title="اعتماد الإنجاز">
                       اعتماد
@@ -1404,15 +1484,13 @@
                       تراجع مسبّب
                     </button>
                   ` : ''}
-                </div>
-              ` : ''}
+                ` : ''}
 
-              <!-- أزرار الموظف صاحب الطلب -->
-              ${(!isSupervisor && item.userId === currentUser.uid) ? `
-                <div class="inline-flex items-center gap-1">
+                <!-- أزرار الموظف صاحب الطلب -->
+                ${(!isSupervisor && item.userId === currentUser.uid) ? `
                   ${item.status === 'مرفوض' ? `
-                    <button onclick="openResubmitModal('${item.id}')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs transition" title="معالجة الملاحظات وإعادة الرفع">
-                      <i class="fa-solid fa-wrench ml-0.5"></i> معالجة وإعادة رفع
+                    <button onclick="openResubmitModal('${item.id}')" class="px-2 py-1 text-[11px] font-bold rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs transition" title="معالجة الملاحظات وإعادة الرفع">
+                      <i class="fa-solid fa-wrench ml-0.5"></i> معالجة
                     </button>
                   ` : ''}
 
@@ -1420,14 +1498,12 @@
                     <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1" title="تعديل"><i class="fa-solid fa-pen"></i></button>
                     <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1" title="حذف"><i class="fa-solid fa-trash"></i></button>
                   ` : ''}
+                ` : ''}
 
-                  ${item.status === 'معتمد' ? `<span class="text-slate-400 text-[10px] font-semibold">معتمد رسمياً</span>` : ''}
-                </div>
-              ` : ''}
-
-              ${(currentUserProfile.role === 'admin') ? `
-                <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 mr-1" title="حذف نهائي"><i class="fa-solid fa-trash"></i></button>
-              ` : ''}
+                ${(currentUserProfile.role === 'admin') ? `
+                  <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1" title="حذف نهائي"><i class="fa-solid fa-trash"></i></button>
+                ` : ''}
+              </div>
             </td>
           </tr>
         `;
@@ -1447,6 +1523,44 @@
       document.getElementById('statRejected').textContent = rejectedTasks.length;
       document.getElementById('rejectedStatLabel').textContent = isSupervisor ? 'أرشيف المرفوضات' : 'الطلبات المرفوضة';
     }
+
+    // عرض تفاصيل المهمة
+    const viewRecordModal = document.getElementById('viewRecordModal');
+    window.viewRecordDetails = function(id) {
+      const item = achievements.find(x => x.id === id);
+      if (!item) return;
+
+      document.getElementById('viewDetailTicket').textContent = item.ticketNo || '-';
+      document.getElementById('viewDetailDate').textContent = item.date || '-';
+      document.getElementById('viewDetailEmployee').textContent = item.employeeName || '-';
+      document.getElementById('viewDetailEmpDept').textContent = `${item.employeeDept || '-'} (${item.employeeSection || '-'})`;
+
+      let stText = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800">بانتظار الاعتماد</span>';
+      if (item.status === 'معتمد') stText = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">معتمد</span>';
+      if (item.status === 'مرفوض') stText = '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800">مرفوض</span>';
+      document.getElementById('viewDetailStatus').innerHTML = stText;
+
+      document.getElementById('viewDetailType').textContent = item.type || '-';
+      document.getElementById('viewDetailBeneficiary').textContent = item.beneficiary || '-';
+      document.getElementById('viewDetailSystem').textContent = item.system || '-';
+      document.getElementById('viewDetailDepartment').textContent = item.department || '-';
+      document.getElementById('viewDetailService').textContent = item.service || '-';
+      document.getElementById('viewDetailSolution').textContent = item.solution || '-';
+
+      const rejBox = document.getElementById('viewDetailRejectionBox');
+      if (item.status === 'مرفوض' && item.rejectionReason) {
+        rejBox.classList.remove('hidden');
+        document.getElementById('viewDetailRejectionReason').textContent = item.rejectionReason;
+      } else {
+        rejBox.classList.add('hidden');
+      }
+
+      viewRecordModal.classList.remove('hidden');
+    };
+
+    window.closeViewRecordModal = function() {
+      viewRecordModal.classList.add('hidden');
+    };
 
     // الاعتماد
     window.approveRecord = async function(id) {
@@ -1840,9 +1954,7 @@
       }
     });
 
-    // ==========================================================
-    // إدارة الهيكل وقيد المسؤولين مع تطبيق ضابط الحماية الصارم (الخيار الأول)
-    // ==========================================================
+    // إدارة الهيكل وقيد المسؤولين والموظفين
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -1862,7 +1974,6 @@
       }
 
       try {
-        // فحص المهام المسجلة باسم الموظف
         const tasksSnap = await db.collection('achievements').where('userId', '==', uid).get();
         const taskCount = tasksSnap.size;
 
