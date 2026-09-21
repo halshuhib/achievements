@@ -148,6 +148,12 @@
             <span class="hidden sm:inline">الهيكل والموظفون</span>
           </button>
 
+          <!-- زر إدارة القوائم المنسدلة لمدير النظام -->
+          <button id="manageLookupsBtn" onclick="openLookupsModal()" class="hidden h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition items-center gap-1.5 border border-slate-200">
+            <i class="fa-solid fa-sliders text-teal-600"></i>
+            <span class="hidden md:inline">إدارة القوائم المنسدلة</span>
+          </button>
+
           <button id="backupBtn" onclick="openBackupModal()" class="hidden h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition items-center gap-1.5 border border-slate-200">
             <i class="fa-solid fa-database text-slate-500"></i>
             <span class="hidden md:inline">نسخ احتياطي وتصفير</span>
@@ -244,12 +250,6 @@
 
             <select id="filterType" class="bg-slate-50 border border-slate-200 rounded-lg px-2 py-1.5 text-xs font-semibold text-slate-700 outline-none">
               <option value="">كافة أنواع الطلبات</option>
-              <option value="دعم فني">دعم فني</option>
-              <option value="إنشاء اسم مستخدم">إنشاء اسم مستخدم</option>
-              <option value="خلل تقني">خلل تقني</option>
-              <option value="تدريب">تدريب</option>
-              <option value="استفسار">استفسار</option>
-              <option value="تصحيح مسار">تصحيح مسار</option>
             </select>
 
             <button id="resetFilterBtn" class="px-2.5 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-lg text-xs font-semibold transition">إعادة تعيين</button>
@@ -300,7 +300,85 @@
     </main>
   </div>
 
-  <!-- ================= 3. نافذة عرض تفاصيل المهمة ================= -->
+  <!-- ================= 3. نافذة إدارة القوائم المنسدلة (جديد لمدير النظام) ================= -->
+  <div id="lookupsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
+    <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-4 bg-teal-800 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i class="fa-solid fa-sliders text-lg"></i>
+          <h3 class="font-bold text-base">إدارة وتحديث القوائم المنسدلة للنظام (بدون تدخل برمجي)</h3>
+        </div>
+        <button onclick="closeLookupsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+
+      <!-- أزرار التبويبات -->
+      <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold overflow-x-auto">
+        <button onclick="switchLookupTab('systems')" id="tabBtnSystems" class="px-4 py-2.5 text-teal-800 border-b-2 border-teal-700 bg-white">الأنظمة المرتبطة</button>
+        <button onclick="switchLookupTab('types')" id="tabBtnTypes" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">أنواع الطلبات</button>
+        <button onclick="switchLookupTab('org')" id="tabBtnOrg" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">الهيكل الداخلي (إدارات وأقسام)</button>
+        <button onclick="switchLookupTab('destDepts')" id="tabBtnDestDepts" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">الإدارات والمحافظات المستفيدة</button>
+      </div>
+
+      <div class="p-5 overflow-y-auto space-y-4 text-xs flex-1">
+        <!-- تبويب الأنظمة التقنية -->
+        <div id="lookupTabContentSystems" class="space-y-3">
+          <div class="flex gap-2">
+            <input type="text" id="newSystemInput" placeholder="أدخل اسم النظام التقني الجديد..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+            <button onclick="addSystemItem()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition flex items-center gap-1">
+              <i class="fa-solid fa-plus"></i> إضافة نظام
+            </button>
+          </div>
+          <div id="systemsListContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
+        </div>
+
+        <!-- تبويب أنواع الطلبات -->
+        <div id="lookupTabContentTypes" class="hidden space-y-3">
+          <div class="flex gap-2">
+            <input type="text" id="newTypeInput" placeholder="أدخل نوع الطلب الجديد (مثال: صيانة أجهزة)..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+            <button onclick="addTypeItem()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition flex items-center gap-1">
+              <i class="fa-solid fa-plus"></i> إضافة نوع
+            </button>
+          </div>
+          <div id="typesListContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
+        </div>
+
+        <!-- تبويب الهيكل الداخلي -->
+        <div id="lookupTabContentOrg" class="hidden space-y-4">
+          <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
+            <h5 class="font-bold text-slate-800">إضافة قسم جديد تحت إدارة معينة:</h5>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <select id="targetOrgDeptSelect" class="px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-semibold"></select>
+              <input type="text" id="newOrgSectionInput" placeholder="اسم القسم الجديد..." class="px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
+            </div>
+            <div class="flex justify-end">
+              <button onclick="addOrgSectionItem()" class="px-4 py-1.5 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition">إضافة القسم</button>
+            </div>
+          </div>
+          <div id="orgStructureContainer" class="space-y-3 max-h-80 overflow-y-auto"></div>
+        </div>
+
+        <!-- تبويب الإدارات المستفيدة -->
+        <div id="lookupTabContentDestDepts" class="hidden space-y-3">
+          <div class="flex gap-2">
+            <input type="text" id="newDestDeptInput" placeholder="أدخل اسم الجهة أو المحافظة المستفيدة..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+            <button onclick="addDestDeptItem()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition flex items-center gap-1">
+              <i class="fa-solid fa-plus"></i> إضافة جهة
+            </button>
+          </div>
+          <div id="destDeptsContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
+        </div>
+      </div>
+
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+        <span class="text-[11px] text-slate-400 font-semibold">تُحدث القوائم تلقائياً في السحابة وتنعكس فورياً لدى جميع المستخدمين.</span>
+        <button onclick="closeLookupsModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 4. نافذة عرض تفاصيل المهمة ================= -->
   <div id="viewRecordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -377,7 +455,7 @@
     </div>
   </div>
 
-  <!-- ================= 4. نافذة رفض الطلب مع ذكر السبب ================= -->
+  <!-- ================= 5. نافذة رفض الطلب مع ذكر السبب ================= -->
   <div id="rejectReasonModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-rose-700 text-white flex items-center justify-between">
@@ -407,7 +485,7 @@
     </div>
   </div>
 
-  <!-- ================= 5. نافذة التراجع الاستثنائي عن الرفض من المعتمد ================= -->
+  <!-- ================= 6. نافذة التراجع الاستثنائي عن الرفض من المعتمد ================= -->
   <div id="unrejectModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-amber-700 text-white flex items-center justify-between">
@@ -437,7 +515,7 @@
     </div>
   </div>
 
-  <!-- ================= 6. نافذة معالجة وإعادة إرسال الطلب المرفوض (للموظف) ================= -->
+  <!-- ================= 7. نافذة معالجة وإعادة إرسال الطلب المرفوض (للموظف) ================= -->
   <div id="resubmitModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -476,7 +554,7 @@
     </div>
   </div>
 
-  <!-- ================= 7. نافذة إدارة الهيكل والموظفين ================= -->
+  <!-- ================= 8. نافذة إدارة الهيكل والموظفين ================= -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -513,15 +591,7 @@
 
             <div>
               <label class="block font-bold text-slate-700 mb-1">الإدارة التابع لها</label>
-              <select id="newEmpDept" required onchange="handleDeptChange(this.value)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-semibold">
-                <option value="">اختر الإدارة من الهيكل...</option>
-                <option value="الإدارة العامة لتقنية المعلومات والتحول الرقمي">الإدارة العامة لتقنية المعلومات والتحول الرقمي</option>
-                <option value="إدارة الأنظمة والبرامج">إدارة الأنظمة والبرامج</option>
-                <option value="إدارة الدعم الفني">إدارة الدعم الفني</option>
-                <option value="إدارة البنية التحتية">إدارة البنية التحتية</option>
-                <option value="إدارة التحول الرقمي">إدارة التحول الرقمي</option>
-                <option value="إدارة التخطيط التقني">إدارة التخطيط التقني</option>
-              </select>
+              <select id="newEmpDept" required onchange="handleDeptChange(this.value)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-semibold"></select>
             </div>
 
             <div>
@@ -585,7 +655,7 @@
     </div>
   </div>
 
-  <!-- ================= 8. نافذة تعيين كلمة المرور المباشرة بواسطة مدير النظام ================= -->
+  <!-- ================= 9. نافذة تعيين كلمة المرور المباشرة بواسطة مدير النظام ================= -->
   <div id="adminDirectPasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -618,7 +688,7 @@
     </div>
   </div>
 
-  <!-- ================= 9. نافذة تغيير كلمة المرور الاختيارية للمستخدم ================= -->
+  <!-- ================= 10. نافذة تغيير كلمة المرور الاختيارية للمستخدم ================= -->
   <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -646,7 +716,7 @@
     </div>
   </div>
 
-  <!-- ================= 10. شاشة تغيير كلمة المرور الإجبارية ================= -->
+  <!-- ================= 11. شاشة تغيير كلمة المرور الإجبارية ================= -->
   <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/85 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-emerald-500/30">
       <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-800 text-white text-center">
@@ -676,7 +746,7 @@
     </div>
   </div>
 
-  <!-- ================= 11. نافذة النسخ الاحتياطي وتصفير السجلات ================= -->
+  <!-- ================= 12. نافذة النسخ الاحتياطي وتصفير السجلات ================= -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -689,7 +759,7 @@
       <div class="p-5 space-y-4 text-xs">
         <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl">
           <h4 class="font-bold text-blue-900 mb-1"><i class="fa-solid fa-cloud-arrow-down ml-1"></i> تصدير نسخة شاملة:</h4>
-          <p class="text-slate-600 mb-2.5">تنزيل ملف JSON يحتوي على كامل الهيكل وسجلات الإنجازات والمستخدمين.</p>
+          <p class="text-slate-600 mb-2.5">تنزيل ملف JSON يحتوي على كامل الهيكل وسجلات الإنجازات والمستخدمين والقوائم المنسدلة.</p>
           <button onclick="exportBackupData()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
             <i class="fa-solid fa-download"></i>
             <span>تنزيل ملف النسخة الاحتياطية (JSON)</span>
@@ -698,7 +768,7 @@
 
         <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl">
           <h4 class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-cloud-arrow-up ml-1"></i> استعادة نسخة:</h4>
-          <p class="text-slate-600 mb-2.5">استرجاع السجلات والهيكل من ملف محفوظ.</p>
+          <p class="text-slate-600 mb-2.5">استرجاع السجلات والهيكل والقوائم من ملف محفوظ.</p>
           <input type="file" id="restoreFileInput" accept=".json" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white file:font-semibold">
           <button onclick="importBackupData()" class="mt-3 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
             <i class="fa-solid fa-rotate-left"></i>
@@ -725,7 +795,7 @@
     </div>
   </div>
 
-  <!-- ================= 12. نافذة تسجيل وتعديل الإنجاز ================= -->
+  <!-- ================= 13. نافذة تسجيل وتعديل الإنجاز ================= -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -770,25 +840,11 @@
         <div class="grid grid-cols-2 gap-3">
           <div>
             <label class="block font-bold text-slate-700 mb-1">نوع الطلب</label>
-            <select id="formType" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none">
-              <option value="دعم فني">دعم فني</option>
-              <option value="إنشاء اسم مستخدم">إنشاء اسم مستخدم</option>
-              <option value="خلل تقني">خلل تقني</option>
-              <option value="تدريب">تدريب</option>
-              <option value="استفسار">استفسار</option>
-              <option value="تصحيح مسار">تصحيح مسار</option>
-            </select>
+            <select id="formType" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none"></select>
           </div>
           <div>
             <label class="block font-bold text-slate-700 mb-1">النظام المرتبط</label>
-            <select id="formSystem" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none">
-              <option value="نظام موارد">نظام موارد</option>
-              <option value="نظام تسهيل">نظام تسهيل</option>
-              <option value="نظام الرسائل النصية">نظام الرسائل النصية</option>
-              <option value="نظام التصديق الرقمي">نظام التصديق الرقمي</option>
-              <option value="نظام الشاشات">نظام الشاشات</option>
-              <option value="أخرى">أنظمة أخرى</option>
-            </select>
+            <select id="formSystem" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none"></select>
           </div>
         </div>
 
@@ -803,105 +859,7 @@
             <span class="text-[10px] text-emerald-700">اكتب للبحث أو اختر من القائمة</span>
           </div>
           <input type="text" id="formDepartment" list="easternEmirateDepartmentsList" required placeholder="ابحث أو اختر الإدارة المستفيدة..." class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
-          
-          <datalist id="easternEmirateDepartmentsList">
-            <option value="مكتب سمو أمير المنطقة الشرقية"></option>
-            <option value="مكتب سمو نائب أمير المنطقة الشرقية"></option>
-            <option value="إدارة الشؤون الخاصة - المكتب الخاص"></option>
-            <option value="مكتب التواصل والعلاقات العامة"></option>
-            <option value="إدارة الاستقبال والمراسم - قسم المراسم"></option>
-            <option value="إدارة الاستقبال والمراسم - قسم الاستقبال"></option>
-            <option value="إدارة الاستقبال والمراسم - قسم الأخوياء"></option>
-            <option value="مجلس المنطقة"></option>
-            <option value="أمانة مجلس المنطقة"></option>
-
-            <option value="إدارة الأمن السيبراني - قسم الحوكمة والالتزام"></option>
-            <option value="إدارة الأمن السيبراني - قسم عمليات الأمن السيبراني"></option>
-            <option value="إدارة الأمن السيبراني - قسم الصلاحيات وحماية البيانات"></option>
-            <option value="وكيل الإمارة للشؤون الأمنية - مكتب الوكيل"></option>
-            <option value="الإدارة العامة للشؤون القانونية - وحدة حقوق الإنسان"></option>
-            <option value="الإدارة العامة للمراجعة الداخلية"></option>
-            <option value="العمليات المشتركة"></option>
-            <option value="مركز إدارة الأزمات والكوارث"></option>
-            <option value="إدارة مراقبة المخزون"></option>
-            <option value="الإدارة العامة للإعلام والاتصال المؤسسي"></option>
-
-            <option value="الإدارة العامة لتقنية المعلومات والتحول الرقمي"></option>
-            <option value="قسم الجودة التقنية"></option>
-            <option value="إدارة الأنظمة والبرامج - قسم تطور الأنظمة والبرامج"></option>
-            <option value="إدارة الأنظمة والبرامج - قسم الاختبار وجودة الأنظمة والبرامج"></option>
-            <option value="إدارة الدعم الفني - قسم خدمات المستفيدين"></option>
-            <option value="إدارة الدعم الفني - قسم الصيانة والتشغيل"></option>
-            <option value="إدارة الدعم الفني - قسم التمويل الفني"></option>
-            <option value="إدارة البنية التحتية - قسم الشبكات"></option>
-            <option value="إدارة البنية التحتية - قسم الحوسبة السحابية ومركز البيانات"></option>
-            <option value="إدارة البنية التحتية - قسم المخاطر واستمرارية الأعمال"></option>
-            <option value="إدارة البنية التحتية - قسم أمن وحماية البنية التحتية"></option>
-            <option value="إدارة التحول الرقمي - قسم تحليل الأعمال"></option>
-            <option value="إدارة التحول الرقمي - قسم تمكين التحول الرقمي"></option>
-            <option value="إدارة التحول الرقمي - قسم الإبتكار والذكاء الاصطناعي"></option>
-            <option value="إدارة التخطيط التقني - قسم التخطيط والدراسات"></option>
-            <option value="إدارة التخطيط التقني - قسم البنية المؤسسية"></option>
-            <option value="إدارة التخطيط التقني - مكتب إدارة المشاريع"></option>
-
-            <option value="محافظة الأحساء"></option>
-            <option value="محافظة حفر الباطن"></option>
-            <option value="محافظة الجبيل"></option>
-            <option value="محافظة القطيف"></option>
-            <option value="محافظة الخبر"></option>
-            <option value="محافظة الخفجي"></option>
-            <option value="محافظة النعيرية"></option>
-            <option value="محافظة بقيق"></option>
-            <option value="محافظة رأس تنورة"></option>
-            <option value="محافظة قرية العليا"></option>
-            <option value="محافظة العديد"></option>
-            <option value="محافظة البيضاء"></option>
-            <option value="مراكز المنطقة الشرقية"></option>
-
-            <option value="وكيل الإمارة - مكتب الوكيل"></option>
-            <option value="وكيل الإمارة - وحدة المتابعة"></option>
-
-            <option value="الإدارة العامة للشؤون الإدارية والمالية"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - إدارة المالية"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - إدارة المشتريات"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - إدارة الميزانية"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - إدارة التشغيل والصيانة"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - إدارة المستودعات"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - مركز الاتصالات الإدارية"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - إدارة الاتصالات السلكية واللاسلكية"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - إدارة الحركة والنقل"></option>
-            <option value="إدارة الشؤون الإدارية والمالية - وحدة لوازم الضيافة والسلاح"></option>
-
-            <option value="وكيل الإمارة المساعد للحقوق - مكتب الوكيل المساعد"></option>
-            <option value="الإدارة العامة للحقوق العامة - إدارة الحقوق العامة"></option>
-            <option value="الإدارة العامة للحقوق العامة - إدارة شؤون السجناء والموقوفين"></option>
-            <option value="الإدارة العامة للحقوق العامة - إدارة شؤون المخدرات والمؤثرات العقلية"></option>
-            <option value="الإدارة العامة للحقوق الخاصة - إدارة قضايا الأراضي والعقار"></option>
-            <option value="الإدارة العامة للحقوق الخاصة - إدارة القضايا والمطالبات الخاصة"></option>
-            <option value="وكالة الحقوق - إدارة متابعة تنفيذ الأحكام"></option>
-
-            <option value="وكيل الإمارة المساعد للشؤون التنموية - مكتب الوكيل المساعد"></option>
-            <option value="الإدارة العامة للشؤون المحلية - إدارة الشؤون العامة"></option>
-            <option value="الإدارة العامة للشؤون المحلية - إدارة المساعدات والتعويضات"></option>
-            <option value="الإدارة العامة للشؤون المحلية - إدارة الشراكة المجتمعية"></option>
-            <option value="الإدارة العامة لمتابعة المشاريع والخدمات - إدارة تنسيق ومتابعة الخدمات"></option>
-            <option value="الإدارة العامة لمتابعة المشاريع والخدمات - إدارة تنسيق ومتابعة المشاريع"></option>
-            <option value="الشؤون التنموية - إدارة تنشيط الاستثمار والسياحة"></option>
-
-            <option value="الإدارة العامة للموارد البشرية"></option>
-            <option value="إدارة الموارد البشرية - تطوير الموارد البشرية"></option>
-            <option value="إدارة الموارد البشرية - عمليات الموارد البشرية"></option>
-            <option value="إدارة الموارد البشرية - إدارة التواصل الداخلي"></option>
-            <option value="إدارة الموارد البشرية - وحدة العمل التطوعي"></option>
-
-            <option value="إدارة التميز المؤسسي"></option>
-            <option value="مكتب تحقيق الرؤية"></option>
-            <option value="إدارة شؤون اللجان"></option>
-            <option value="مكتب إدارة البيانات"></option>
-            <option value="إدارة شؤون المشايخ والنواب والمعرّفين"></option>
-            <option value="المركز الشامل لخدمة المستفيدين"></option>
-            <option value="مركز الوثائق والمحفوظات"></option>
-          </datalist>
+          <datalist id="easternEmirateDepartmentsList"></datalist>
         </div>
 
         <div>
@@ -922,7 +880,7 @@
     </div>
   </div>
 
-  <!-- ================= 13. نافذة التقارير الإحصائية ================= -->
+  <!-- ================= 14. نافذة التقارير الإحصائية ================= -->
   <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex items-center justify-between">
@@ -980,7 +938,8 @@
   </div>
 
   <script>
-    const ORG_STRUCTURE = {
+    // القيم الافتراضية الأولية للنظام
+    const DEFAULT_ORG_STRUCTURE = {
       "الإدارة العامة لتقنية المعلومات والتحول الرقمي": [
         "قسم الجودة التقنية",
         "مكتب المدير العام"
@@ -1012,6 +971,122 @@
       ]
     };
 
+    const DEFAULT_SYSTEMS = [
+      "نظام موارد",
+      "نظام تسهيل",
+      "نظام الرسائل النصية",
+      "نظام التصديق الرقمي",
+      "نظام الشاشات",
+      "أخرى"
+    ];
+
+    const DEFAULT_TYPES = [
+      "دعم فني",
+      "إنشاء اسم مستخدم",
+      "خلل تقني",
+      "تدريب",
+      "استفسار",
+      "تصحيح مسار"
+    ];
+
+    const DEFAULT_DEPARTMENTS_LIST = [
+      "مكتب سمو أمير المنطقة الشرقية",
+      "مكتب سمو نائب أمير المنطقة الشرقية",
+      "إدارة الشؤون الخاصة - المكتب الخاص",
+      "مكتب التواصل والعلاقات العامة",
+      "إدارة الاستقبال والمراسم - قسم المراسم",
+      "إدارة الاستقبال والمراسم - قسم الاستقبال",
+      "إدارة الاستقبال والمراسم - قسم الأخوياء",
+      "مجلس المنطقة",
+      "أمانة مجلس المنطقة",
+      "إدارة الأمن السيبراني - قسم الحوكمة والالتزام",
+      "إدارة الأمن السيبراني - قسم عمليات الأمن السيبراني",
+      "إدارة الأمن السيبراني - قسم الصلاحيات وحماية البيانات",
+      "وكيل الإمارة للشؤون الأمنية - مكتب الوكيل",
+      "الإدارة العامة للشؤون القانونية - وحدة حقوق الإنسان",
+      "الإدارة العامة للمراجعة الداخلية",
+      "العمليات المشتركة",
+      "مركز إدارة الأزمات والكوارث",
+      "إدارة مراقبة المخزون",
+      "الإدارة العامة للإعلام والاتصال المؤسسي",
+      "الإدارة العامة لتقنية المعلومات والتحول الرقمي",
+      "قسم الجودة التقنية",
+      "إدارة الأنظمة والبرامج - قسم تطور الأنظمة والبرامج",
+      "إدارة الأنظمة والبرامج - قسم الاختبار وجودة الأنظمة والبرامج",
+      "إدارة الدعم الفني - قسم خدمات المستفيدين",
+      "إدارة الدعم الفني - قسم الصيانة والتشغيل",
+      "إدارة الدعم الفني - قسم التمويل الفني",
+      "إدارة البنية التحتية - قسم الشبكات",
+      "إدارة البنية التحتية - قسم الحوسبة السحابية ومركز البيانات",
+      "إدارة البنية التحتية - قسم المخاطر واستمرارية الأعمال",
+      "إدارة البنية التحتية - قسم أمن وحماية البنية التحتية",
+      "إدارة التحول الرقمي - قسم تحليل الأعمال",
+      "إدارة التحول الرقمي - قسم تمكين التحول الرقمي",
+      "إدارة التحول الرقمي - قسم الإبتكار والذكاء الاصطناعي",
+      "إدارة التخطيط التقني - قسم التخطيط والدراسات",
+      "إدارة التخطيط التقني - قسم البنية المؤسسية",
+      "إدارة التخطيط التقني - مكتب إدارة المشاريع",
+      "محافظة الأحساء",
+      "محافظة حفر الباطن",
+      "محافظة الجبيل",
+      "محافظة القطيف",
+      "محافظة الخبر",
+      "محافظة الخفجي",
+      "محافظة النعيرية",
+      "محافظة بقيق",
+      "محافظة رأس تنورة",
+      "محافظة قرية العليا",
+      "محافظة العديد",
+      "محافظة البيضاء",
+      "مراكز المنطقة الشرقية",
+      "وكيل الإمارة - مكتب الوكيل",
+      "وكيل الإمارة - وحدة المتابعة",
+      "الإدارة العامة للشؤون الإدارية والمالية",
+      "إدارة الشؤون الإدارية والمالية - إدارة المالية",
+      "إدارة الشؤون الإدارية والمالية - إدارة المشتريات",
+      "إدارة الشؤون الإدارية والمالية - إدارة الميزانية",
+      "إدارة الشؤون الإدارية والمالية - إدارة التشغيل والصيانة",
+      "إدارة الشؤون الإدارية والمالية - إدارة المستودعات",
+      "إدارة الشؤون الإدارية والمالية - مركز الاتصالات الإدارية",
+      "إدارة الشؤون الإدارية والمالية - إدارة الاتصالات السلكية واللاسلكية",
+      "إدارة الشؤون الإدارية والمالية - إدارة الحركة والنقل",
+      "إدارة الشؤون الإدارية والمالية - وحدة لوازم الضيافة والسلاح",
+      "وكيل الإمارة المساعد للحقوق - مكتب الوكيل المساعد",
+      "الإدارة العامة للحقوق العامة - إدارة الحقوق العامة",
+      "الإدارة العامة للحقوق العامة - إدارة شؤون السجناء والموقوفين",
+      "الإدارة العامة للحقوق العامة - إدارة شؤون المخدرات والمؤثرات العقلية",
+      "الإدارة العامة للحقوق الخاصة - إدارة قضايا الأراضي والعقار",
+      "الإدارة العامة للحقوق الخاصة - إدارة القضايا والمطالبات الخاصة",
+      "وكالة الحقوق - إدارة متابعة تنفيذ الأحكام",
+      "وكيل الإمارة المساعد للشؤون التنموية - مكتب الوكيل المساعد",
+      "الإدارة العامة للشؤون المحلية - إدارة الشؤون العامة",
+      "الإدارة العامة للشؤون المحلية - إدارة المساعدات والتعويضات",
+      "الإدارة العامة للشؤون المحلية - إدارة الشراكة المجتمعية",
+      "الإدارة العامة لمتابعة المشاريع والخدمات - إدارة تنسيق ومتابعة الخدمات",
+      "الإدارة العامة لمتابعة المشاريع والخدمات - إدارة تنسيق ومتابعة المشاريع",
+      "الشؤون التنموية - إدارة تنشيط الاستثمار والسياحة",
+      "الإدارة العامة للموارد البشرية",
+      "إدارة الموارد البشرية - تطوير الموارد البشرية",
+      "إدارة الموارد البشرية - عمليات الموارد البشرية",
+      "إدارة الموارد البشرية - إدارة التواصل الداخلي",
+      "إدارة الموارد البشرية - وحدة العمل التطوعي",
+      "إدارة التميز المؤسسي",
+      "مكتب تحقيق الرؤية",
+      "إدارة شؤون اللجان",
+      "مكتب إدارة البيانات",
+      "إدارة شؤون المشايخ والنواب والمعرّفين",
+      "المركز الشامل لخدمة المستفيدين",
+      "مركز الوثائق والمحفوظات"
+    ];
+
+    // المتغيرات الديناميكية للقوائم
+    let currentLookups = {
+      orgStructure: { ...DEFAULT_ORG_STRUCTURE },
+      systems: [ ...DEFAULT_SYSTEMS ],
+      types: [ ...DEFAULT_TYPES ],
+      departmentsList: [ ...DEFAULT_DEPARTMENTS_LIST ]
+    };
+
     const firebaseConfig = {
       apiKey: "AIzaSyCdAJbhASinCo7gX7JjhNUDyftsZ8-CI9I",
       authDomain: "achievements-portal.firebaseapp.com",
@@ -1030,6 +1105,7 @@
     let currentUserProfile = null;
     let achievements = [];
     let unsubscribeFirestore = null;
+    let unsubscribeLookups = null;
     let allUsersCache = [];
 
     function generateTicketNo() {
@@ -1041,6 +1117,64 @@
       document.getElementById('formTicketNo').value = generateTicketNo();
     };
 
+    // مزامنة القوائم المنسدلة من Firestore
+    function subscribeToSystemLookups() {
+      const lookupsDoc = db.collection('system_settings').doc('lookups');
+      unsubscribeLookups = lookupsDoc.onSnapshot(async (doc) => {
+        if (doc.exists) {
+          const data = doc.data();
+          currentLookups.orgStructure = data.orgStructure || DEFAULT_ORG_STRUCTURE;
+          currentLookups.systems = data.systems || DEFAULT_SYSTEMS;
+          currentLookups.types = data.types || DEFAULT_TYPES;
+          currentLookups.departmentsList = data.departmentsList || DEFAULT_DEPARTMENTS_LIST;
+        } else {
+          // تهيئة المستند لأول مرة
+          await lookupsDoc.set(currentLookups);
+        }
+        applyLookupsToDOM();
+      }, err => {
+        console.warn("Lookups sync warning:", err);
+        applyLookupsToDOM();
+      });
+    }
+
+    // تطبيق القوائم على كافة عناصر الـ HTML
+    function applyLookupsToDOM() {
+      // 1. تحديث قائمة الأنظمة
+      const sysSelect = document.getElementById('formSystem');
+      const curSys = sysSelect.value;
+      sysSelect.innerHTML = currentLookups.systems.map(s => `<option value="${s}">${s}</option>`).join('');
+      if (curSys && currentLookups.systems.includes(curSys)) sysSelect.value = curSys;
+
+      // 2. تحديث قائمة أنواع الطلبات (النموذج والفلتر)
+      const typeSelect = document.getElementById('formType');
+      const curType = typeSelect.value;
+      typeSelect.innerHTML = currentLookups.types.map(t => `<option value="${t}">${t}</option>`).join('');
+      if (curType && currentLookups.types.includes(curType)) typeSelect.value = curType;
+
+      const filterTypeSelect = document.getElementById('filterType');
+      const curFilterType = filterTypeSelect.value;
+      filterTypeSelect.innerHTML = '<option value="">كافة أنواع الطلبات</option>' + currentLookups.types.map(t => `<option value="${t}">${t}</option>`).join('');
+      if (curFilterType) filterTypeSelect.value = curFilterType;
+
+      // 3. تحديث الإدارات والمحافظات المستفيدة (Datalist)
+      const datalist = document.getElementById('easternEmirateDepartmentsList');
+      datalist.innerHTML = currentLookups.departmentsList.map(d => `<option value="${d}"></option>`).join('');
+
+      // 4. تحديث قائمة إدارات الهيكل الداخلي
+      const newEmpDept = document.getElementById('newEmpDept');
+      const curDeptVal = newEmpDept.value;
+      newEmpDept.innerHTML = '<option value="">اختر الإدارة من الهيكل...</option>' + 
+        Object.keys(currentLookups.orgStructure).map(d => `<option value="${d}">${d}</option>`).join('');
+      if (curDeptVal && currentLookups.orgStructure[curDeptVal]) newEmpDept.value = curDeptVal;
+
+      populateDepartmentScopeFilter();
+      updateSectionDropdown(newEmpDept.value);
+
+      // تحديث واجهات المودال إذا كانت مفتوحة
+      renderLookupsManagerUI();
+    }
+
     window.handleDeptChange = function(deptName) {
       updateSectionDropdown(deptName);
       handleRoleChange(document.getElementById('newEmpRole').value);
@@ -1049,8 +1183,8 @@
     function updateSectionDropdown(deptName) {
       const secSelect = document.getElementById('newEmpSection');
       secSelect.innerHTML = '';
-      if (ORG_STRUCTURE[deptName]) {
-        ORG_STRUCTURE[deptName].forEach(sec => {
+      if (currentLookups.orgStructure[deptName]) {
+        currentLookups.orgStructure[deptName].forEach(sec => {
           const opt = document.createElement('option');
           opt.value = sec;
           opt.textContent = sec;
@@ -1075,7 +1209,7 @@
       }
     };
 
-    // الدخول الذكي
+    // الدخول
     const authSection = document.getElementById('authSection');
     const mainAppSection = document.getElementById('mainAppSection');
     const loginForm = document.getElementById('loginForm');
@@ -1144,6 +1278,7 @@
 
         await loadUserProfile(user);
         await cacheAllUsers();
+        subscribeToSystemLookups();
 
         if (currentUserProfile.mustChangePassword) {
           showForceChangePasswordModal();
@@ -1154,6 +1289,7 @@
         authSection.classList.remove('hidden');
         mainAppSection.classList.add('hidden');
         if (unsubscribeFirestore) unsubscribeFirestore();
+        if (unsubscribeLookups) unsubscribeLookups();
       }
     });
 
@@ -1203,6 +1339,7 @@
       const adminBtn = document.getElementById('adminUsersBtn');
       const analyticsBtn = document.getElementById('analyticsBtn');
       const backupBtn = document.getElementById('backupBtn');
+      const lookupsBtn = document.getElementById('manageLookupsBtn');
       const empFilter = document.getElementById('employeeFilter');
       const deptFilter = document.getElementById('filterDepartmentScope');
 
@@ -1212,15 +1349,16 @@
         adminBtn.classList.remove('hidden'); adminBtn.classList.add('flex');
         analyticsBtn.classList.remove('hidden'); analyticsBtn.classList.add('flex');
         backupBtn.classList.remove('hidden'); backupBtn.classList.add('flex');
+        lookupsBtn.classList.remove('hidden'); lookupsBtn.classList.add('flex');
         empFilter.classList.remove('hidden');
         deptFilter.classList.remove('hidden');
-        populateDepartmentScopeFilter();
       } else if (currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager') {
         roleBadge.textContent = `مدير إدارة: ${currentUserProfile.department}`;
         roleBadge.className = 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 text-purple-800';
         adminBtn.classList.add('hidden'); adminBtn.classList.remove('flex');
         analyticsBtn.classList.remove('hidden'); analyticsBtn.classList.add('flex');
         backupBtn.classList.add('hidden'); backupBtn.classList.remove('flex');
+        lookupsBtn.classList.add('hidden'); lookupsBtn.classList.remove('flex');
         empFilter.classList.remove('hidden');
         deptFilter.classList.add('hidden');
       } else if (currentUserProfile.role === 'section_head') {
@@ -1229,6 +1367,7 @@
         adminBtn.classList.add('hidden'); adminBtn.classList.remove('flex');
         analyticsBtn.classList.remove('hidden'); analyticsBtn.classList.add('flex');
         backupBtn.classList.add('hidden'); backupBtn.classList.remove('flex');
+        lookupsBtn.classList.add('hidden'); lookupsBtn.classList.remove('flex');
         empFilter.classList.remove('hidden');
         deptFilter.classList.add('hidden');
       } else {
@@ -1237,6 +1376,7 @@
         adminBtn.classList.add('hidden'); adminBtn.classList.remove('flex');
         analyticsBtn.classList.add('hidden'); analyticsBtn.classList.remove('flex');
         backupBtn.classList.add('hidden'); backupBtn.classList.remove('flex');
+        lookupsBtn.classList.add('hidden'); lookupsBtn.classList.remove('flex');
         empFilter.classList.add('hidden');
         deptFilter.classList.add('hidden');
       }
@@ -1245,7 +1385,7 @@
     function populateDepartmentScopeFilter() {
       const deptFilter = document.getElementById('filterDepartmentScope');
       deptFilter.innerHTML = '<option value="">كافة إدارات الهيكل</option>';
-      Object.keys(ORG_STRUCTURE).forEach(d => {
+      Object.keys(currentLookups.orgStructure).forEach(d => {
         const opt = document.createElement('option');
         opt.value = d;
         opt.textContent = d;
@@ -1459,19 +1599,16 @@
             
             <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
               <div class="inline-flex items-center gap-1">
-                <!-- زر عرض تفاصيل المهمة (متاح دائماً) -->
                 <button onclick="viewRecordDetails('${item.id}')" class="text-emerald-700 hover:text-emerald-900 p-1 rounded hover:bg-emerald-50" title="عرض تفاصيل المهمة">
                   <i class="fa-solid fa-eye text-sm"></i>
                 </button>
 
-                <!-- زر التعديل (متاح دائماً لمن يملك الصلاحية) -->
                 ${canEdit ? `
                   <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50" title="تعديل الإنجاز">
                     <i class="fa-solid fa-pen text-sm"></i>
                   </button>
                 ` : ''}
 
-                <!-- أزرار المعتمد (المدير / رئيس القسم) -->
                 ${isSupervisor ? `
                   ${item.status === 'بانتظار الاعتماد' ? `
                     <button onclick="approveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition" title="اعتماد الإنجاز">
@@ -1495,14 +1632,12 @@
                   ` : ''}
                 ` : ''}
 
-                <!-- زر معالجة المرفوض للموظف -->
                 ${(!isSupervisor && item.userId === currentUser.uid && item.status === 'مرفوض') ? `
                   <button onclick="openResubmitModal('${item.id}')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs transition" title="معالجة الملاحظات وإعادة الرفع">
                     <i class="fa-solid fa-wrench ml-0.5"></i> معالجة
                   </button>
                 ` : ''}
 
-                <!-- زر الحذف لمدير النظام أو للموظف طالما لم يُعتمد -->
                 ${(currentUserProfile.role === 'admin' || (!isSupervisor && item.userId === currentUser.uid && item.status !== 'معتمد')) ? `
                   <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" title="حذف">
                     <i class="fa-solid fa-trash text-sm"></i>
@@ -1528,6 +1663,165 @@
       document.getElementById('statRejected').textContent = rejectedTasks.length;
       document.getElementById('rejectedStatLabel').textContent = isSupervisor ? 'أرشيف المرفوضات' : 'الطلبات المرفوضة';
     }
+
+    // نافذة إدارة القوائم المنسدلة
+    const lookupsModal = document.getElementById('lookupsModal');
+    window.openLookupsModal = function() {
+      if (currentUserProfile.role !== 'admin') return;
+      lookupsModal.classList.remove('hidden');
+      renderLookupsManagerUI();
+    };
+    window.closeLookupsModal = function() {
+      lookupsModal.classList.add('hidden');
+    };
+
+    window.switchLookupTab = function(tab) {
+      ['Systems', 'Types', 'Org', 'DestDepts'].forEach(t => {
+        document.getElementById(`lookupTabContent${t}`).classList.add('hidden');
+        const btn = document.getElementById(`tabBtn${t}`);
+        if (btn) btn.className = 'px-4 py-2.5 text-slate-600 hover:text-slate-900';
+      });
+
+      const activeTabId = tab.charAt(0).toUpperCase() + tab.slice(1);
+      document.getElementById(`lookupTabContent${activeTabId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tabBtn${activeTabId}`);
+      if (activeBtn) activeBtn.className = 'px-4 py-2.5 text-teal-800 border-b-2 border-teal-700 bg-white font-bold';
+    };
+
+    function renderLookupsManagerUI() {
+      // الأنظمة
+      const sysList = document.getElementById('systemsListContainer');
+      sysList.innerHTML = currentLookups.systems.map((s, idx) => `
+        <div class="flex items-center justify-between p-2.5 bg-white hover:bg-slate-50">
+          <span class="font-bold text-slate-800">${s}</span>
+          <button onclick="removeSystemItem(${idx})" class="text-red-500 hover:text-red-700 px-2 py-1 rounded" title="حذف">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      `).join('');
+
+      // أنواع الطلبات
+      const typesList = document.getElementById('typesListContainer');
+      typesList.innerHTML = currentLookups.types.map((t, idx) => `
+        <div class="flex items-center justify-between p-2.5 bg-white hover:bg-slate-50">
+          <span class="font-bold text-slate-800">${t}</span>
+          <button onclick="removeTypeItem(${idx})" class="text-red-500 hover:text-red-700 px-2 py-1 rounded" title="حذف">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      `).join('');
+
+      // الهيكل الداخلي
+      const targetOrgSelect = document.getElementById('targetOrgDeptSelect');
+      targetOrgSelect.innerHTML = Object.keys(currentLookups.orgStructure).map(d => `<option value="${d}">${d}</option>`).join('');
+
+      const orgContainer = document.getElementById('orgStructureContainer');
+      orgContainer.innerHTML = Object.entries(currentLookups.orgStructure).map(([dept, sections]) => `
+        <div class="border border-slate-200 rounded-xl p-3 bg-white space-y-2">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+            <span class="font-bold text-teal-900">${dept}</span>
+            <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">${sections.length} قسم</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5 pt-1">
+            ${sections.map(sec => `
+              <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg text-[11px] font-semibold">
+                <span>${sec}</span>
+                <button onclick="removeOrgSectionItem('${dept}', '${sec}')" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-xmark"></i></button>
+              </span>
+            `).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      // الإدارات المستفيدة
+      const destDeptsList = document.getElementById('destDeptsContainer');
+      destDeptsList.innerHTML = currentLookups.departmentsList.map((d, idx) => `
+        <div class="flex items-center justify-between p-2 bg-white hover:bg-slate-50">
+          <span class="font-semibold text-slate-800">${d}</span>
+          <button onclick="removeDestDeptItem(${idx})" class="text-red-500 hover:text-red-700 px-2 py-0.5 rounded" title="حذف">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    async function saveLookupsToFirestore() {
+      try {
+        await db.collection('system_settings').doc('lookups').set(currentLookups);
+      } catch (err) {
+        alert("حدث خطأ أثناء حفظ القوائم: " + err.message);
+      }
+    }
+
+    window.addSystemItem = async function() {
+      const inp = document.getElementById('newSystemInput');
+      const val = inp.value.trim();
+      if (!val) return;
+      if (currentLookups.systems.includes(val)) return alert("هذا النظام موجود مسبقاً.");
+      currentLookups.systems.push(val);
+      inp.value = '';
+      await saveLookupsToFirestore();
+    };
+
+    window.removeSystemItem = async function(index) {
+      if (confirm(`هل أنت متأكد من حذف (${currentLookups.systems[index]}) من القائمة؟`)) {
+        currentLookups.systems.splice(index, 1);
+        await saveLookupsToFirestore();
+      }
+    };
+
+    window.addTypeItem = async function() {
+      const inp = document.getElementById('newTypeInput');
+      const val = inp.value.trim();
+      if (!val) return;
+      if (currentLookups.types.includes(val)) return alert("نوع الطلب موجود مسبقاً.");
+      currentLookups.types.push(val);
+      inp.value = '';
+      await saveLookupsToFirestore();
+    };
+
+    window.removeTypeItem = async function(index) {
+      if (confirm(`هل أنت متأكد من حذف نوع الطلب (${currentLookups.types[index]})؟`)) {
+        currentLookups.types.splice(index, 1);
+        await saveLookupsToFirestore();
+      }
+    };
+
+    window.addOrgSectionItem = async function() {
+      const dept = document.getElementById('targetOrgDeptSelect').value;
+      const inp = document.getElementById('newOrgSectionInput');
+      const sec = inp.value.trim();
+      if (!sec) return;
+      if (!currentLookups.orgStructure[dept]) currentLookups.orgStructure[dept] = [];
+      if (currentLookups.orgStructure[dept].includes(sec)) return alert("القسم موجود مسبقاً في هذه الإدارة.");
+      currentLookups.orgStructure[dept].push(sec);
+      inp.value = '';
+      await saveLookupsToFirestore();
+    };
+
+    window.removeOrgSectionItem = async function(dept, sec) {
+      if (confirm(`هل أنت متأكد من حذف قسم (${sec}) من (${dept})؟`)) {
+        currentLookups.orgStructure[dept] = currentLookups.orgStructure[dept].filter(s => s !== sec);
+        await saveLookupsToFirestore();
+      }
+    };
+
+    window.addDestDeptItem = async function() {
+      const inp = document.getElementById('newDestDeptInput');
+      const val = inp.value.trim();
+      if (!val) return;
+      if (currentLookups.departmentsList.includes(val)) return alert("هذه الجهة موجودة مسبقاً.");
+      currentLookups.departmentsList.unshift(val);
+      inp.value = '';
+      await saveLookupsToFirestore();
+    };
+
+    window.removeDestDeptItem = async function(index) {
+      if (confirm(`هل ترغب في حذف (${currentLookups.departmentsList[index]}) من قائمة المستفيدين؟`)) {
+        currentLookups.departmentsList.splice(index, 1);
+        await saveLookupsToFirestore();
+      }
+    };
 
     // عرض تفاصيل المهمة
     const viewRecordModal = document.getElementById('viewRecordModal');
@@ -1779,8 +2073,8 @@
       document.getElementById('editDocId').value = item.id;
       document.getElementById('formTicketNo').value = item.ticketNo || generateTicketNo();
       document.getElementById('formDate').value = item.date || '';
-      document.getElementById('formType').value = item.type || 'دعم فني';
-      document.getElementById('formSystem').value = item.system || 'نظام موارد';
+      document.getElementById('formType').value = item.type || currentLookups.types[0];
+      document.getElementById('formSystem').value = item.system || currentLookups.systems[0];
       document.getElementById('formBeneficiary').value = item.beneficiary || '';
       document.getElementById('formDepartment').value = item.department || '';
       document.getElementById('formService').value = item.service || '';
@@ -1971,7 +2265,6 @@
       permissionsModal.classList.add('hidden');
     };
 
-    // دالة حذف الموظف الفردية مع فحص المنع والحماية المؤسسية
     window.deleteSingleUser = async function(uid, name) {
       if (uid === currentUser.uid) {
         alert("لا يمكنك حذف حسابك الشخصي (مدير النظام).");
@@ -2211,7 +2504,7 @@
       }
     });
 
-    // النسخ الاحتياطي ومسح وتصفير السجلات مع الموظفين
+    // النسخ الاحتياطي ومسح وتصفير السجلات
     const backupModal = document.getElementById('backupModal');
     window.openBackupModal = function() { backupModal.classList.remove('hidden'); };
     window.closeBackupModal = function() { backupModal.classList.add('hidden'); };
@@ -2226,7 +2519,8 @@
         exportDate: new Date().toISOString(),
         totalAchievements: achList.length,
         achievements: achList,
-        users: usrList
+        users: usrList,
+        lookups: currentLookups
       };
 
       const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
@@ -2243,7 +2537,6 @@
       } catch (e) { alert("فشل التصدير: " + e.message); }
     };
 
-    // دالة التصفير الشاملة
     window.safePurgeAllData = async function() {
       if (currentUserProfile.role !== 'admin') {
         alert("هذا الإجراء متاح لمدير النظام فقط.");
@@ -2261,12 +2554,12 @@
         alert("جاري تنزيل النسخة الاحتياطية لجهازك أولاً... انتظر لحظات.");
         await triggerBackupDownload();
 
-        // 1. مسح كافة سجلات الإنجازات
+        // 1. مسح سجلات الإنجازات
         const achSnap = await db.collection('achievements').get();
         const deleteAchPromises = achSnap.docs.map(doc => doc.ref.delete());
         await Promise.all(deleteAchPromises);
 
-        // 2. مسح جميع المستخدمين باستثناء مدير النظام الحالي
+        // 2. مسح المستخدمين باستثناء المدير الحالي
         const usersSnap = await db.collection('users').get();
         const deleteUsersPromises = usersSnap.docs
           .filter(doc => doc.id !== currentUser.uid)
@@ -2305,8 +2598,12 @@
             await batch.commit();
           }
 
+          if (data.lookups) {
+            await db.collection('system_settings').doc('lookups').set(data.lookups, { merge: true });
+          }
+
           statusMsg.className = "text-emerald-700 block";
-          statusMsg.textContent = "✅ تمت استعادة السجلات بنجاح.";
+          statusMsg.textContent = "✅ تمت استعادة السجلات والقوائم بنجاح.";
           fileInp.value = '';
         } catch (err) {
           statusMsg.className = "text-rose-700 block";
@@ -2388,7 +2685,7 @@
       `).join('');
     }
 
-    // التسلسل الإداري التلقائي والدقيق للمسؤول والمعتمد المباشر
+    // التسلسل الإداري للتواقيع والاعتمادات
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -2453,12 +2750,10 @@
       else if (sDate) periodText = `من تاريخ ${sDate}`;
       else if (eDate) periodText = `حتى تاريخ ${eDate}`;
 
-      // تحديد المعتمد المباشر بدقة وفق الهرم الإداري
       let dynamicManagerTitle = '';
       
       if (isIndividual) {
         if (targetEmpRole === 'employee') {
-          // الموظف يعتمد تقريره رئيس قسمه المباشر إن وجد، أو مدير إدارته
           if (targetEmpSec && targetEmpSec !== 'عام الإدارة' && targetEmpSec !== 'عام الإدارة / بدون قسم') {
             const head = allUsersCache.find(u => u.department === targetEmpDept && u.section === targetEmpSec && u.role === 'section_head' && !u.isArchived);
             dynamicManagerTitle = head ? `اعتماد رئيس القسم (${head.name})` : `اعتماد رئيس قسم ${targetEmpSec}`;
@@ -2467,18 +2762,15 @@
             dynamicManagerTitle = mgr ? `اعتماد مدير الإدارة (${mgr.name})` : `اعتماد مدير إدارة ${targetEmpDept}`;
           }
         } else if (targetEmpRole === 'section_head') {
-          // رئيس القسم يعتمد تقريره مدير إدارته المباشر
           const mgr = allUsersCache.find(u => u.department === targetEmpDept && (u.role === 'dept_manager' || u.role === 'manager') && !u.isArchived);
           dynamicManagerTitle = mgr ? `اعتماد مدير الإدارة (${mgr.name})` : `اعتماد مدير ${targetEmpDept}`;
         } else if (targetEmpRole === 'dept_manager' || targetEmpRole === 'manager') {
-          // مدير الإدارة يعتمد تقريره مدير عام الإدارة العامة
           const adminUser = allUsersCache.find(u => u.role === 'admin' && !u.isArchived);
           dynamicManagerTitle = adminUser ? `اعتماد المدير العام (${adminUser.name})` : 'اعتماد مدير عام الإدارة العامة لتقنية المعلومات والتحول الرقمي';
         } else {
           dynamicManagerTitle = 'الاعتماد والتدقيق الإداري';
         }
       } else {
-        // تقرير مجمع
         if (currentUserProfile.role === 'section_head') {
           const mgr = allUsersCache.find(u => u.department === currentUserProfile.department && (u.role === 'dept_manager' || u.role === 'manager') && !u.isArchived);
           dynamicManagerTitle = mgr ? `اعتماد مدير الإدارة (${mgr.name})` : `اعتماد مدير ${currentUserProfile.department}`;
