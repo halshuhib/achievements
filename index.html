@@ -80,7 +80,7 @@
 
   <!-- واجهة التطبيق الرئيسية -->
   <div id="mainAppSection" class="hidden flex-1 flex flex-col">
-    <!-- ترويسة الطباعة الرسمية المعتمدة -->
+    <!-- ترويسة الطباعة الرسمية -->
     <div id="printReportHeader" class="mb-4">
       <div class="text-center pb-2 mb-2">
         <h2 id="printReportTitle" style="font-size: 18pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية المعتمدة</h2>
@@ -95,13 +95,22 @@
       </table>
     </div>
 
-    <!-- الشريط العلوي -->
+    <!-- الشريط العلوي مع صورة الموظف -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <!-- هوية المستخدم مع الصورة الرمزية القابلة للرفع -->
         <div class="flex items-center gap-3">
-          <div class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
-            <i class="fa-solid fa-clipboard-list text-sm"></i>
+          <div class="relative group cursor-pointer" onclick="document.getElementById('avatarFileInput').click()" title="انقر لتغيير أو رفع صورتك الشخصية">
+            <div id="avatarContainer" class="w-11 h-11 rounded-full bg-emerald-700 text-white flex items-center justify-center shadow-sm overflow-hidden border-2 border-emerald-600">
+              <i id="defaultAvatarIcon" class="fa-solid fa-user text-base"></i>
+              <img id="userAvatarImg" src="" alt="الصورة الشخصية" class="hidden w-full h-full object-cover">
+            </div>
+            <div class="absolute inset-0 bg-black/40 rounded-full opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-[11px] transition">
+              <i class="fa-solid fa-camera"></i>
+            </div>
+            <input type="file" id="avatarFileInput" accept="image/*" class="hidden" onchange="handleAvatarUpload(event)">
           </div>
+
           <div>
             <div class="flex items-center gap-2">
               <h1 class="text-sm sm:text-base font-bold text-slate-900 leading-none">سجل الإنجازات اليومية</h1>
@@ -115,6 +124,7 @@
           </div>
         </div>
 
+        <!-- أزرار الإجراءات المتناسقة -->
         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
           <button id="openAddModalBtn" class="h-9 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-plus text-xs"></i>
@@ -297,13 +307,13 @@
     </main>
   </div>
 
-  <!-- باقي المودالات والنوافذ الإدارية -->
+  <!-- النوافذ الإدارية ومودال التعديل والحذف -->
   <div id="lookupsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-teal-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-sliders text-lg"></i>
-          <h3 class="font-bold text-base">إدارة وترتيب القوائم المنسدلة للنظام (حفظ سحابي فوري)</h3>
+          <h3 class="font-bold text-base">إدارة وترتيب القوائم المنسدلة للنظام</h3>
         </div>
         <button onclick="closeLookupsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -417,16 +427,16 @@
   <div id="rejectReasonModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-rose-700 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2"><i class="fa-solid fa-circle-xmark text-lg"></i><h3 class="font-bold text-sm">رفض الطلب</h3></div>
+        <h3 class="font-bold text-sm">رفض الطلب</h3>
         <button onclick="closeRejectReasonModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="rejectReasonForm" class="p-5 space-y-3 text-xs">
         <input type="hidden" id="rejectRecordDocId">
         <label class="block font-bold text-slate-700 mb-1">سبب الرفض <span class="text-red-500">*</span></label>
-        <textarea id="rejectionReasonText" required rows="3" placeholder="اكتب الملاحظات..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
+        <textarea id="rejectionReasonText" required rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="closeRejectReasonModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" id="saveRejectBtn" class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg">تأكيد الرفض</button>
+          <button type="button" onclick="closeRejectReasonModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" id="saveRejectBtn" class="px-4 py-1.5 bg-rose-600 text-white font-bold rounded-lg">تأكيد الرفض</button>
         </div>
       </form>
     </div>
@@ -435,16 +445,16 @@
   <div id="unrejectModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-amber-700 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2"><i class="fa-solid fa-rotate-left text-lg"></i><h3 class="font-bold text-sm">التراجع عن الرفض</h3></div>
+        <h3 class="font-bold text-sm">التراجع عن الرفض</h3>
         <button onclick="closeUnrejectModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="unrejectForm" class="p-5 space-y-3 text-xs">
         <input type="hidden" id="unrejectDocId">
         <label class="block font-bold text-slate-700 mb-1">سبب التراجع <span class="text-red-500">*</span></label>
-        <textarea id="unrejectReasonText" required rows="3" placeholder="المبرر الإداري..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
+        <textarea id="unrejectReasonText" required rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="closeUnrejectModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" class="px-4 py-1.5 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-lg">تأكيد</button>
+          <button type="button" onclick="closeUnrejectModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" class="px-4 py-1.5 bg-amber-700 text-white font-bold rounded-lg">تأكيد</button>
         </div>
       </form>
     </div>
@@ -468,8 +478,8 @@
           <textarea id="resubmitExplanation" required rows="2" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
         </div>
         <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
-          <button type="button" onclick="closeResubmitModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg">إعادة الرفع</button>
+          <button type="button" onclick="closeResubmitModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" class="px-4 py-2 bg-emerald-700 text-white font-bold rounded-lg">إعادة الرفع</button>
         </div>
       </form>
     </div>
@@ -533,7 +543,7 @@
   <div id="adminDirectPasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
-        <h3 class="font-bold text-sm">تعيين كلمة مرور مؤقتة مباشرة</h3>
+        <h3 class="font-bold text-sm">تعيين كلمة مرور مؤقتة</h3>
         <button onclick="closeAdminDirectPasswordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="adminDirectPasswordForm" class="p-5 space-y-3 text-xs">
@@ -541,7 +551,6 @@
         <input type="hidden" id="targetAdminResetEmail">
         <span id="targetAdminResetName" class="font-bold block text-slate-800 mb-1"></span>
         <input type="text" id="targetAdminDirectPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none font-mono font-bold">
-        <div id="adminDirectPassMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         <div class="pt-2 flex justify-end gap-2">
           <button type="button" onclick="closeAdminDirectPasswordModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
           <button type="submit" id="saveAdminDirectPassBtn" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded-lg">حفظ</button>
@@ -553,13 +562,12 @@
   <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
-        <h3 class="font-bold text-sm">تغيير كلمة المرور الخاصة بي</h3>
+        <h3 class="font-bold text-sm">تغيير كلمة المرور</h3>
         <button onclick="closeChangePasswordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="changePasswordForm" class="p-5 space-y-3 text-xs">
         <input type="password" id="myNewPassword" required placeholder="كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
         <input type="password" id="myConfirmPassword" required placeholder="تأكيد كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
-        <div id="changePassMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         <div class="pt-2 flex justify-end gap-2">
           <button type="button" onclick="closeChangePasswordModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
           <button type="submit" id="savePasswordBtn" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded-lg">حفظ</button>
@@ -576,7 +584,6 @@
       <form id="forceChangePasswordForm" class="p-6 space-y-3.5 text-xs">
         <input type="password" id="forceNewPassword" required placeholder="كلمة المرور الجديدة" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
         <input type="password" id="forceConfirmPassword" required placeholder="تأكيد كلمة المرور" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
-        <div id="forceChangePassMsg" class="hidden text-xs p-2.5 rounded-xl font-semibold text-center"></div>
         <button type="submit" id="saveForcePasswordBtn" class="w-full py-3 bg-emerald-700 text-white font-bold rounded-xl">حفظ ودخول</button>
       </form>
     </div>
@@ -733,6 +740,73 @@
     window.generateTicketInput = function() {
       document.getElementById('formTicketNo').value = generateTicketNo();
     };
+
+    // معالجة رفع وحفظ صورة الموظف سحابياً
+    window.handleAvatarUpload = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        alert("يرجى اختيار ملف صورة صالح (JPG, PNG, WebP).");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          // ضغط الصورة إلى مقاس 160x160 px لتكون خفيفة جداً في التخزين
+          const canvas = document.createElement('canvas');
+          const maxDim = 160;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const base64Data = canvas.toDataURL('image/jpeg', 0.82);
+
+          // الحفظ في Firestore
+          db.collection('users').doc(currentUser.uid).update({
+            avatar: base64Data
+          }).then(() => {
+            currentUserProfile.avatar = base64Data;
+            displayUserAvatar(base64Data);
+            alert("✅ تم تحديث صورتك الشخصية بنجاح.");
+          }).catch(err => {
+            alert("فشل حفظ الصورة: " + err.message);
+          });
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsText ? reader.readAsDataURL(file) : null;
+    };
+
+    function displayUserAvatar(base64Data) {
+      const avatarImg = document.getElementById('userAvatarImg');
+      const defaultIcon = document.getElementById('defaultAvatarIcon');
+      if (base64Data) {
+        avatarImg.src = base64Data;
+        avatarImg.classList.remove('hidden');
+        defaultIcon.classList.add('hidden');
+      } else {
+        avatarImg.classList.add('hidden');
+        defaultIcon.classList.remove('hidden');
+      }
+    }
 
     function subscribeToSystemLookups() {
       const lookupsDoc = db.collection('system_settings').doc('lookups');
@@ -912,6 +986,7 @@
           department: 'الإدارة العامة لتقنية المعلومات والتحول الرقمي',
           section: 'مكتب المدير العام',
           role: role,
+          avatar: null,
           isArchived: false,
           mustChangePassword: false
         };
@@ -930,6 +1005,9 @@
         ? currentUserProfile.department
         : `${currentUserProfile.department} (${currentUserProfile.section || ''})`;
       document.getElementById('userBadgeDept').textContent = deptDisplay;
+
+      // عرض الصورة الشخصية إن كانت موجودة
+      displayUserAvatar(currentUserProfile.avatar);
 
       const roleBadge = document.getElementById('userRoleBadge');
       const adminBtn = document.getElementById('adminUsersBtn');
@@ -1192,16 +1270,26 @@
             
             <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
               <div class="inline-flex items-center gap-1">
+                <!-- زر عرض تفاصيل المهمة -->
                 <button onclick="viewRecordDetails('${item.id}')" class="text-emerald-700 hover:text-emerald-900 p-1 rounded hover:bg-emerald-50" title="عرض تفاصيل المهمة">
                   <i class="fa-solid fa-eye text-sm"></i>
                 </button>
 
+                <!-- زر تعديل الإنجاز -->
                 ${canEdit ? `
                   <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50" title="تعديل الإنجاز">
                     <i class="fa-solid fa-pen text-sm"></i>
                   </button>
                 ` : ''}
 
+                <!-- زر حذف الإنجاز في حالة الإضافة الخاطئة (متاح دائماً لصاحب الإنجاز أو المسؤولين) -->
+                ${(isSupervisor || item.userId === currentUser.uid) ? `
+                  <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" title="حذف المهمة (في حالة الإضافة الخاطئة)">
+                    <i class="fa-solid fa-trash text-sm"></i>
+                  </button>
+                ` : ''}
+
+                <!-- أزرار الاعتماد الإداري للمسؤولين -->
                 ${isSupervisor ? `
                   ${item.status === 'بانتظار الاعتماد' ? `
                     <button onclick="approveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition" title="اعتماد">
@@ -1225,15 +1313,10 @@
                   ` : ''}
                 ` : ''}
 
+                <!-- زر معالجة المرفوض للموظف -->
                 ${(!isSupervisor && item.userId === currentUser.uid && item.status === 'مرفوض') ? `
                   <button onclick="openResubmitModal('${item.id}')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs transition" title="معالجة">
                     <i class="fa-solid fa-wrench ml-0.5"></i> معالجة
-                  </button>
-                ` : ''}
-
-                ${(currentUserProfile.role === 'admin' || (!isSupervisor && item.userId === currentUser.uid && item.status !== 'معتمد')) ? `
-                  <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" title="حذف">
-                    <i class="fa-solid fa-trash text-sm"></i>
                   </button>
                 ` : ''}
               </div>
@@ -1643,9 +1726,16 @@
       recordModal.classList.remove('hidden');
     };
 
+    // دالة حذف الإنجاز في حالة الإضافة الخاطئة
     window.deleteRecord = async function(id) {
-      if (confirm("هل أنت متأكد من حذف هذا الإنجاز؟")) {
-        await db.collection('achievements').doc(id).delete();
+      const item = achievements.find(x => x.id === id);
+      const ticketText = item ? `رقم التذكرة: (${item.ticketNo || id})` : '';
+      if (confirm(`تأكيد الحذف الإداري:\nهل أنت متأكد من حذف هذه المهمة المسجلة ${ticketText}؟\nسيتم حذفها نهائياً من قاعدة البيانات.`)) {
+        try {
+          await db.collection('achievements').doc(id).delete();
+        } catch (err) {
+          alert("حدث خطأ أثناء محاولة الحذف: " + err.message);
+        }
       }
     };
 
@@ -1656,7 +1746,6 @@
       document.getElementById('targetAdminResetEmail').value = email;
       document.getElementById('targetAdminResetName').textContent = `${name} (${email})`;
       document.getElementById('targetAdminDirectPassword').value = '';
-      document.getElementById('adminDirectPassMsg').classList.add('hidden');
       adminDirectPasswordModal.classList.remove('hidden');
     };
     window.closeAdminDirectPasswordModal = function() { adminDirectPasswordModal.classList.add('hidden'); };
@@ -1712,7 +1801,6 @@
     const changePasswordModal = document.getElementById('changePasswordModal');
     window.openChangePasswordModal = function() {
       document.getElementById('changePasswordForm').reset();
-      document.getElementById('changePassMsg').classList.add('hidden');
       changePasswordModal.classList.remove('hidden');
     };
     window.closeChangePasswordModal = function() { changePasswordModal.classList.add('hidden'); };
@@ -1742,6 +1830,23 @@
       loadUsersList();
     };
     window.closePermissionsModal = function() { permissionsModal.classList.add('hidden'); };
+
+    window.deleteSingleUser = async function(uid, name) {
+      if (uid === currentUser.uid) return alert("لا يمكنك حذف حسابك الشخصي (مدير النظام).");
+      try {
+        const tasksSnap = await db.collection('achievements').where('userId', '==', uid).get();
+        if (tasksSnap.size > 0) {
+          alert(`🚫 لا يمكن حذف الموظف (${name}) لوجود مهام مرتبطة بحسابه. يرجى أرشفته بدلاً من ذلك.`);
+          return;
+        }
+        if (confirm(`حذف حساب الموظف (${name}) نهائياً؟`)) {
+          await db.collection('users').doc(uid).delete();
+          await cacheAllUsers();
+          loadUsersList();
+          populateEmployeeFilterHierarchy();
+        }
+      } catch (err) { alert(err.message); }
+    };
 
     async function loadUsersList() {
       const tbody = document.getElementById('usersPermissionsTableBody');
@@ -1846,7 +1951,7 @@
         const secondaryApp = firebase.initializeApp(firebaseConfig, "SecApp" + Date.now());
         const newUserCred = await secondaryApp.auth().createUserWithEmailAndPassword(email, pass);
         await db.collection('users').doc(newUserCred.user.uid).set({
-          name, department: dept, section: sec, email, role, isArchived: false, mustChangePassword: true, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          name, department: dept, section: sec, email, role, avatar: null, isArchived: false, mustChangePassword: true, createdAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         await secondaryApp.auth().signOut();
         secondaryApp.delete();
@@ -1937,10 +2042,7 @@
       }).join('');
     }
 
-    // ==========================================================
-    // منطق التقرير الذكي المحدث كلياً:
-    // فحص هل السجلات تخص نفس الشخص المستخرج أم أنها متعددة الموظفين
-    // ==========================================================
+    // منطق التقرير الذكي: فحص السجلات المعروضة
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -1976,7 +2078,6 @@
         return matchesQuery && matchesDate && matchesEmp && matchesType && matchesStatus && matchesDeptScope;
       });
 
-      // فحص ذكي: هل جميع الإنجازات المعروضة في التقرير تخص شخصاً واحداً فقط؟
       const distinctEmployees = [...new Set(data.map(d => d.employeeName).filter(Boolean))];
       
       const isIndividual = (currentUserProfile.role === 'employee') || 
@@ -2013,7 +2114,6 @@
       else if (sDate) periodText = `من تاريخ ${sDate}`;
       else if (eDate) periodText = `حتى تاريخ ${eDate}`;
 
-      // تحديد الاعتماد الإداري وفق التسلسل
       let dynamicManagerTitle = '';
       if (isIndividual) {
         if (targetEmpRole === 'employee') {
@@ -2048,7 +2148,7 @@
       return { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle };
     }
 
-    // تصدير Word بدقة تامة وبدون الأعمدة الثلاثة عند التقرير الفردي
+    // تصدير Word
     document.getElementById('exportWordBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle } = getExportScope();
       if (data.length === 0) return alert("لا توجد إنجازات معتمدة للتصدير.");
@@ -2058,7 +2158,6 @@
       let tableRows = '';
 
       if (isIndividual) {
-        // تقرير فردي: استبعاد (الاعتماد - الموظف - إدارة الموظف) وإضافة الإدارة المستفيدة وتوسيع عمود الخدمة والإجراء
         tableHeaders = `
           <tr>
             <th style="width: 4%;">م</th>
@@ -2084,7 +2183,6 @@
           </tr>
         `).join('');
       } else {
-        // تقرير مجمع يخص عدة موظفين تحت مسؤول
         tableHeaders = `
           <tr>
             <th style="width: 3%;">م</th>
