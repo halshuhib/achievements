@@ -33,7 +33,7 @@
       main { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
       table { width: 100% !important; border-collapse: collapse !important; border: 1.5px solid #000 !important; }
       thead th { border: 1px solid #000 !important; padding: 5px !important; font-size: 11pt !important; background: #f1f5f9 !important; font-family: Arial, sans-serif !important; }
-      tbody td { border: 1px solid #000 !important; padding: 5px !important; font-size: 11pt !important; line-height: 1.25 !important; font-family: Arial, sans-serif !important; }
+      tbody td { border: 1px solid #000 !important; padding: 5px !important; font-size: 11pt !important; line-height: 1.3 !important; font-family: Arial, sans-serif !important; }
       th:last-child, td:last-child { display: none !important; }
       #printReportHeader, #printReportFooter { display: block !important; font-family: Arial, sans-serif !important; }
     }
@@ -44,7 +44,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- 1. شاشة الدخول -->
+  <!-- شاشة الدخول -->
   <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 w-full max-w-md">
       <div class="text-center mb-6">
@@ -78,15 +78,15 @@
     </div>
   </div>
 
-  <!-- 2. واجهة التطبيق الرئيسية -->
+  <!-- واجهة التطبيق الرئيسية -->
   <div id="mainAppSection" class="hidden flex-1 flex flex-col">
-    <!-- ترويسة الطباعة -->
+    <!-- ترويسة الطباعة الرسمية المعتمدة -->
     <div id="printReportHeader" class="mb-4">
       <div class="text-center pb-2 mb-2">
         <h2 id="printReportTitle" style="font-size: 18pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية المعتمدة</h2>
         <p style="font-size: 12pt; color: #334155; margin: 3px 0 0 0;">الإدارة العامة لتقنية المعلومات والتحول الرقمي</p>
       </div>
-      <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 8px; font-size: 12pt;">
+      <table style="width: 100%; border: 1.5px solid #000; margin-bottom: 8px; font-size: 11pt;">
         <tr>
           <td style="padding: 5px; width: 33%;"><b>الموظف / النطاق:</b> <span id="printEmployeeName">-</span></td>
           <td style="padding: 5px; width: 33%;"><b>الإدارة / القسم:</b> <span id="printEmployeeDept">-</span></td>
@@ -290,14 +290,14 @@
         </div>
       </div>
 
-      <!-- تذييل الطباعة -->
+      <!-- تذييل الطباعة المعتمد -->
       <div id="printReportFooter" class="mt-8 pt-4 border-t-2 border-slate-900">
-        <div id="printFooterBoxes" style="display: flex; justify-content: space-between; text-align: center; font-size: 12pt;"></div>
+        <div id="printFooterBoxes" style="display: flex; justify-content: space-between; text-align: center; font-size: 11pt;"></div>
       </div>
     </main>
   </div>
 
-  <!-- 3. نافذة إدارة القوائم المنسدلة مع التحكم الكامل بالترتيب -->
+  <!-- باقي المودالات والنوافذ الإدارية -->
   <div id="lookupsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-teal-800 text-white flex items-center justify-between">
@@ -318,7 +318,6 @@
       </div>
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs flex-1">
-        <!-- تبويب الإدارات المستفيدة -->
         <div id="lookupTabContentDestDepts" class="space-y-3">
           <div class="flex gap-2">
             <input type="text" id="newDestDeptInput" placeholder="أدخل اسم الجهة أو المحافظة المستفيدة..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
@@ -326,13 +325,9 @@
               <i class="fa-solid fa-plus"></i> إضافة جهة
             </button>
           </div>
-          <div class="text-[11px] text-slate-500 font-semibold mb-1 flex items-center gap-1">
-            <i class="fa-solid fa-up-down text-teal-700"></i> استخدم الأسهم لتقديم أو تأخير ظهور الجهات في القائمة:
-          </div>
           <div id="destDeptsContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
         </div>
 
-        <!-- تبويب الأنظمة -->
         <div id="lookupTabContentSystems" class="hidden space-y-3">
           <div class="flex gap-2">
             <input type="text" id="newSystemInput" placeholder="أدخل اسم النظام التقني الجديد..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
@@ -340,13 +335,9 @@
               <i class="fa-solid fa-plus"></i> إضافة نظام
             </button>
           </div>
-          <div class="text-[11px] text-slate-500 font-semibold mb-1 flex items-center gap-1">
-            <i class="fa-solid fa-up-down text-teal-700"></i> التحكم في ترتيب ظهور الأنظمة:
-          </div>
           <div id="systemsListContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
         </div>
 
-        <!-- تبويب أنواع الطلبات -->
         <div id="lookupTabContentTypes" class="hidden space-y-3">
           <div class="flex gap-2">
             <input type="text" id="newTypeInput" placeholder="أدخل نوع الطلب الجديد..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
@@ -354,13 +345,9 @@
               <i class="fa-solid fa-plus"></i> إضافة نوع
             </button>
           </div>
-          <div class="text-[11px] text-slate-500 font-semibold mb-1 flex items-center gap-1">
-            <i class="fa-solid fa-up-down text-teal-700"></i> التحكم في ترتيب ظهور أنواع الطلبات:
-          </div>
           <div id="typesListContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
         </div>
 
-        <!-- تبويب الهيكل الداخلي -->
         <div id="lookupTabContentOrg" class="hidden space-y-4">
           <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
             <h5 class="font-bold text-slate-800">إضافة قسم جديد تحت إدارة معينة:</h5>
@@ -377,13 +364,11 @@
       </div>
 
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-        <span class="text-[11px] text-slate-400 font-semibold">يتم حفظ الترتيب تلقائياً في السحابة فور الضغط على أي سهم.</span>
         <button onclick="closeLookupsModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- 4. نافذة عرض تفاصيل المهمة -->
   <div id="viewRecordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -393,424 +378,237 @@
         </div>
         <button onclick="closeViewRecordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
-
       <div class="p-5 space-y-3.5 text-xs overflow-y-auto">
         <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
-          <div>
-            <span class="text-slate-400 block text-[11px]">رقم التذكرة:</span>
-            <span id="viewDetailTicket" class="font-mono font-bold text-blue-700 text-sm"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px]">التاريخ:</span>
-            <span id="viewDetailDate" class="font-bold text-slate-800"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px]">الموظف المنفذ:</span>
-            <span id="viewDetailEmployee" class="font-bold text-slate-800"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px]">إدارة وقسم الموظف:</span>
-            <span id="viewDetailEmpDept" class="font-bold text-slate-700"></span>
-          </div>
+          <div><span class="text-slate-400 block text-[11px]">رقم التذكرة:</span><span id="viewDetailTicket" class="font-mono font-bold text-blue-700 text-sm"></span></div>
+          <div><span class="text-slate-400 block text-[11px]">التاريخ:</span><span id="viewDetailDate" class="font-bold text-slate-800"></span></div>
+          <div><span class="text-slate-400 block text-[11px]">الموظف المنفذ:</span><span id="viewDetailEmployee" class="font-bold text-slate-800"></span></div>
+          <div><span class="text-slate-400 block text-[11px]">إدارة وقسم الموظف:</span><span id="viewDetailEmpDept" class="font-bold text-slate-700"></span></div>
         </div>
-
         <div class="grid grid-cols-2 gap-3 p-3 bg-slate-50 border border-slate-200 rounded-xl">
-          <div>
-            <span class="text-slate-400 block text-[11px]">حالة الاعتماد:</span>
-            <span id="viewDetailStatus" class="inline-block mt-0.5"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px]">نوع الطلب:</span>
-            <span id="viewDetailType" class="font-bold text-slate-800"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px]">اسم المستفيد:</span>
-            <span id="viewDetailBeneficiary" class="font-bold text-blue-900"></span>
-          </div>
-          <div>
-            <span class="text-slate-400 block text-[11px]">النظام التقني:</span>
-            <span id="viewDetailSystem" class="font-bold text-emerald-800"></span>
-          </div>
+          <div><span class="text-slate-400 block text-[11px]">حالة الاعتماد:</span><span id="viewDetailStatus" class="inline-block mt-0.5"></span></div>
+          <div><span class="text-slate-400 block text-[11px]">نوع الطلب:</span><span id="viewDetailType" class="font-bold text-slate-800"></span></div>
+          <div><span class="text-slate-400 block text-[11px]">اسم المستفيد:</span><span id="viewDetailBeneficiary" class="font-bold text-blue-900"></span></div>
+          <div><span class="text-slate-400 block text-[11px]">النظام التقني:</span><span id="viewDetailSystem" class="font-bold text-emerald-800"></span></div>
         </div>
-
         <div>
           <span class="text-slate-400 block text-[11px] mb-1">الإدارة الطالبة / المستفيدة:</span>
           <div id="viewDetailDepartment" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800"></div>
         </div>
-
         <div>
           <span class="text-slate-400 block text-[11px] mb-1">الخدمة المطلوبة:</span>
           <div id="viewDetailService" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-semibold text-slate-800"></div>
         </div>
-
         <div>
           <span class="text-slate-400 block text-[11px] mb-1">الإجراء والحل المنفذ:</span>
           <div id="viewDetailSolution" class="p-3 bg-slate-50 border border-slate-200 rounded-xl text-slate-700 leading-relaxed whitespace-pre-wrap"></div>
         </div>
-
         <div id="viewDetailRejectionBox" class="hidden p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-900">
           <b class="block mb-1"><i class="fa-solid fa-ban ml-1"></i> ملاحظات الرفض:</b>
           <p id="viewDetailRejectionReason" class="font-semibold"></p>
         </div>
       </div>
-
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
         <button onclick="closeViewRecordModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- 5. نافذة رفض الطلب مع ذكر السبب -->
   <div id="rejectReasonModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-rose-700 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-circle-xmark text-lg"></i>
-          <h3 class="font-bold text-sm">رفض الطلب وإعادته للموظف مع الملاحظات</h3>
-        </div>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-circle-xmark text-lg"></i><h3 class="font-bold text-sm">رفض الطلب</h3></div>
         <button onclick="closeRejectReasonModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="rejectReasonForm" class="p-5 space-y-3 text-xs">
         <input type="hidden" id="rejectRecordDocId">
-        <div class="p-2.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-900 leading-relaxed">
-          <span><b>ضابط تنظيمي:</b> عند رفض الطلب، سيختفي فوراً من صندوق المهام النشطة الخاص بك، ويعود للموظف لاستيفاء الملاحظات وإعادة رفعه بمبرر رسمي.</span>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">سبب الرفض والملاحظات المطلوبة <span class="text-red-500">*</span></label>
-          <textarea id="rejectionReasonText" required rows="3" placeholder="اكتب بالتفصيل سبب الرفض أو النواقص المطلوبة من الموظف..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
-        </div>
+        <label class="block font-bold text-slate-700 mb-1">سبب الرفض <span class="text-red-500">*</span></label>
+        <textarea id="rejectionReasonText" required rows="3" placeholder="اكتب الملاحظات..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
         <div class="pt-2 flex justify-end gap-2">
           <button type="button" onclick="closeRejectReasonModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" id="saveRejectBtn" class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg flex items-center gap-1.5">
-            <i class="fa-solid fa-ban"></i>
-            <span>تأكيد الرفض والإبعاد</span>
-          </button>
+          <button type="submit" id="saveRejectBtn" class="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg">تأكيد الرفض</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 6. نافذة التراجع الاستثنائي عن الرفض -->
   <div id="unrejectModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-amber-700 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-rotate-left text-lg"></i>
-          <h3 class="font-bold text-sm">التراجع الاستثنائي عن الرفض</h3>
-        </div>
+        <div class="flex items-center gap-2"><i class="fa-solid fa-rotate-left text-lg"></i><h3 class="font-bold text-sm">التراجع عن الرفض</h3></div>
         <button onclick="closeUnrejectModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="unrejectForm" class="p-5 space-y-3 text-xs">
         <input type="hidden" id="unrejectDocId">
-        <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 leading-relaxed">
-          <span>لا يمكن إلغاء الرفض إلا بكتابة مبرر إداري واضح يُسجل في تاريخ المعاملة، ويُعاد الطلب لحالة "بانتظار الاعتماد".</span>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">سبب ومبرر التراجع عن الرفض <span class="text-red-500">*</span></label>
-          <textarea id="unrejectReasonText" required rows="3" placeholder="مثال: تم التأكد من اكتمال الإجراء / خطأ غير مقصود في قرار الرفض..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
-        </div>
+        <label class="block font-bold text-slate-700 mb-1">سبب التراجع <span class="text-red-500">*</span></label>
+        <textarea id="unrejectReasonText" required rows="3" placeholder="المبرر الإداري..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
         <div class="pt-2 flex justify-end gap-2">
           <button type="button" onclick="closeUnrejectModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" class="px-4 py-1.5 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-lg flex items-center gap-1.5">
-            <i class="fa-solid fa-check"></i>
-            <span>تأكيد التراجع وإعادة الطلب</span>
-          </button>
+          <button type="submit" class="px-4 py-1.5 bg-amber-700 hover:bg-amber-800 text-white font-bold rounded-lg">تأكيد</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 7. نافذة معالجة وإعادة إرسال الطلب المرفوض -->
   <div id="resubmitModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-pen-to-square text-lg"></i>
-          <h3 class="font-bold text-base">معالجة واستكمال الإنجاز المرفوض وإعادة الرفع</h3>
-        </div>
+        <h3 class="font-bold text-base">معالجة وإعادة الرفع</h3>
         <button onclick="closeResubmitModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="resubmitForm" class="p-5 space-y-3 text-xs overflow-y-auto">
         <input type="hidden" id="resubmitDocId">
-
-        <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-900">
-          <p class="font-bold mb-1"><i class="fa-solid fa-circle-exclamation ml-1"></i> ملاحظات المسؤول عند الرفض:</p>
-          <p id="resubmitViewReason" class="font-semibold text-slate-800 bg-white p-2 rounded-lg border border-rose-100"></p>
-        </div>
-
+        <div class="p-3 bg-rose-50 border border-rose-200 rounded-xl text-rose-900"><p id="resubmitViewReason" class="font-semibold"></p></div>
         <div>
-          <label class="block font-bold text-slate-700 mb-1">الإجراء المنفذ (المعدل / المستكمل) <span class="text-red-500">*</span></label>
+          <label class="block font-bold text-slate-700 mb-1">الإجراء المنفذ (المعدل) <span class="text-red-500">*</span></label>
           <textarea id="resubmitSolution" required rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
         </div>
-
         <div>
-          <label class="block font-bold text-slate-700 mb-1">رد الموظف ومبرر إعادة الرفع للمعتمد <span class="text-red-500">*</span></label>
-          <textarea id="resubmitExplanation" required rows="2" placeholder="اكتب ما تم استكماله رداً على ملاحظات المسؤول..." class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
+          <label class="block font-bold text-slate-700 mb-1">مبرر الموظف <span class="text-red-500">*</span></label>
+          <textarea id="resubmitExplanation" required rows="2" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none resize-none"></textarea>
         </div>
-
         <div class="pt-2 flex justify-end gap-2 border-t border-slate-100">
           <button type="button" onclick="closeResubmitModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg flex items-center gap-1.5">
-            <i class="fa-solid fa-paper-plane"></i>
-            <span>إعادة الرفع للاعتماد الآن</span>
-          </button>
+          <button type="submit" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg">إعادة الرفع</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 8. نافذة إدارة الهيكل والموظفين -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-sitemap text-lg"></i>
-          <h3 class="font-bold text-base">إدارة الهيكل التنظيمي، الأدوار وقيد المسؤولين والموظفين</h3>
-        </div>
-        <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
+        <h3 class="font-bold text-base">إدارة الهيكل والموظفين</h3>
+        <button onclick="closePermissionsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-
       <div class="p-5 overflow-y-auto space-y-4">
-        <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
-          <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
-          <span><b>ضابط حماية السجلات:</b> عند تعديل إدارة أو قسم الموظف، يقوم النظام تلقائياً بتحديث كافة إنجازاته لتتبع القسم الجديد فوراً دون فقدان أي إنجاز.</span>
-        </div>
-
         <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
-          <h4 id="empFormHeading" class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-            <i class="fa-solid fa-user-plus text-emerald-700"></i>
-            <span>إضافة وتعيين موظف جديد وفق الهيكل الإداري</span>
-          </h4>
+          <h4 id="empFormHeading" class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-user-plus text-emerald-700"></i><span>إضافة موظف</span></h4>
           <form id="createEmployeeForm" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
             <input type="hidden" id="editingEmpUid">
+            <div><label class="block font-bold text-slate-700 mb-1">اسم الموظف</label><input type="text" id="newEmpName" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none"></div>
+            <div><label class="block font-bold text-slate-700 mb-1">البريد الرسمي</label><input type="email" id="newEmpEmail" required class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none"></div>
+            <div><label class="block font-bold text-slate-700 mb-1">الإدارة</label><select id="newEmpDept" required onchange="handleDeptChange(this.value)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-semibold"></select></div>
             <div>
-              <label class="block font-bold text-slate-700 mb-1">اسم الموظف الثلاثي</label>
-              <input type="text" id="newEmpName" required placeholder="مثال: فهد محمد الدوسري" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
-            </div>
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">البريد الإلكتروني الرسمي</label>
-              <input type="email" id="newEmpEmail" required placeholder="emp@domain.gov.sa" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">الإدارة التابع لها</label>
-              <select id="newEmpDept" required onchange="handleDeptChange(this.value)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-semibold"></select>
-            </div>
-
-            <div>
-              <label class="block font-bold text-slate-700 mb-1">الدور والصلاحية</label>
+              <label class="block font-bold text-slate-700 mb-1">الدور</label>
               <select id="newEmpRole" onchange="handleRoleChange(this.value)" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none font-bold text-slate-800">
-                <option value="employee">موظف (يسجل ويدير إنجازاته الخاصة)</option>
-                <option value="section_head">رئيس قسم (يشرف ويعتمد مهام قسمه وموظفيه)</option>
-                <option value="dept_manager">مدير إدارة (يشرف على الإدارة ومدراء أقسامها وموظفيها)</option>
-                <option value="admin">مدير عام / مدير نظام (إشراف شامل على الهيكل بالكامل)</option>
+                <option value="employee">موظف</option>
+                <option value="section_head">رئيس قسم</option>
+                <option value="dept_manager">مدير إدارة</option>
+                <option value="admin">مدير عام / مدير نظام</option>
               </select>
             </div>
-
-            <div id="sectionContainer">
-              <label class="block font-bold text-slate-700 mb-1">القسم التابع له</label>
-              <select id="newEmpSection" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
-                <option value="عام الإدارة / بدون قسم">عام الإدارة / بدون قسم</option>
-              </select>
-            </div>
-
-            <div id="passContainer">
-              <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة</label>
-              <input type="text" id="newEmpPass" placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
-            </div>
-
+            <div id="sectionContainer"><label class="block font-bold text-slate-700 mb-1">القسم</label><select id="newEmpSection" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none"></select></div>
+            <div id="passContainer"><label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة</label><input type="text" id="newEmpPass" placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none"></div>
             <div class="sm:col-span-2 flex justify-end gap-2 pt-1">
-              <button type="button" id="cancelEditEmpBtn" onclick="resetEmpForm()" class="hidden px-3 py-2 bg-slate-200 text-slate-700 font-bold rounded-lg transition">إلغاء التعديل</button>
-              <button type="submit" id="createEmpBtn" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg transition flex items-center gap-1">
-                <i class="fa-solid fa-check"></i>
-                <span id="createEmpBtnText">إنشاء وتفعيل الحساب</span>
-              </button>
+              <button type="button" id="cancelEditEmpBtn" onclick="resetEmpForm()" class="hidden px-3 py-2 bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
+              <button type="submit" id="createEmpBtn" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg"><span id="createEmpBtnText">حفظ</span></button>
             </div>
           </form>
           <div id="createEmpMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         </div>
-
-        <div>
-          <h4 class="text-xs font-bold text-slate-700 mb-2">قائمة منسوبي الإدارة العامة وحساباتهم:</h4>
-          <div class="overflow-x-auto border border-slate-200 rounded-xl">
-            <table class="w-full text-right text-xs">
-              <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
-                <tr>
-                  <th class="p-2.5">اسم الموظف</th>
-                  <th class="p-2.5">البريد</th>
-                  <th class="p-2.5">الإدارة</th>
-                  <th class="p-2.5">القسم</th>
-                  <th class="p-2.5">الدور المحدد</th>
-                  <th class="p-2.5 text-center">الحالة</th>
-                  <th class="p-2.5 text-center">خيارات التحكم وتعيين كلمة المرور</th>
-                </tr>
-              </thead>
-              <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100">
-                <tr><td colspan="7" class="text-center py-4 text-slate-400">جاري تحميل القائمة...</td></tr>
-              </tbody>
-            </table>
-          </div>
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+          <table class="w-full text-right text-xs">
+            <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-2.5">اسم الموظف</th>
+                <th class="p-2.5">البريد</th>
+                <th class="p-2.5">الإدارة</th>
+                <th class="p-2.5">القسم</th>
+                <th class="p-2.5">الدور</th>
+                <th class="p-2.5 text-center">الحالة</th>
+                <th class="p-2.5 text-center">خيارات</th>
+              </tr>
+            </thead>
+            <tbody id="usersPermissionsTableBody" class="divide-y divide-slate-100"></tbody>
+          </table>
         </div>
       </div>
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
-        <button onclick="closePermissionsModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl transition">إغلاق</button>
+        <button onclick="closePermissionsModal()" class="px-4 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- 9. نافذة تعيين كلمة المرور المباشرة -->
   <div id="adminDirectPasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-user-shield text-lg"></i>
-          <h3 class="font-bold text-sm">تعيين كلمة مرور مؤقتة مباشرة</h3>
-        </div>
+        <h3 class="font-bold text-sm">تعيين كلمة مرور مؤقتة مباشرة</h3>
         <button onclick="closeAdminDirectPasswordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="adminDirectPasswordForm" class="p-5 space-y-3 text-xs">
         <input type="hidden" id="targetAdminResetUid">
         <input type="hidden" id="targetAdminResetEmail">
-        <div class="p-2.5 bg-amber-50 border border-amber-200 rounded-xl text-amber-900 text-[11px] leading-relaxed">
-          <span>الموظف: <b id="targetAdminResetName" class="text-slate-800"></b></span><br>
-          <span>سيدخل الموظف فوراً بهذه الكلمة وسيجبره النظام على استبدالها برمز خاص وسري قبل فتح النظام.</span>
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة الجديدة</label>
-          <input type="text" id="targetAdminDirectPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none font-mono font-bold">
-        </div>
+        <span id="targetAdminResetName" class="font-bold block text-slate-800 mb-1"></span>
+        <input type="text" id="targetAdminDirectPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none font-mono font-bold">
         <div id="adminDirectPassMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="closeAdminDirectPasswordModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" id="saveAdminDirectPassBtn" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg flex items-center gap-1.5">
-            <i class="fa-solid fa-lock"></i>
-            <span>حفظ وتفعيل فوري</span>
-          </button>
+          <button type="button" onclick="closeAdminDirectPasswordModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" id="saveAdminDirectPassBtn" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded-lg">حفظ</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 10. نافذة تغيير كلمة المرور الاختيارية -->
   <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-key text-lg"></i>
-          <h3 class="font-bold text-sm">تغيير كلمة المرور الخاصة بي</h3>
-        </div>
+        <h3 class="font-bold text-sm">تغيير كلمة المرور الخاصة بي</h3>
         <button onclick="closeChangePasswordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="changePasswordForm" class="p-5 space-y-3 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">كلمة المرور الجديدة</label>
-          <input type="password" id="myNewPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">تأكيد كلمة المرور الجديدة</label>
-          <input type="password" id="myConfirmPassword" required placeholder="أعد كتابة كلمة المرور" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
-        </div>
+        <input type="password" id="myNewPassword" required placeholder="كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+        <input type="password" id="myConfirmPassword" required placeholder="تأكيد كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
         <div id="changePassMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         <div class="pt-2 flex justify-end gap-2">
-          <button type="button" onclick="closeChangePasswordModal()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
-          <button type="submit" id="savePasswordBtn" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg">حفظ التغيير</button>
+          <button type="button" onclick="closeChangePasswordModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
+          <button type="submit" id="savePasswordBtn" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded-lg">حفظ</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 11. شاشة تغيير كلمة المرور الإجبارية -->
   <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/85 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-emerald-500/30">
       <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-800 text-white text-center">
-        <div class="w-12 h-12 bg-white/20 rounded-2xl mx-auto flex items-center justify-center mb-2 shadow-inner">
-          <i class="fa-solid fa-shield-halved text-2xl text-white"></i>
-        </div>
         <h3 class="font-black text-base">تحديث أمني إجباري لكلمة المرور</h3>
-        <p class="text-xs text-emerald-100 mt-1">تم تعيين كلمة مرور مؤقتة لحسابك. حفاظاً على السرية التامة، يجب تعيين كلمة مرور خاصة وجديدة للدخول.</p>
       </div>
       <form id="forceChangePasswordForm" class="p-6 space-y-3.5 text-xs">
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">كلمة المرور السرية الجديدة</label>
-          <input type="password" id="forceNewPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-emerald-600">
-        </div>
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">تأكيد كلمة المرور الجديدة</label>
-          <input type="password" id="forceConfirmPassword" required placeholder="أعد إدخال كلمة المرور" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none focus:ring-2 focus:ring-emerald-600">
-        </div>
+        <input type="password" id="forceNewPassword" required placeholder="كلمة المرور الجديدة" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
+        <input type="password" id="forceConfirmPassword" required placeholder="تأكيد كلمة المرور" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
         <div id="forceChangePassMsg" class="hidden text-xs p-2.5 rounded-xl font-semibold text-center"></div>
-        <div class="pt-2">
-          <button type="submit" id="saveForcePasswordBtn" class="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-lg shadow-emerald-700/20 transition flex items-center justify-center gap-2">
-            <i class="fa-solid fa-check-double"></i>
-            <span>تحديث كلمة المرور والدخول للنظام</span>
-          </button>
-        </div>
+        <button type="submit" id="saveForcePasswordBtn" class="w-full py-3 bg-emerald-700 text-white font-bold rounded-xl">حفظ ودخول</button>
       </form>
     </div>
   </div>
 
-  <!-- 12. نافذة النسخ الاحتياطي وتصفير السجلات -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-database text-lg"></i>
-          <h3 class="font-bold text-base">إدارة النسخ الاحتياطي ومسح السجلات</h3>
-        </div>
+        <h3 class="font-bold text-base">النسخ الاحتياطي ومسح السجلات</h3>
         <button onclick="closeBackupModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="p-5 space-y-4 text-xs">
-        <div class="p-3.5 bg-blue-50 border border-blue-200 rounded-xl">
-          <h4 class="font-bold text-blue-900 mb-1"><i class="fa-solid fa-cloud-arrow-down ml-1"></i> تصدير نسخة شاملة:</h4>
-          <p class="text-slate-600 mb-2.5">تنزيل ملف JSON يحتوي على كامل الهيكل وسجلات الإنجازات والمستخدمين والقوائم المنسدلة.</p>
-          <button onclick="exportBackupData()" class="px-3.5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-download"></i>
-            <span>تنزيل ملف النسخة الاحتياطية (JSON)</span>
-          </button>
+        <button onclick="exportBackupData()" class="w-full py-2.5 bg-blue-600 text-white font-bold rounded-lg">تنزيل نسخة احتياطية (JSON)</button>
+        <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl">
+          <input type="file" id="restoreFileInput" accept=".json" class="block w-full text-xs">
+          <button onclick="importBackupData()" class="mt-2 px-3 py-1.5 bg-amber-600 text-white font-bold rounded-lg">استعادة نسخة</button>
+          <div id="restoreStatusMsg" class="mt-1 text-[11px] font-bold"></div>
         </div>
-
-        <div class="p-3.5 bg-amber-50 border border-amber-200 rounded-xl">
-          <h4 class="font-bold text-amber-900 mb-1"><i class="fa-solid fa-cloud-arrow-up ml-1"></i> استعادة نسخة:</h4>
-          <p class="text-slate-600 mb-2.5">استرجاع السجلات والهيكل والقوائم من ملف محفوظ.</p>
-          <input type="file" id="restoreFileInput" accept=".json" class="block w-full text-xs text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:bg-amber-600 file:text-white file:font-semibold">
-          <button onclick="importBackupData()" class="mt-3 px-3.5 py-2 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-rotate-left"></i>
-            <span>بدء الاستعادة الآن</span>
-          </button>
-          <div id="restoreStatusMsg" class="mt-2 text-[11px] font-bold"></div>
-        </div>
-
-        <div class="p-3.5 bg-rose-50 border border-rose-200 rounded-xl">
-          <h4 class="font-bold text-rose-900 mb-1 flex items-center gap-1.5">
-            <i class="fa-solid fa-triangle-exclamation text-rose-600"></i>
-            <span>مسح وتصفير جميع بيانات الإنجازات والموظفين:</span>
-          </h4>
-          <p class="text-slate-600 mb-2.5">سيقوم النظام إجبارياً بتنزيل نسخة احتياطية على جهازك أولاً، ثم مسح كافة سجلات الإنجازات وحسابات الموظفين نهائياً مع الإبقاء على حساب مدير النظام فقط.</p>
-          <button onclick="safePurgeAllData()" class="px-3.5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-lg flex items-center gap-1.5 transition">
-            <i class="fa-solid fa-trash-can"></i>
-            <span>أخذ نسخة وتصفير النظام كاملاً</span>
-          </button>
-        </div>
+        <button onclick="safePurgeAllData()" class="w-full py-2.5 bg-rose-600 text-white font-bold rounded-lg">أخذ نسخة وتصفير النظام كاملاً</button>
       </div>
-      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
-        <button onclick="closeBackupModal()" class="px-4 py-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl">إغلاق</button>
-      </div>
+      <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end"><button onclick="closeBackupModal()" class="px-4 py-1.5 bg-slate-200 text-slate-700 font-bold rounded-xl">إغلاق</button></div>
     </div>
   </div>
 
-  <!-- 13. نافذة تسجيل وتعديل الإنجاز -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
         <h3 id="recordModalTitle" class="text-base font-bold text-slate-800">إضافة إنجاز جديد</h3>
         <button id="closeRecordModalBtn" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-
       <form id="recordForm" class="p-5 space-y-3 overflow-y-auto text-xs">
         <input type="hidden" id="editDocId">
-        
         <div class="grid grid-cols-2 gap-3">
           <div>
             <div class="flex items-center justify-between mb-1">
@@ -825,263 +623,79 @@
           </div>
         </div>
 
-        <div class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl">
-          <label class="block font-bold text-slate-800 mb-1.5 flex items-center gap-1.5">
-            <i class="fa-solid fa-stamp text-emerald-700"></i>
-            <span>حالة اعتماد هذا الإنجاز:</span>
-          </label>
-          <div class="grid grid-cols-2 gap-2">
-            <label class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-white transition">
-              <input type="radio" name="requiresApproval" value="false" checked class="text-emerald-600 focus:ring-emerald-500">
-              <span class="font-bold text-slate-700">لا يحتاج اعتماد (معتمد تلقائياً)</span>
-            </label>
-            <label class="flex items-center gap-2 p-2 border border-slate-200 rounded-lg cursor-pointer hover:bg-white transition">
-              <input type="radio" name="requiresApproval" value="true" class="text-emerald-600 focus:ring-emerald-500">
-              <span class="font-bold text-slate-700">يتطلب اعتماد المسؤول</span>
-            </label>
-          </div>
+        <div class="p-2 bg-slate-50 border border-slate-200 rounded-xl flex gap-4">
+          <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="requiresApproval" value="false" checked><span class="font-bold">معتمد تلقائياً</span></label>
+          <label class="flex items-center gap-1.5 cursor-pointer"><input type="radio" name="requiresApproval" value="true"><span class="font-bold">يتطلب اعتماد</span></label>
         </div>
 
         <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">نوع الطلب</label>
-            <select id="formType" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none"></select>
-          </div>
-          <div>
-            <label class="block font-bold text-slate-700 mb-1">النظام المرتبط</label>
-            <select id="formSystem" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none"></select>
-          </div>
+          <div><label class="block font-bold text-slate-700 mb-1">نوع الطلب</label><select id="formType" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none"></select></div>
+          <div><label class="block font-bold text-slate-700 mb-1">النظام المرتبط</label><select id="formSystem" required class="w-full px-3 py-2 bg-slate-50 font-semibold rounded-xl border border-slate-200 outline-none"></select></div>
         </div>
 
+        <div><label class="block font-bold text-slate-700 mb-1">اسم المستفيد</label><input type="text" id="formBeneficiary" required class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none"></div>
         <div>
-          <label class="block font-bold text-slate-700 mb-1">اسم المستفيد</label>
-          <input type="text" id="formBeneficiary" required placeholder="مثال: علي محمد" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="block font-bold text-slate-700">الإدارة المستفيدة (بحث ذكي)</label>
-            <span class="text-[10px] text-emerald-700">اكتب للبحث أو اختر من القائمة</span>
-          </div>
-          <input type="text" id="formDepartment" list="easternEmirateDepartmentsList" required placeholder="ابحث أو اختر الإدارة المستفيدة..." class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
+          <label class="block font-bold text-slate-700 mb-1">الإدارة الطالبة / المستفيدة</label>
+          <input type="text" id="formDepartment" list="easternEmirateDepartmentsList" required class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
           <datalist id="easternEmirateDepartmentsList"></datalist>
         </div>
 
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">الخدمة المطلوبة</label>
-          <input type="text" id="formService" required placeholder="مثال: معالجة صلاحيات التكليف" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none">
-        </div>
-
-        <div>
-          <label class="block font-bold text-slate-700 mb-1">الإجراء والحل المنفذ</label>
-          <textarea id="formSolution" required rows="3" placeholder="اكتب بالتفصيل ما تم اتخاذه..." class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none resize-none"></textarea>
-        </div>
+        <div><label class="block font-bold text-slate-700 mb-1">الخدمة المطلوبة</label><input type="text" id="formService" required class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none"></div>
+        <div><label class="block font-bold text-slate-700 mb-1">الإجراء والحل المنفذ</label><textarea id="formSolution" required rows="3" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none resize-none"></textarea></div>
 
         <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
-          <button type="button" id="cancelRecordModalBtn" class="px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">إلغاء</button>
-          <button type="submit" class="px-5 py-2 font-bold bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl shadow-xs transition">حفظ الإنجاز</button>
+          <button type="button" id="cancelRecordModalBtn" class="px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">إلغاء</button>
+          <button type="submit" class="px-5 py-2 font-bold bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl">حفظ الإنجاز</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- 14. نافذة التقارير الإحصائية -->
   <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-chart-pie text-lg"></i>
-          <h3 class="font-bold text-base">التقارير الإحصائية ومقارنة أداء الموظفين (المهام المعتمدة والمنجزة فقط)</h3>
-        </div>
-        <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+        <h3 class="font-bold text-base">التقارير الإحصائية (المهام المعتمدة فقط)</h3>
+        <button onclick="closeAnalyticsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark text-lg"></i></button>
       </div>
-
       <div class="p-6 overflow-y-auto space-y-6">
-        <div>
-          <h4 class="text-sm font-extrabold text-slate-800 mb-3 flex items-center gap-2">
-            <i class="fa-solid fa-trophy text-amber-500"></i>
-            <span>ترتيب الموظفين حسب الإنجاز الفعلي المعتمد (المرفوض لا يحسب)</span>
-          </h4>
-          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
-            <table class="w-full text-right text-xs">
-              <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
-                <tr>
-                  <th class="p-3">الترتيب</th>
-                  <th class="p-3">اسم الموظف</th>
-                  <th class="p-3">الإدارة والقسم</th>
-                  <th class="p-3 text-center">المهام المعتمدة المنجزة</th>
-                  <th class="p-3">نسبة المساهمة</th>
-                </tr>
-              </thead>
-              <tbody id="empRankingTableBody" class="divide-y divide-slate-100"></tbody>
-            </table>
-          </div>
+        <div class="border border-slate-200 rounded-2xl overflow-hidden">
+          <table class="w-full text-right text-xs">
+            <thead class="bg-slate-50 text-slate-700 font-bold border-b border-slate-200">
+              <tr>
+                <th class="p-3">الترتيب</th>
+                <th class="p-3">اسم الموظف</th>
+                <th class="p-3">الإدارة والقسم</th>
+                <th class="p-3 text-center">المهام المعتمدة</th>
+                <th class="p-3">نسبة المساهمة</th>
+              </tr>
+            </thead>
+            <tbody id="empRankingTableBody" class="divide-y divide-slate-100"></tbody>
+          </table>
         </div>
-
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
-            <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
-              <i class="fa-solid fa-server text-emerald-700"></i>
-              <span>أكثر الأنظمة التقنية طلباً للدعم:</span>
-            </h5>
-            <div id="systemsAnalyticsList" class="space-y-2 text-xs"></div>
-          </div>
-
-          <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50">
-            <h5 class="text-xs font-bold text-slate-800 mb-3 flex items-center gap-1.5">
-              <i class="fa-solid fa-layer-group text-purple-600"></i>
-              <span>توزيع أنواع الطلبات المنجزة:</span>
-            </h5>
-            <div id="typesAnalyticsList" class="space-y-2 text-xs"></div>
-          </div>
+          <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50"><div id="systemsAnalyticsList" class="space-y-2 text-xs"></div></div>
+          <div class="p-4 border border-slate-200 rounded-2xl bg-slate-50/50"><div id="typesAnalyticsList" class="space-y-2 text-xs"></div></div>
         </div>
       </div>
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex justify-end">
-        <button onclick="closeAnalyticsModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold rounded-xl">إغلاق</button>
+        <button onclick="closeAnalyticsModal()" class="px-5 py-2 bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">إغلاق</button>
       </div>
     </div>
   </div>
 
   <script>
     const DEFAULT_ORG_STRUCTURE = {
-      "الإدارة العامة لتقنية المعلومات والتحول الرقمي": [
-        "قسم الجودة التقنية",
-        "مكتب المدير العام"
-      ],
-      "إدارة الأنظمة والبرامج": [
-        "قسم تطور الأنظمة والبرامج",
-        "قسم الاختبار وجودة الأنظمة والبرامج"
-      ],
-      "إدارة الدعم الفني": [
-        "قسم خدمات المستفيدين",
-        "قسم الصيانة والتشغيل",
-        "قسم التمويل الفني"
-      ],
-      "إدارة البنية التحتية": [
-        "قسم الشبكات",
-        "قسم الحوسبة السحابية ومركز البيانات",
-        "قسم المخاطر واستمرارية الأعمال",
-        "قسم أمن وحماية البنية التحتية"
-      ],
-      "إدارة التحول الرقمي": [
-        "قسم تحليل الأعمال",
-        "قسم تمكين التحول الرقمي",
-        "قسم الإبتكار والذكاء الاصطناعي"
-      ],
-      "إدارة التخطيط التقني": [
-        "قسم التخطيط والدراسات",
-        "قسم البنية المؤسسية",
-        "مكتب إدارة المشاريع"
-      ]
+      "الإدارة العامة لتقنية المعلومات والتحول الرقمي": [ "قسم الجودة التقنية", "مكتب المدير العام" ],
+      "إدارة الأنظمة والبرامج": [ "قسم تطور الأنظمة والبرامج", "قسم الاختبار وجودة الأنظمة والبرامج" ],
+      "إدارة الدعم الفني": [ "قسم خدمات المستفيدين", "قسم الصيانة والتشغيل", "قسم التمويل الفني" ],
+      "إدارة البنية التحتية": [ "قسم الشبكات", "قسم الحوسبة السحابية ومركز البيانات", "قسم المخاطر واستمرارية الأعمال", "قسم أمن وحماية البنية التحتية" ],
+      "إدارة التحول الرقمي": [ "قسم تحليل الأعمال", "قسم تمكين التحول الرقمي", "قسم الإبتكار والذكاء الاصطناعي" ],
+      "إدارة التخطيط التقني": [ "قسم التخطيط والدراسات", "قسم البنية المؤسسية", "مكتب إدارة المشاريع" ]
     };
 
-    const DEFAULT_SYSTEMS = [
-      "نظام موارد",
-      "نظام تسهيل",
-      "نظام الرسائل النصية",
-      "نظام التصديق الرقمي",
-      "نظام الشاشات",
-      "أخرى"
-    ];
-
-    const DEFAULT_TYPES = [
-      "دعم فني",
-      "إنشاء اسم مستخدم",
-      "خلل تقني",
-      "تدريب",
-      "استفسار",
-      "تصحيح مسار"
-    ];
-
-    const DEFAULT_DEPARTMENTS_LIST = [
-      "مكتب سمو أمير المنطقة الشرقية",
-      "مكتب سمو نائب أمير المنطقة الشرقية",
-      "إدارة الشؤون الخاصة - المكتب الخاص",
-      "مكتب التواصل والعلاقات العامة",
-      "إدارة الاستقبال والمراسم - قسم المراسم",
-      "إدارة الاستقبال والمراسم - قسم الاستقبال",
-      "إدارة الاستقبال والمراسم - قسم الأخوياء",
-      "مجلس المنطقة",
-      "أمانة مجلس المنطقة",
-      "إدارة الأمن السيبراني - قسم الحوكمة والالتزام",
-      "إدارة الأمن السيبراني - قسم عمليات الأمن السيبراني",
-      "إدارة الأمن السيبراني - قسم الصلاحيات وحماية البيانات",
-      "وكيل الإمارة للشؤون الأمنية - مكتب الوكيل",
-      "الإدارة العامة للشؤون القانونية - وحدة حقوق الإنسان",
-      "الإدارة العامة للمراجعة الداخلية",
-      "العمليات المشتركة",
-      "مركز إدارة الأزمات والكوارث",
-      "إدارة مراقبة المخزون",
-      "الإدارة العامة للإعلام والاتصال المؤسسي",
-      "الإدارة العامة لتقنية المعلومات والتحول الرقمي",
-      "قسم الجودة التقنية",
-      "إدارة الأنظمة والبرامج - قسم تطور الأنظمة والبرامج",
-      "إدارة الأنظمة والبرامج - قسم الاختبار وجودة الأنظمة والبرامج",
-      "إدارة الدعم الفني - قسم خدمات المستفيدين",
-      "إدارة الدعم الفني - قسم الصيانة والتشغيل",
-      "إدارة الدعم الفني - قسم التمويل الفني",
-      "إدارة البنية التحتية - قسم الشبكات",
-      "إدارة البنية التحتية - قسم الحوسبة السحابية ومركز البيانات",
-      "إدارة البنية التحتية - قسم المخاطر واستمرارية الأعمال",
-      "إدارة البنية التحتية - قسم أمن وحماية البنية التحتية",
-      "إدارة التحول الرقمي - قسم تحليل الأعمال",
-      "إدارة التحول الرقمي - قسم تمكين التحول الرقمي",
-      "إدارة التحول الرقمي - قسم الإبتكار والذكاء الاصطناعي",
-      "إدارة التخطيط التقني - قسم التخطيط والدراسات",
-      "إدارة التخطيط التقني - قسم البنية المؤسسية",
-      "إدارة التخطيط التقني - مكتب إدارة المشاريع",
-      "محافظة الأحساء",
-      "محافظة حفر الباطن",
-      "محافظة الجبيل",
-      "محافظة القطيف",
-      "محافظة الخبر",
-      "محافظة الخفجي",
-      "محافظة النعيرية",
-      "محافظة بقيق",
-      "محافظة رأس تنورة",
-      "محافظة قرية العليا",
-      "محافظة العديد",
-      "محافظة البيضاء",
-      "مراكز المنطقة الشرقية",
-      "وكيل الإمارة - مكتب الوكيل",
-      "وكيل الإمارة - وحدة المتابعة",
-      "الإدارة العامة للشؤون الإدارية والمالية",
-      "إدارة الشؤون الإدارية والمالية - إدارة المالية",
-      "إدارة الشؤون الإدارية والمالية - إدارة المشتريات",
-      "إدارة الشؤون الإدارية والمالية - إدارة الميزانية",
-      "إدارة الشؤون الإدارية والمالية - إدارة التشغيل والصيانة",
-      "إدارة الشؤون الإدارية والمالية - إدارة المستودعات",
-      "إدارة الشؤون الإدارية والمالية - مركز الاتصالات الإدارية",
-      "إدارة الشؤون الإدارية والمالية - إدارة الاتصالات السلكية واللاسلكية",
-      "إدارة الشؤون الإدارية والمالية - إدارة الحركة والنقل",
-      "إدارة الشؤون الإدارية والمالية - وحدة لوازم الضيافة والسلاح",
-      "وكيل الإمارة المساعد للحقوق - مكتب الوكيل المساعد",
-      "الإدارة العامة للحقوق العامة - إدارة الحقوق العامة",
-      "الإدارة العامة للحقوق العامة - إدارة شؤون السجناء والموقوفين",
-      "الإدارة العامة للحقوق العامة - إدارة شؤون المخدرات والمؤثرات العقلية",
-      "الإدارة العامة للحقوق الخاصة - إدارة قضايا الأراضي والعقار",
-      "الإدارة العامة للحقوق الخاصة - إدارة القضايا والمطالبات الخاصة",
-      "وكالة الحقوق - إدارة متابعة تنفيذ الأحكام",
-      "وكيل الإمارة المساعد للشؤون التنموية - مكتب الوكيل المساعد",
-      "الإدارة العامة للشؤون المحلية - إدارة الشؤون العامة",
-      "الإدارة العامة للشؤون المحلية - إدارة المساعدات والتعويضات",
-      "الإدارة العامة للشؤون المحلية - إدارة الشراكة المجتمعية",
-      "الإدارة العامة لمتابعة المشاريع والخدمات - إدارة تنسيق ومتابعة الخدمات",
-      "الإدارة العامة لمتابعة المشاريع والخدمات - إدارة تنسيق ومتابعة المشاريع",
-      "الشؤون التنموية - إدارة تنشيط الاستثمار والسياحة",
-      "الإدارة العامة للموارد البشرية",
-      "إدارة الموارد البشرية - تطوير الموارد البشرية",
-      "إدارة الموارد البشرية - عمليات الموارد البشرية",
-      "إدارة الموارد البشرية - إدارة التواصل الداخلي",
-      "إدارة الموارد البشرية - وحدة العمل التطوعي",
-      "إدارة التميز المؤسسي",
-      "مكتب تحقيق الرؤية",
-      "إدارة شؤون اللجان",
-      "مكتب إدارة البيانات",
-      "إدارة شؤون المشايخ والنواب والمعرّفين",
-      "المركز الشامل لخدمة المستفيدين",
-      "مركز الوثائق والمحفوظات"
-    ];
+    const DEFAULT_SYSTEMS = [ "نظام موارد", "نظام تسهيل", "نظام الرسائل النصية", "نظام التصديق الرقمي", "نظام الشاشات", "أخرى" ];
+    const DEFAULT_TYPES = [ "دعم فني", "إنشاء اسم مستخدم", "خلل تقني", "تدريب", "استفسار", "تصحيح مسار" ];
+    const DEFAULT_DEPARTMENTS_LIST = [ "مكتب سمو أمير المنطقة الشرقية", "مكتب سمو نائب أمير المنطقة الشرقية", "إدارة الشؤون الخاصة - المكتب الخاص", "مكتب التواصل والعلاقات العامة", "إدارة الاستقبال والمراسم - قسم المراسم", "إدارة الاستقبال والمراسم - قسم الاستقبال", "إدارة الاستقبال والمراسم - قسم الأخوياء", "مجلس المنطقة", "أمانة مجلس المنطقة", "إدارة الأمن السيبراني", "وكيل الإمارة للشؤون الأمنية", "الإدارة العامة للشؤون القانونية", "الإدارة العامة للمراجعة الداخلية", "العمليات المشتركة", "مركز إدارة الأزمات والكوارث", "إدارة مراقبة المخزون", "الإدارة العامة للإعلام والاتصال المؤسسي", "الإدارة العامة لتقنية المعلومات والتحول الرقمي", "إدارة الأنظمة والبرامج", "إدارة الدعم الفني", "إدارة البنية التحتية", "إدارة التحول الرقمي", "إدارة التخطيط التقني", "محافظة الأحساء", "محافظة حفر الباطن", "محافظة الجبيل", "محافظة القطيف", "محافظة الخبر", "محافظة الخفجي", "محافظة النعيرية", "محافظة بقيق", "محافظة رأس تنورة", "محافظة قرية العليا", "محافظة العديد", "محافظة البيضاء", "وكيل الإمارة", "الإدارة العامة للشؤون الإدارية والمالية", "إدارة المالية", "إدارة المشتريات", "إدارة الميزانية", "إدارة التشغيل والصيانة", "إدارة المستودعات", "مركز الاتصالات الإدارية", "إدارة الاتصالات السلكية واللاسلكية", "إدارة الحركة والنقل", "وكالة الحقوق", "وكالة الشؤون التنموية", "الإدارة العامة للموارد البشرية", "إدارة التميز المؤسسي", "مكتب تحقيق الرؤية", "إدارة شؤون اللجان", "مكتب إدارة البيانات", "المركز الشامل لخدمة المستفيدين", "مركز الوثائق والمحفوظات" ];
 
     let currentLookups = {
       orgStructure: { ...DEFAULT_ORG_STRUCTURE },
@@ -1134,7 +748,6 @@
         }
         applyLookupsToDOM();
       }, err => {
-        console.warn("Lookups sync warning:", err);
         applyLookupsToDOM();
       });
     }
@@ -1192,14 +805,12 @@
     window.handleRoleChange = function(role) {
       const secContainer = document.getElementById('sectionContainer');
       const secSelect = document.getElementById('newEmpSection');
-
       if (role === 'dept_manager' || role === 'admin') {
         secContainer.classList.add('opacity-40', 'pointer-events-none');
         secSelect.innerHTML = '<option value="عام الإدارة / بدون قسم" selected>عام الإدارة (لا يتبع لقسم)</option>';
       } else {
         secContainer.classList.remove('opacity-40', 'pointer-events-none');
-        const dept = document.getElementById('newEmpDept').value;
-        updateSectionDropdown(dept);
+        updateSectionDropdown(document.getElementById('newEmpDept').value);
       }
     };
 
@@ -1216,20 +827,15 @@
       e.preventDefault();
       authError.classList.add('hidden');
       authSubmitBtn.disabled = true;
-      authSubmitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري التحقق...</span>`;
-
-      const inputEmail = authEmail.value.trim();
-      const inputPass = authPassword.value;
-
       try {
-        await auth.signInWithEmailAndPassword(inputEmail, inputPass);
+        await auth.signInWithEmailAndPassword(authEmail.value.trim(), authPassword.value);
       } catch (err) {
         try {
-          const queryUser = await db.collection('users').where('email', '==', inputEmail).get();
+          const queryUser = await db.collection('users').where('email', '==', authEmail.value.trim()).get();
           if (!queryUser.empty) {
             const userData = queryUser.docs[0].data();
-            if (userData.tempPassword && userData.tempPassword === inputPass) {
-              currentUser = { uid: queryUser.docs[0].id, email: inputEmail };
+            if (userData.tempPassword && userData.tempPassword === authPassword.value) {
+              currentUser = { uid: queryUser.docs[0].id, email: authEmail.value.trim() };
               currentUserProfile = { ...userData, mustChangePassword: true };
               authSection.classList.add('hidden');
               mainAppSection.classList.remove('hidden');
@@ -1245,7 +851,6 @@
         }
       } finally {
         authSubmitBtn.disabled = false;
-        authSubmitBtn.innerHTML = `<span>دخول للنظام</span> <i class="fa-solid fa-arrow-left text-sm"></i>`;
       }
     });
 
@@ -1291,9 +896,7 @@
         const snap = await db.collection('users').get();
         allUsersCache = [];
         snap.forEach(d => allUsersCache.push({ uid: d.id, ...d.data() }));
-      } catch (e) {
-        console.warn("Could not cache users:", e);
-      }
+      } catch (e) {}
     }
 
     async function loadUserProfile(user) {
@@ -1386,7 +989,6 @@
       });
     }
 
-    // حل المشكلة: استعلام الموظف يعتمد على معرفه الثابت userId فلا تختفي إنجازاته أبداً
     function subscribeToAchievements() {
       let query = db.collection('achievements');
 
@@ -1418,9 +1020,7 @@
         populateEmployeeFilterHierarchy();
         renderTable();
         updateStats();
-      }, err => {
-        console.error("Firestore Error:", err);
-      });
+      }, err => {});
     }
 
     function populateEmployeeFilterHierarchy() {
@@ -1429,7 +1029,6 @@
       empFilter.innerHTML = '<option value="">كافة الموظفين التابعين</option>';
 
       let visibleUsers = [];
-
       if (currentUserProfile.role === 'admin') {
         visibleUsers = allUsersCache;
       } else if (currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager') {
@@ -1549,7 +1148,7 @@
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 flex items-center gap-1 justify-center">
                 <i class="fa-solid fa-ban"></i> مرفوض
               </span>
-              <button onclick="viewRejectionDetail('${item.rejectionReason?.replace(/'/g, "\\'")}', '${item.rejectedBy || 'المسؤول'}')" class="text-[9px] text-rose-600 hover:underline mt-0.5 flex items-center gap-0.5" title="عرض سبب الرفض">
+              <button onclick="viewRejectionDetail('${item.rejectionReason?.replace(/'/g, "\\'")}', '${item.rejectedBy || 'المسؤول'}')" class="text-[9px] text-rose-600 hover:underline mt-0.5 flex items-center gap-0.5">
                 <i class="fa-solid fa-circle-info"></i> سبب الرفض
               </button>
             </div>
@@ -1562,7 +1161,7 @@
                 <i class="fa-solid fa-hourglass-half"></i> بالانتظار
               </span>
               ${isResubmitted ? `
-                <button onclick="viewResubmitDetail('${item.resubmitExplanation?.replace(/'/g, "\\'")}')" class="text-[9px] text-blue-600 font-bold hover:underline mt-0.5 flex items-center gap-0.5" title="معاد رفعه مع مبرر الموظف">
+                <button onclick="viewResubmitDetail('${item.resubmitExplanation?.replace(/'/g, "\\'")}')" class="text-[9px] text-blue-600 font-bold hover:underline mt-0.5 flex items-center gap-0.5">
                   <i class="fa-solid fa-reply-all"></i> معاد رفعه
                 </button>
               ` : ''}
@@ -1605,29 +1204,29 @@
 
                 ${isSupervisor ? `
                   ${item.status === 'بانتظار الاعتماد' ? `
-                    <button onclick="approveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition" title="اعتماد الإنجاز">
+                    <button onclick="approveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition" title="اعتماد">
                       اعتماد
                     </button>
-                    <button onclick="openRejectReasonModal('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition" title="رفض الطلب مع ذكر السبب">
+                    <button onclick="openRejectReasonModal('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100 transition" title="رفض">
                       رفض
                     </button>
                   ` : ''}
 
                   ${item.status === 'معتمد' ? `
-                    <button onclick="unapproveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100 transition" title="إلغاء الاعتماد والعودة للانتظار">
+                    <button onclick="unapproveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-amber-50 text-amber-700 border border-amber-300 hover:bg-amber-100 transition" title="إلغاء الاعتماد">
                       إلغاء الاعتماد
                     </button>
                   ` : ''}
 
                   ${item.status === 'مرفوض' ? `
-                    <button onclick="openUnrejectModal('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-amber-50 text-amber-800 border border-amber-300 hover:bg-amber-100 transition" title="تراجع استثنائي عن الرفض مع ذكر السبب">
+                    <button onclick="openUnrejectModal('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-amber-50 text-amber-800 border border-amber-300 hover:bg-amber-100 transition" title="تراجع مسبّب">
                       تراجع مسبّب
                     </button>
                   ` : ''}
                 ` : ''}
 
                 ${(!isSupervisor && item.userId === currentUser.uid && item.status === 'مرفوض') ? `
-                  <button onclick="openResubmitModal('${item.id}')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs transition" title="معالجة الملاحظات وإعادة الرفع">
+                  <button onclick="openResubmitModal('${item.id}')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs transition" title="معالجة">
                     <i class="fa-solid fa-wrench ml-0.5"></i> معالجة
                   </button>
                 ` : ''}
@@ -1648,7 +1247,6 @@
       const validCompleted = achievements.filter(x => x.status === 'معتمد');
       const pendingTasks = achievements.filter(x => x.status === 'بانتظار الاعتماد');
       const rejectedTasks = achievements.filter(x => x.status === 'مرفوض');
-
       const isSupervisor = (currentUserProfile.role === 'admin' || currentUserProfile.role === 'dept_manager' || currentUserProfile.role === 'manager' || currentUserProfile.role === 'section_head');
 
       document.getElementById('statTotal').textContent = isSupervisor ? (validCompleted.length + pendingTasks.length) : achievements.length;
@@ -1658,16 +1256,13 @@
       document.getElementById('rejectedStatLabel').textContent = isSupervisor ? 'أرشيف المرفوضات' : 'الطلبات المرفوضة';
     }
 
-    // إدارة القوائم المنسدلة مع دعم تغيير الترتيب (Reordering)
     const lookupsModal = document.getElementById('lookupsModal');
     window.openLookupsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
       lookupsModal.classList.remove('hidden');
       renderLookupsManagerUI();
     };
-    window.closeLookupsModal = function() {
-      lookupsModal.classList.add('hidden');
-    };
+    window.closeLookupsModal = function() { lookupsModal.classList.add('hidden'); };
 
     window.switchLookupTab = function(tab) {
       ['Systems', 'Types', 'Org', 'DestDepts'].forEach(t => {
@@ -1675,7 +1270,6 @@
         const btn = document.getElementById(`tabBtn${t}`);
         if (btn) btn.className = 'px-4 py-2.5 text-slate-600 hover:text-slate-900';
       });
-
       const activeTabId = tab.charAt(0).toUpperCase() + tab.slice(1);
       document.getElementById(`lookupTabContent${activeTabId}`).classList.remove('hidden');
       const activeBtn = document.getElementById(`tabBtn${activeTabId}`);
@@ -1683,80 +1277,55 @@
     };
 
     function renderLookupsManagerUI() {
-      // 1. الإدارات المستفيدة مع أزرار الترتيب والحذف
       const destDeptsList = document.getElementById('destDeptsContainer');
       destDeptsList.innerHTML = currentLookups.departmentsList.map((d, idx) => `
         <div class="flex items-center justify-between p-2 bg-white hover:bg-slate-50">
           <span class="font-semibold text-slate-800">${d}</span>
           <div class="flex items-center gap-1">
-            <button onclick="moveArrayItem('departmentsList', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأعلى">
-              <i class="fa-solid fa-arrow-up"></i>
-            </button>
-            <button onclick="moveArrayItem('departmentsList', ${idx}, 1)" ${idx === currentLookups.departmentsList.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأسفل">
-              <i class="fa-solid fa-arrow-down"></i>
-            </button>
-            <button onclick="removeDestDeptItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded" title="حذف">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
+            <button onclick="moveArrayItem('departmentsList', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'}><i class="fa-solid fa-arrow-up"></i></button>
+            <button onclick="moveArrayItem('departmentsList', ${idx}, 1)" ${idx === currentLookups.departmentsList.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'}><i class="fa-solid fa-arrow-down"></i></button>
+            <button onclick="removeDestDeptItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded"><i class="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
       `).join('');
 
-      // 2. الأنظمة مع أزرار الترتيب
       const sysList = document.getElementById('systemsListContainer');
       sysList.innerHTML = currentLookups.systems.map((s, idx) => `
         <div class="flex items-center justify-between p-2.5 bg-white hover:bg-slate-50">
           <span class="font-bold text-slate-800">${s}</span>
           <div class="flex items-center gap-1">
-            <button onclick="moveArrayItem('systems', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأعلى">
-              <i class="fa-solid fa-arrow-up"></i>
-            </button>
-            <button onclick="moveArrayItem('systems', ${idx}, 1)" ${idx === currentLookups.systems.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأسفل">
-              <i class="fa-solid fa-arrow-down"></i>
-            </button>
-            <button onclick="removeSystemItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded" title="حذف">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
+            <button onclick="moveArrayItem('systems', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'}><i class="fa-solid fa-arrow-up"></i></button>
+            <button onclick="moveArrayItem('systems', ${idx}, 1)" ${idx === currentLookups.systems.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'}><i class="fa-solid fa-arrow-down"></i></button>
+            <button onclick="removeSystemItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded"><i class="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
       `).join('');
 
-      // 3. أنواع الطلبات مع أزرار الترتيب
       const typesList = document.getElementById('typesListContainer');
       typesList.innerHTML = currentLookups.types.map((t, idx) => `
         <div class="flex items-center justify-between p-2.5 bg-white hover:bg-slate-50">
           <span class="font-bold text-slate-800">${t}</span>
           <div class="flex items-center gap-1">
-            <button onclick="moveArrayItem('types', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأعلى">
-              <i class="fa-solid fa-arrow-up"></i>
-            </button>
-            <button onclick="moveArrayItem('types', ${idx}, 1)" ${idx === currentLookups.types.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأسفل">
-              <i class="fa-solid fa-arrow-down"></i>
-            </button>
-            <button onclick="removeTypeItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded" title="حذف">
-              <i class="fa-solid fa-trash-can"></i>
-            </button>
+            <button onclick="moveArrayItem('types', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'}><i class="fa-solid fa-arrow-up"></i></button>
+            <button onclick="moveArrayItem('types', ${idx}, 1)" ${idx === currentLookups.types.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'}><i class="fa-solid fa-arrow-down"></i></button>
+            <button onclick="removeTypeItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded"><i class="fa-solid fa-trash-can"></i></button>
           </div>
         </div>
       `).join('');
 
-      // 4. الهيكل الداخلي
       const targetOrgSelect = document.getElementById('targetOrgDeptSelect');
       targetOrgSelect.innerHTML = Object.keys(currentLookups.orgStructure).map(d => `<option value="${d}">${d}</option>`).join('');
 
       const orgContainer = document.getElementById('orgStructureContainer');
       orgContainer.innerHTML = Object.entries(currentLookups.orgStructure).map(([dept, sections]) => `
         <div class="border border-slate-200 rounded-xl p-3 bg-white space-y-2">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
-            <span class="font-bold text-teal-900">${dept}</span>
-            <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">${sections.length} قسم</span>
-          </div>
+          <div class="flex items-center justify-between border-b border-slate-100 pb-1.5"><span class="font-bold text-teal-900">${dept}</span></div>
           <div class="flex flex-wrap gap-1.5 pt-1">
             ${sections.map((sec, sIdx) => `
-              <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg text-[11px] font-semibold">
+              <span class="inline-flex items-center gap-1 bg-slate-100 text-slate-800 px-2 py-1 rounded-lg text-[11px] font-semibold">
                 <span>${sec}</span>
-                <button onclick="moveOrgSectionItem('${dept}', ${sIdx}, -1)" ${sIdx === 0 ? 'disabled class="opacity-30"' : 'class="text-teal-700 hover:text-teal-900"'} title="تحريك لليمين"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
-                <button onclick="moveOrgSectionItem('${dept}', ${sIdx}, 1)" ${sIdx === sections.length - 1 ? 'disabled class="opacity-30"' : 'class="text-teal-700 hover:text-teal-900"'} title="تحريك لليسار"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
+                <button onclick="moveOrgSectionItem('${dept}', ${sIdx}, -1)"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                <button onclick="moveOrgSectionItem('${dept}', ${sIdx}, 1)"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
                 <button onclick="removeOrgSectionItem('${dept}', '${sec}')" class="text-red-400 hover:text-red-600 ml-1"><i class="fa-solid fa-xmark"></i></button>
               </span>
             `).join('')}
@@ -1765,7 +1334,6 @@
       `).join('');
     }
 
-    // دالة عامة لتحريك العناصر وتغيير الترتيب
     window.moveArrayItem = async function(arrayName, index, direction) {
       const arr = currentLookups[arrayName];
       const targetIndex = index + direction;
@@ -1789,23 +1357,20 @@
     async function saveLookupsToFirestore() {
       try {
         await db.collection('system_settings').doc('lookups').set(currentLookups);
-      } catch (err) {
-        alert("حدث خطأ أثناء حفظ القوائم: " + err.message);
-      }
+      } catch (err) { alert("خطأ: " + err.message); }
     }
 
     window.addSystemItem = async function() {
       const inp = document.getElementById('newSystemInput');
       const val = inp.value.trim();
-      if (!val) return;
-      if (currentLookups.systems.includes(val)) return alert("هذا النظام موجود مسبقاً.");
+      if (!val || currentLookups.systems.includes(val)) return;
       currentLookups.systems.push(val);
       inp.value = '';
       await saveLookupsToFirestore();
     };
 
     window.removeSystemItem = async function(index) {
-      if (confirm(`هل أنت متأكد من حذف (${currentLookups.systems[index]}) من القائمة؟`)) {
+      if (confirm(`حذف (${currentLookups.systems[index]})؟`)) {
         currentLookups.systems.splice(index, 1);
         await saveLookupsToFirestore();
       }
@@ -1814,15 +1379,14 @@
     window.addTypeItem = async function() {
       const inp = document.getElementById('newTypeInput');
       const val = inp.value.trim();
-      if (!val) return;
-      if (currentLookups.types.includes(val)) return alert("نوع الطلب موجود مسبقاً.");
+      if (!val || currentLookups.types.includes(val)) return;
       currentLookups.types.push(val);
       inp.value = '';
       await saveLookupsToFirestore();
     };
 
     window.removeTypeItem = async function(index) {
-      if (confirm(`هل أنت متأكد من حذف نوع الطلب (${currentLookups.types[index]})؟`)) {
+      if (confirm(`حذف (${currentLookups.types[index]})؟`)) {
         currentLookups.types.splice(index, 1);
         await saveLookupsToFirestore();
       }
@@ -1834,14 +1398,14 @@
       const sec = inp.value.trim();
       if (!sec) return;
       if (!currentLookups.orgStructure[dept]) currentLookups.orgStructure[dept] = [];
-      if (currentLookups.orgStructure[dept].includes(sec)) return alert("القسم موجود مسبقاً في هذه الإدارة.");
+      if (currentLookups.orgStructure[dept].includes(sec)) return;
       currentLookups.orgStructure[dept].push(sec);
       inp.value = '';
       await saveLookupsToFirestore();
     };
 
     window.removeOrgSectionItem = async function(dept, sec) {
-      if (confirm(`هل أنت متأكد من حذف قسم (${sec}) من (${dept})؟`)) {
+      if (confirm(`حذف (${sec})؟`)) {
         currentLookups.orgStructure[dept] = currentLookups.orgStructure[dept].filter(s => s !== sec);
         await saveLookupsToFirestore();
       }
@@ -1850,21 +1414,19 @@
     window.addDestDeptItem = async function() {
       const inp = document.getElementById('newDestDeptInput');
       const val = inp.value.trim();
-      if (!val) return;
-      if (currentLookups.departmentsList.includes(val)) return alert("هذه الجهة موجودة مسبقاً.");
+      if (!val || currentLookups.departmentsList.includes(val)) return;
       currentLookups.departmentsList.unshift(val);
       inp.value = '';
       await saveLookupsToFirestore();
     };
 
     window.removeDestDeptItem = async function(index) {
-      if (confirm(`هل ترغب في حذف (${currentLookups.departmentsList[index]}) من قائمة المستفيدين؟`)) {
+      if (confirm(`حذف (${currentLookups.departmentsList[index]})؟`)) {
         currentLookups.departmentsList.splice(index, 1);
         await saveLookupsToFirestore();
       }
     };
 
-    // عرض تفاصيل المهمة
     const viewRecordModal = document.getElementById('viewRecordModal');
     window.viewRecordDetails = function(id) {
       const item = achievements.find(x => x.id === id);
@@ -1897,12 +1459,8 @@
 
       viewRecordModal.classList.remove('hidden');
     };
+    window.closeViewRecordModal = function() { viewRecordModal.classList.add('hidden'); };
 
-    window.closeViewRecordModal = function() {
-      viewRecordModal.classList.add('hidden');
-    };
-
-    // الاعتماد
     window.approveRecord = async function(id) {
       await db.collection('achievements').doc(id).update({
         status: 'معتمد',
@@ -1913,88 +1471,60 @@
       });
     };
 
-    // إلغاء الاعتماد
     window.unapproveRecord = async function(id) {
-      await db.collection('achievements').doc(id).update({
-        status: 'بانتظار الاعتماد',
-        approvedBy: null,
-        approvedAt: null
-      });
+      await db.collection('achievements').doc(id).update({ status: 'بانتظار الاعتماد', approvedBy: null, approvedAt: null });
     };
 
-    // الرفض
     const rejectReasonModal = document.getElementById('rejectReasonModal');
     const rejectReasonForm = document.getElementById('rejectReasonForm');
-
     window.openRejectReasonModal = function(id) {
       document.getElementById('rejectRecordDocId').value = id;
       document.getElementById('rejectionReasonText').value = '';
       rejectReasonModal.classList.remove('hidden');
     };
-
-    window.closeRejectReasonModal = function() {
-      rejectReasonModal.classList.add('hidden');
-    };
+    window.closeRejectReasonModal = function() { rejectReasonModal.classList.add('hidden'); };
 
     rejectReasonForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('rejectRecordDocId').value;
       const reason = document.getElementById('rejectionReasonText').value.trim();
-
-      if (!reason) {
-        alert("يرجى كتابة سبب الرفض لتوضيحه للموظف.");
-        return;
-      }
-
+      if (!reason) return;
       await db.collection('achievements').doc(id).update({
         status: 'مرفوض',
         rejectionReason: reason,
         rejectedBy: currentUserProfile.name,
         rejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        approvedBy: null,
-        approvedAt: null
+        approvedBy: null, approvedAt: null
       });
-
       closeRejectReasonModal();
     });
 
-    // التراجع عن الرفض
     const unrejectModal = document.getElementById('unrejectModal');
     const unrejectForm = document.getElementById('unrejectForm');
-
     window.openUnrejectModal = function(id) {
       document.getElementById('unrejectDocId').value = id;
       document.getElementById('unrejectReasonText').value = '';
       unrejectModal.classList.remove('hidden');
     };
-
-    window.closeUnrejectModal = function() {
-      unrejectModal.classList.add('hidden');
-    };
+    window.closeUnrejectModal = function() { unrejectModal.classList.add('hidden'); };
 
     unrejectForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('unrejectDocId').value;
       const reason = document.getElementById('unrejectReasonText').value.trim();
-
-      if (!reason) return alert("يرجى كتابة سبب التراجع الإداري.");
-
+      if (!reason) return;
       await db.collection('achievements').doc(id).update({
         status: 'بانتظار الاعتماد',
         unrejectReason: reason,
         unrejectedBy: currentUserProfile.name,
         unrejectedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        rejectionReason: '',
-        rejectedBy: ''
+        rejectionReason: '', rejectedBy: ''
       });
-
       closeUnrejectModal();
     });
 
-    // معالجة وإعادة رفع
     const resubmitModal = document.getElementById('resubmitModal');
     const resubmitForm = document.getElementById('resubmitForm');
-
     window.openResubmitModal = function(id) {
       const item = achievements.find(x => x.id === id);
       if (!item) return;
@@ -2004,36 +1534,28 @@
       document.getElementById('resubmitExplanation').value = '';
       resubmitModal.classList.remove('hidden');
     };
-
-    window.closeResubmitModal = function() {
-      resubmitModal.classList.add('hidden');
-    };
+    window.closeResubmitModal = function() { resubmitModal.classList.add('hidden'); };
 
     resubmitForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = document.getElementById('resubmitDocId').value;
       const newSolution = document.getElementById('resubmitSolution').value.trim();
       const explanation = document.getElementById('resubmitExplanation').value.trim();
-
-      if (!newSolution || !explanation) return alert("يرجى إكمال الإجراء المنفذ وكتابة مبرر إعادة الرفع.");
-
+      if (!newSolution || !explanation) return alert("يرجى إكمال البيانات.");
       await db.collection('achievements').doc(id).update({
         solution: newSolution,
         resubmitExplanation: explanation,
         status: 'بانتظار الاعتماد',
         resubmittedAt: firebase.firestore.FieldValue.serverTimestamp()
       });
-
       closeResubmitModal();
-      alert("✅ تمت معالجة الطلب وإعادة رفعه بنجاح للمعتمد.");
     });
 
     window.viewRejectionDetail = function(reason, rejectedBy) {
-      alert(`تفاصيل سبب رفض الطلب:\n\nالملاحظات والسبب: ${reason || 'لم يتم ذكر سبب محدد'}\nبواسطة المسؤول: ${rejectedBy}`);
+      alert(`تفاصيل سبب الرفض:\n\nالملاحظات: ${reason || 'غير محدد'}\nبواسطة: ${rejectedBy}`);
     };
-
     window.viewResubmitDetail = function(explanation) {
-      alert(`رد الموظف ومبرر إعادة الرفع للمعتمد:\n\n${explanation}`);
+      alert(`رد ومبرر الموظف عند إعادة الرفع:\n\n${explanation}`);
     };
 
     document.getElementById('searchInput').addEventListener('input', renderTable);
@@ -2084,9 +1606,7 @@
         solution: document.getElementById('formSolution').value.trim(),
         requiresApproval: requiresApproval,
         status: requiresApproval ? 'بانتظار الاعتماد' : 'معتمد',
-        rejectionReason: '',
-        rejectedBy: '',
-        resubmitExplanation: '',
+        rejectionReason: '', rejectedBy: '', resubmitExplanation: '',
         userId: currentUser.uid,
         employeeName: currentUserProfile.name || currentUser.email,
         employeeDept: currentUserProfile.department || 'إدارة الأنظمة والبرامج',
@@ -2102,9 +1622,7 @@
           await db.collection('achievements').add(data);
         }
         closeRecordModal();
-      } catch (err) {
-        alert("حدث خطأ: " + err.message);
-      }
+      } catch (err) { alert("خطأ: " + err.message); }
     });
 
     window.editRecord = function(id) {
@@ -2120,10 +1638,8 @@
       document.getElementById('formDepartment').value = item.department || '';
       document.getElementById('formService').value = item.service || '';
       document.getElementById('formSolution').value = item.solution || '';
-      
       const req = !!item.requiresApproval;
       document.querySelector(`input[name="requiresApproval"][value="${req}"]`).checked = true;
-
       recordModal.classList.remove('hidden');
     };
 
@@ -2133,10 +1649,8 @@
       }
     };
 
-    // تعيين كلمة المرور
     const adminDirectPasswordModal = document.getElementById('adminDirectPasswordModal');
     const adminDirectPasswordForm = document.getElementById('adminDirectPasswordForm');
-
     window.openAdminDirectPasswordModal = function(uid, email, name) {
       document.getElementById('targetAdminResetUid').value = uid;
       document.getElementById('targetAdminResetEmail').value = email;
@@ -2145,50 +1659,24 @@
       document.getElementById('adminDirectPassMsg').classList.add('hidden');
       adminDirectPasswordModal.classList.remove('hidden');
     };
-
-    window.closeAdminDirectPasswordModal = function() {
-      adminDirectPasswordModal.classList.add('hidden');
-    };
+    window.closeAdminDirectPasswordModal = function() { adminDirectPasswordModal.classList.add('hidden'); };
 
     adminDirectPasswordForm.addEventListener('submit', async (e) => {
       e.preventDefault();
       const uid = document.getElementById('targetAdminResetUid').value;
       const newPass = document.getElementById('targetAdminDirectPassword').value.trim();
-      const msg = document.getElementById('adminDirectPassMsg');
-      const btn = document.getElementById('saveAdminDirectPassBtn');
-
-      if (!newPass || newPass.length < 6) {
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = "كلمة المرور يجب ألا تقل عن 6 خانات.";
-        return;
-      }
-
-      btn.disabled = true;
-      msg.className = "text-xs p-2 rounded-lg font-semibold bg-blue-50 text-blue-700 block";
-      msg.textContent = "جاري الحفظ والتفعيل الفوري...";
-
-      try {
-        await db.collection('users').doc(uid).update({
-          tempPassword: newPass,
-          mustChangePassword: true,
-          tempPasswordSetAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-        msg.textContent = "✅ تم تعيين كلمة المرور بنجاح. يستطيع الموظف الدخول بها وسيجبر على تغييرها فوراً.";
-        setTimeout(() => closeAdminDirectPasswordModal(), 1300);
-      } catch (err) {
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = "حدث خطأ: " + err.message;
-      } finally {
-        btn.disabled = false;
-      }
+      if (!newPass || newPass.length < 6) return alert("كلمة المرور يجب ألا تقل عن 6 خانات.");
+      await db.collection('users').doc(uid).update({
+        tempPassword: newPass,
+        mustChangePassword: true,
+        tempPasswordSetAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      alert("✅ تم تعيين كلمة المرور المؤقتة بنجاح.");
+      closeAdminDirectPasswordModal();
     });
 
-    // إجبار التغيير
     const forceChangePasswordModal = document.getElementById('forceChangePasswordModal');
     const forceChangePasswordForm = document.getElementById('forceChangePasswordForm');
-
     function showForceChangePasswordModal() {
       document.getElementById('forceNewPassword').value = '';
       document.getElementById('forceConfirmPassword').value = '';
@@ -2201,100 +1689,51 @@
       const p1 = document.getElementById('forceNewPassword').value.trim();
       const p2 = document.getElementById('forceConfirmPassword').value.trim();
       const msg = document.getElementById('forceChangePassMsg');
-      const btn = document.getElementById('saveForcePasswordBtn');
-
-      if (p1 !== p2) {
-        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = "كلمتا المرور غير متطابقتين.";
+      if (p1 !== p2 || p1.length < 6) {
+        msg.className = "text-xs p-2 rounded bg-rose-50 text-rose-700 block";
+        msg.textContent = "يرجى التحقق من تطابق كلمتي المرور وطولها (6 خانات كحد أدنى).";
         return;
       }
-      if (p1.length < 6) {
-        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = "يجب ألا تقل كلمة المرور السرية عن 6 خانات.";
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>جاري الحفظ والتأمين...</span>`;
-
       try {
-        if (auth.currentUser) {
-          await auth.currentUser.updatePassword(p1);
-        }
-
+        if (auth.currentUser) await auth.currentUser.updatePassword(p1);
         await db.collection('users').doc(currentUser.uid).update({
           mustChangePassword: false,
           tempPassword: firebase.firestore.FieldValue.delete(),
           passwordChangedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
         currentUserProfile.mustChangePassword = false;
-
-        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-emerald-50 text-emerald-700 block";
-        msg.textContent = "✅ تم تحديث كلمة المرور بنجاح! مرحباً بك في النظام.";
-        setTimeout(() => {
-          forceChangePasswordModal.classList.add('hidden');
-        }, 1000);
+        forceChangePasswordModal.classList.add('hidden');
       } catch (err) {
-        msg.className = "text-xs p-2.5 rounded-xl font-semibold bg-rose-50 text-rose-700 block";
+        msg.className = "text-xs p-2 rounded bg-rose-50 text-rose-700 block";
         msg.textContent = err.message;
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-check-double"></i> <span>تحديث كلمة المرور والدخول للنظام</span>`;
       }
     });
 
-    // تغيير كلمة المرور الاختيارية
     const changePasswordModal = document.getElementById('changePasswordModal');
     window.openChangePasswordModal = function() {
       document.getElementById('changePasswordForm').reset();
       document.getElementById('changePassMsg').classList.add('hidden');
       changePasswordModal.classList.remove('hidden');
     };
-    window.closeChangePasswordModal = function() {
-      changePasswordModal.classList.add('hidden');
-    };
+    window.closeChangePasswordModal = function() { changePasswordModal.classList.add('hidden'); };
 
     document.getElementById('changePasswordForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const p1 = document.getElementById('myNewPassword').value.trim();
       const p2 = document.getElementById('myConfirmPassword').value.trim();
-      const msg = document.getElementById('changePassMsg');
-      const btn = document.getElementById('savePasswordBtn');
-
-      if (p1 !== p2) {
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = "كلمتا المرور غير متطابقتين.";
-        return;
-      }
-      if (p1.length < 6) {
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = "كلمة المرور يجب ألا تقل عن 6 خانات.";
-        return;
-      }
-
-      btn.disabled = true;
+      if (p1 !== p2 || p1.length < 6) return alert("كلمتا المرور غير متطابقتين أو أقل من 6 خانات.");
       try {
-        if (auth.currentUser) {
-          await auth.currentUser.updatePassword(p1);
-        }
+        if (auth.currentUser) await auth.currentUser.updatePassword(p1);
         await db.collection('users').doc(currentUser.uid).update({
           tempPassword: firebase.firestore.FieldValue.delete(),
           mustChangePassword: false,
           passwordChangedAt: firebase.firestore.FieldValue.serverTimestamp()
         });
-
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-        msg.textContent = "✅ تم تغيير كلمة المرور بنجاح!";
-        setTimeout(() => closeChangePasswordModal(), 1200);
-      } catch (err) {
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
-        msg.textContent = "تنبيه: " + (err.code === 'auth/requires-recent-login' ? "يرجى تسجيل الخروج والدخول مجدداً لتأكيد هويتك وتغيير الرمز." : err.message);
-      } finally {
-        btn.disabled = false;
-      }
+        alert("✅ تم تغيير كلمة المرور بنجاح.");
+        closeChangePasswordModal();
+      } catch (err) { alert(err.message); }
     });
 
-    // إدارة الهيكل مع التحديث التسلسلي التلقائي لجميع سجلات الموظف عند نقل القسم
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -2302,47 +1741,12 @@
       resetEmpForm();
       loadUsersList();
     };
-    window.closePermissionsModal = function() {
-      permissionsModal.classList.add('hidden');
-    };
-
-    window.deleteSingleUser = async function(uid, name) {
-      if (uid === currentUser.uid) {
-        alert("لا يمكنك حذف حسابك الشخصي (مدير النظام).");
-        return;
-      }
-
-      try {
-        const tasksSnap = await db.collection('achievements').where('userId', '==', uid).get();
-        const taskCount = tasksSnap.size;
-
-        if (taskCount > 0) {
-          alert(`🚫 تنبيه مؤسسي لمنع فقدان السجلات:\n\nلا يمكن حذف الموظف (${name}) لوجود (${taskCount}) إنجاز/مهمة مسجلة باسمه في قاعدة البيانات.\n\nلحفظ السجلات وتاريخ الإنجازات المعتمدة، يرجى استخدام زر "الأرشفة" لتعطيل حسابه، أو قم بحذف مهامه يدوياً أولاً إن كان حساباً تجريبياً.`);
-          return;
-        }
-
-        if (confirm(`هل أنت متأكد من حذف حساب الموظف (${name}) نهائياً من قاعدة البيانات؟`)) {
-          await db.collection('users').doc(uid).delete();
-          alert(`✅ تم حذف حساب (${name}) بنجاح.`);
-          await cacheAllUsers();
-          loadUsersList();
-          populateEmployeeFilterHierarchy();
-        }
-      } catch (err) {
-        alert("حدث خطأ أثناء فحص أو تنفيذ الحذف: " + err.message);
-      }
-    };
+    window.closePermissionsModal = function() { permissionsModal.classList.add('hidden'); };
 
     async function loadUsersList() {
       const tbody = document.getElementById('usersPermissionsTableBody');
-      tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-slate-400"><i class="fa-solid fa-spinner fa-spin"></i> جاري التحميل...</td></tr>`;
-
+      tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-slate-400">جاري التحميل...</td></tr>`;
       await cacheAllUsers();
-
-      if (allUsersCache.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" class="text-center py-3 text-slate-400">لا يوجد موظفون مسجلون</td></tr>`;
-        return;
-      }
 
       let html = '';
       allUsersCache.forEach(u => {
@@ -2357,36 +1761,18 @@
 
         html += `
           <tr class="hover:bg-slate-50 ${isArchived ? 'bg-slate-100/70 opacity-60' : ''}">
-            <td class="p-2.5 font-bold text-slate-800">
-              ${u.name || 'بدون اسم'}
-              ${isSelf ? '<span class="text-[10px] text-emerald-700 font-bold mr-1">(حسابك)</span>' : ''}
-              ${u.mustChangePassword ? '<span class="mr-1 px-1.5 py-0.5 text-[9px] bg-amber-100 text-amber-800 rounded font-bold">ملزم بالتغيير</span>' : ''}
-            </td>
+            <td class="p-2.5 font-bold text-slate-800">${u.name || 'بدون اسم'} ${isSelf ? '<span class="text-[10px] text-emerald-700 font-bold mr-1">(حسابك)</span>' : ''}</td>
             <td class="p-2.5 text-slate-600 font-mono text-[11px]">${u.email || '-'}</td>
             <td class="p-2.5 text-slate-800 font-semibold">${u.department || '-'}</td>
             <td class="p-2.5 text-slate-600">${u.section || '-'}</td>
             <td class="p-2.5">${badge}</td>
-            <td class="p-2.5 text-center">
-              ${isArchived 
-                ? '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-700">مؤرشف</span>' 
-                : '<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-700">نشط</span>'}
-            </td>
+            <td class="p-2.5 text-center">${isArchived ? '<span class="text-rose-700 font-bold">مؤرشف</span>' : '<span class="text-emerald-700 font-bold">نشط</span>'}</td>
             <td class="p-2.5 text-center whitespace-nowrap">
-              <button onclick="startEditUser('${uid}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border border-slate-300 hover:bg-slate-100 ml-1" title="تعديل بيانات الموظف">
-                <i class="fa-solid fa-user-pen"></i>
-              </button>
-              <button onclick="openAdminDirectPasswordModal('${uid}', '${u.email}', '${u.name}')" class="px-2 py-1 text-[11px] font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-300 hover:bg-emerald-100 ml-1" title="تعيين كلمة مرور مباشرة وإلزامه بالتغيير">
-                <i class="fa-solid fa-key"></i>
-              </button>
-              ${isSelf ? `
-                <span class="text-[10px] text-slate-400 italic">محمي</span>
-              ` : `
-                <button onclick="toggleArchiveUser('${uid}', ${isArchived})" class="px-2 py-1 text-[11px] font-bold rounded-lg ${isArchived ? 'bg-emerald-600 text-white' : 'bg-rose-50 text-rose-700 border border-rose-300 hover:bg-rose-100'} ml-1">
-                  ${isArchived ? 'تفعيل' : 'أرشفة'}
-                </button>
-                <button onclick="deleteSingleUser('${uid}', '${u.name}')" class="px-2 py-1 text-[11px] font-bold rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 border border-rose-300 transition" title="حذف الموظف نهائياً">
-                  <i class="fa-solid fa-trash"></i>
-                </button>
+              <button onclick="startEditUser('${uid}')" class="px-2 py-1 text-[11px] font-bold rounded-lg border hover:bg-slate-100 ml-1"><i class="fa-solid fa-user-pen"></i></button>
+              <button onclick="openAdminDirectPasswordModal('${uid}', '${u.email}', '${u.name}')" class="px-2 py-1 text-[11px] font-bold rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-300 ml-1"><i class="fa-solid fa-key"></i></button>
+              ${isSelf ? '' : `
+                <button onclick="toggleArchiveUser('${uid}', ${isArchived})" class="px-2 py-1 text-[11px] font-bold rounded-lg ${isArchived ? 'bg-emerald-600 text-white' : 'bg-rose-50 text-rose-700 border border-rose-300'} ml-1">${isArchived ? 'تفعيل' : 'أرشفة'}</button>
+                <button onclick="deleteSingleUser('${uid}', '${u.name}')" class="px-2 py-1 text-[11px] font-bold rounded-lg bg-rose-100 text-rose-700 hover:bg-rose-200 border border-rose-300"><i class="fa-solid fa-trash"></i></button>
               `}
             </td>
           </tr>
@@ -2402,20 +1788,14 @@
       document.getElementById('newEmpName').value = u.name || '';
       document.getElementById('newEmpEmail').value = u.email || '';
       document.getElementById('newEmpDept').value = u.department || '';
-      
       const roleVal = (u.role === 'manager') ? 'dept_manager' : (u.role || 'employee');
       document.getElementById('newEmpRole').value = roleVal;
-      
       updateSectionDropdown(u.department || '');
       handleRoleChange(roleVal);
-      
       if (roleVal !== 'dept_manager' && roleVal !== 'admin') {
         document.getElementById('newEmpSection').value = u.section || 'عام الإدارة / بدون قسم';
       }
-
       document.getElementById('passContainer').classList.add('hidden');
-      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-pen text-emerald-700"></i> <span>تعديل بيانات الموظف: ${u.name}</span>`;
-      document.getElementById('createEmpBtnText').textContent = 'حفظ التعديلات وتحديث السجلات';
       document.getElementById('cancelEditEmpBtn').classList.remove('hidden');
     };
 
@@ -2423,52 +1803,17 @@
       document.getElementById('editingEmpUid').value = '';
       document.getElementById('createEmployeeForm').reset();
       document.getElementById('passContainer').classList.remove('hidden');
-      document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-plus text-emerald-700"></i> <span>إضافة وتعيين موظف جديد بالنظام</span>`;
-      document.getElementById('createEmpBtnText').textContent = 'إنشاء وتفعيل الحساب';
       document.getElementById('cancelEditEmpBtn').classList.add('hidden');
-      document.getElementById('createEmpMsg').classList.add('hidden');
       handleRoleChange('employee');
     };
 
     window.toggleArchiveUser = async function(uid, isCurrentlyArchived) {
       const u = allUsersCache.find(x => x.uid === uid);
-      const action = isCurrentlyArchived ? "إلغاء أرشفة" : "أرشفة وتعطيل";
-      if (confirm(`هل أنت متأكد من ${action} الموظف (${u.name})؟`)) {
+      if (confirm(`تأكيد تغيير حالة الموظف (${u.name})؟`)) {
         await db.collection('users').doc(uid).update({ isArchived: !isCurrentlyArchived });
         loadUsersList();
       }
     };
-
-    function validateManagerAndHeadRule(targetDept, targetSection, targetRole, excludeUid = null) {
-      if (targetRole === 'dept_manager') {
-        const existingMgr = allUsersCache.find(u => 
-          u.department === targetDept && 
-          (u.role === 'dept_manager' || u.role === 'manager') && 
-          !u.isArchived && 
-          u.uid !== excludeUid
-        );
-        if (existingMgr) {
-          alert(`قيد إداري:\nيوجد مدير معين بالفعل لـ (${targetDept}) وهو: (${existingMgr.name}).\nلا يمكن تعيين أكثر من مدير واحد لنفس الإدارة.`);
-          return false;
-        }
-      }
-
-      if (targetRole === 'section_head') {
-        const existingHead = allUsersCache.find(u => 
-          u.department === targetDept && 
-          u.section === targetSection && 
-          u.role === 'section_head' && 
-          !u.isArchived && 
-          u.uid !== excludeUid
-        );
-        if (existingHead) {
-          alert(`قيد إداري:\nيوجد رئيس قسم معين بالفعل لـ (${targetSection}) وهو: (${existingHead.name}).\nلا يمكن تعيين أكثر من رئيس قسم واحد لنفس القسم.`);
-          return false;
-        }
-      }
-
-      return true;
-    }
 
     document.getElementById('createEmployeeForm').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -2478,98 +1823,38 @@
       const role = document.getElementById('newEmpRole').value;
       const sec = (role === 'dept_manager' || role === 'admin') ? 'عام الإدارة / بدون قسم' : document.getElementById('newEmpSection').value;
       const email = document.getElementById('newEmpEmail').value.trim();
-      const msg = document.getElementById('createEmpMsg');
-      const btn = document.getElementById('createEmpBtn');
-
-      if (!validateManagerAndHeadRule(dept, sec, role, editUid)) return;
-
-      btn.disabled = true;
 
       if (editUid) {
-        try {
-          // 1. تحديث وثيقة المستخدم
-          await db.collection('users').doc(editUid).update({
-            name: name,
-            department: dept,
-            section: sec,
-            email: email,
-            role: role
+        await db.collection('users').doc(editUid).update({ name, department: dept, section: sec, email, role });
+        const empTasksSnap = await db.collection('achievements').where('userId', '==', editUid).get();
+        if (!empTasksSnap.empty) {
+          const batch = db.batch();
+          empTasksSnap.docs.forEach(docSnap => {
+            batch.update(docSnap.ref, { employeeName: name, employeeDept: dept, employeeSection: sec });
           });
-
-          // 2. تحديث تسلسلي (Cascading Update) لكافة إنجازات هذا الموظف بالقسم والإدارة الجديدة
-          const empTasksSnap = await db.collection('achievements').where('userId', '==', editUid).get();
-          if (!empTasksSnap.empty) {
-            const batch = db.batch();
-            empTasksSnap.docs.forEach(docSnap => {
-              batch.update(docSnap.ref, {
-                employeeName: name,
-                employeeDept: dept,
-                employeeSection: sec
-              });
-            });
-            await batch.commit();
-          }
-
-          if (currentUser.uid === editUid) {
-            currentUserProfile.name = name;
-            currentUserProfile.department = dept;
-            currentUserProfile.section = sec;
-            currentUserProfile.role = role;
-            loadUserProfile(currentUser);
-          }
-
-          msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-          msg.textContent = "✅ تم تحديث بيانات الموظف ومزامنة إنجازاته السابقة مع القسم الجديد بنجاح.";
-          resetEmpForm();
-          loadUsersList();
-        } catch (err) {
-          msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
-          msg.textContent = "حدث خطأ: " + err.message;
-        } finally {
-          btn.disabled = false;
+          await batch.commit();
         }
+        if (currentUser.uid === editUid) {
+          currentUserProfile.name = name; currentUserProfile.department = dept; currentUserProfile.section = sec; currentUserProfile.role = role;
+          loadUserProfile(currentUser);
+        }
+        resetEmpForm();
+        loadUsersList();
       } else {
         const pass = document.getElementById('newEmpPass').value.trim();
-        if (!pass || pass.length < 6) {
-          alert("كلمة المرور يجب ألا تقل عن 6 خانات.");
-          btn.disabled = false;
-          return;
-        }
-        msg.className = "text-xs p-2 rounded-lg font-semibold bg-blue-50 text-blue-700 block";
-        msg.textContent = "جاري إنشاء الحساب وتفعيله...";
-
-        try {
-          const secondaryApp = firebase.initializeApp(firebaseConfig, "SecondaryApp" + Date.now());
-          const newUserCred = await secondaryApp.auth().createUserWithEmailAndPassword(email, pass);
-          
-          await db.collection('users').doc(newUserCred.user.uid).set({
-            name: name,
-            department: dept,
-            section: sec,
-            email: email,
-            role: role,
-            isArchived: false,
-            mustChangePassword: true,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
-
-          await secondaryApp.auth().signOut();
-          secondaryApp.delete();
-
-          msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-          msg.textContent = `✅ تم تعيين الموظف بنجاح (سيلزم بتغيير الرمز فور دخوله).`;
-          resetEmpForm();
-          loadUsersList();
-        } catch (err) {
-          msg.className = "text-xs p-2 rounded-lg font-semibold bg-rose-50 text-rose-700 block";
-          msg.textContent = `فشل إنشاء الحساب: ${err.message}`;
-        } finally {
-          btn.disabled = false;
-        }
+        if (!pass || pass.length < 6) return alert("كلمة المرور يجب ألا تقل عن 6 خانات.");
+        const secondaryApp = firebase.initializeApp(firebaseConfig, "SecApp" + Date.now());
+        const newUserCred = await secondaryApp.auth().createUserWithEmailAndPassword(email, pass);
+        await db.collection('users').doc(newUserCred.user.uid).set({
+          name, department: dept, section: sec, email, role, isArchived: false, mustChangePassword: true, createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        await secondaryApp.auth().signOut();
+        secondaryApp.delete();
+        resetEmpForm();
+        loadUsersList();
       }
     });
 
-    // النسخ الاحتياطي ومسح وتصفير السجلات
     const backupModal = document.getElementById('backupModal');
     window.openBackupModal = function() { backupModal.classList.remove('hidden'); };
     window.closeBackupModal = function() { backupModal.classList.add('hidden'); };
@@ -2579,79 +1864,35 @@
       const usrSnap = await db.collection('users').get();
       const achList = []; achSnap.forEach(d => achList.push({ id: d.id, ...d.data() }));
       const usrList = []; usrSnap.forEach(d => usrList.push({ id: d.id, ...d.data() }));
-
-      const backupData = {
-        exportDate: new Date().toISOString(),
-        totalAchievements: achList.length,
-        achievements: achList,
-        users: usrList,
-        lookups: currentLookups
-      };
-
+      const backupData = { exportDate: new Date().toISOString(), totalAchievements: achList.length, achievements: achList, users: usrList, lookups: currentLookups };
       const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `نسخة_احتياطية_شاملة_${new Date().toISOString().split('T')[0]}.json`;
+      a.download = `نسخة_احتياطية_${new Date().toISOString().split('T')[0]}.json`;
       a.click();
-      return true;
     }
-
-    window.exportBackupData = async function() {
-      try {
-        await triggerBackupDownload();
-      } catch (e) { alert("فشل التصدير: " + e.message); }
-    };
+    window.exportBackupData = async function() { await triggerBackupDownload(); };
 
     window.safePurgeAllData = async function() {
-      if (currentUserProfile.role !== 'admin') {
-        alert("هذا الإجراء متاح لمدير النظام فقط.");
-        return;
-      }
-
-      const confirmText = prompt("تحذير أمني خطير:\nأنت على وشك تصفير النظام بالكامل (مسح كافة الإنجازات وجميع حسابات الموظفين باستثناء حسابك أنت كمدير نظام).\nسيقوم النظام بتنزيل نسخة احتياطية إجبارياً على جهازك قبل البدء.\n\nلتأكيد المسح، اكتب العبارة التالية بدقة:\nتأكيد المسح");
-
-      if (!confirmText || confirmText.trim() !== "تأكيد المسح") {
-        alert("تم إلغاء عملية المسح.");
-        return;
-      }
-
-      try {
-        alert("جاري تنزيل النسخة الاحتياطية لجهازك أولاً... انتظر لحظات.");
-        await triggerBackupDownload();
-
-        const achSnap = await db.collection('achievements').get();
-        const deleteAchPromises = achSnap.docs.map(doc => doc.ref.delete());
-        await Promise.all(deleteAchPromises);
-
-        const usersSnap = await db.collection('users').get();
-        const deleteUsersPromises = usersSnap.docs
-          .filter(doc => doc.id !== currentUser.uid)
-          .map(doc => doc.ref.delete());
-        await Promise.all(deleteUsersPromises);
-
-        alert("✅ تم تصفير النظام بالكامل بنجاح؛ حُذفت جميع السجلات والموظفين مع الحفاظ على حساب مدير النظام فقط.");
-        closeBackupModal();
-        await cacheAllUsers();
-        loadUsersList();
-        populateEmployeeFilterHierarchy();
-      } catch (err) {
-        alert("حدث خطأ أثناء التصفير: " + err.message);
-      }
+      if (prompt("لتأكيد المسح الشامل اكتب: تأكيد المسح") !== "تأكيد المسح") return;
+      await triggerBackupDownload();
+      const achSnap = await db.collection('achievements').get();
+      await Promise.all(achSnap.docs.map(doc => doc.ref.delete()));
+      const usersSnap = await db.collection('users').get();
+      await Promise.all(usersSnap.docs.filter(doc => doc.id !== currentUser.uid).map(doc => doc.ref.delete()));
+      closeBackupModal();
+      loadUsersList();
+      populateEmployeeFilterHierarchy();
     };
 
     window.importBackupData = function() {
       const fileInp = document.getElementById('restoreFileInput');
-      const statusMsg = document.getElementById('restoreStatusMsg');
-      if (!fileInp.files || fileInp.files.length === 0) return alert("اختر ملف JSON أولاً.");
-
+      if (!fileInp.files || fileInp.files.length === 0) return alert("اختر ملف JSON.");
       const reader = new FileReader();
       reader.onload = async function(e) {
         try {
-          statusMsg.className = "text-blue-600 block";
-          statusMsg.textContent = "جاري استعادة البيانات...";
           const data = JSON.parse(e.target.result);
-
-          if (data.achievements && Array.isArray(data.achievements)) {
+          if (data.achievements) {
             const batch = db.batch();
             data.achievements.forEach(item => {
               const docRef = db.collection('achievements').doc(item.id || db.collection('achievements').doc().id);
@@ -2660,95 +1901,46 @@
             });
             await batch.commit();
           }
-
-          if (data.lookups) {
-            await db.collection('system_settings').doc('lookups').set(data.lookups, { merge: true });
-          }
-
-          statusMsg.className = "text-emerald-700 block";
-          statusMsg.textContent = "✅ تمت استعادة السجلات والقوائم بنجاح.";
-          fileInp.value = '';
-        } catch (err) {
-          statusMsg.className = "text-rose-700 block";
-          statusMsg.textContent = "فشلت الاستعادة: الملف غير صالح.";
-        }
+          if (data.lookups) await db.collection('system_settings').doc('lookups').set(data.lookups, { merge: true });
+          alert("✅ تمت الاستعادة بنجاح.");
+        } catch (err) { alert("الملف غير صالح."); }
       };
       reader.readAsText(fileInp.files[0]);
     };
 
-    // التحليلات
     const analyticsModal = document.getElementById('analyticsModal');
-    window.openAnalyticsModal = function() {
-      analyticsModal.classList.remove('hidden');
-      buildAnalyticsReport();
-    };
+    window.openAnalyticsModal = function() { analyticsModal.classList.remove('hidden'); buildAnalyticsReport(); };
     window.closeAnalyticsModal = function() { analyticsModal.classList.add('hidden'); };
 
     function buildAnalyticsReport() {
       const empRankingTbody = document.getElementById('empRankingTableBody');
-      const systemsList = document.getElementById('systemsAnalyticsList');
-      const typesList = document.getElementById('typesAnalyticsList');
-
       const approvedTasks = achievements.filter(a => a.status === 'معتمد');
       const totalTasks = approvedTasks.length || 1;
-
       const empStats = {};
       approvedTasks.forEach(a => {
         const emp = a.employeeName || 'غير محدد';
         if (!empStats[emp]) empStats[emp] = { count: 0, dept: `${a.employeeDept || '-'} / ${a.employeeSection || '-'}` };
         empStats[emp].count++;
       });
-
       const sortedEmps = Object.entries(empStats).sort((a, b) => b[1].count - a[1].count);
-
       empRankingTbody.innerHTML = sortedEmps.map(([empName, data], index) => {
         const pct = Math.round((data.count / totalTasks) * 100);
         return `
           <tr class="hover:bg-slate-50">
-            <td class="p-3 font-bold text-slate-500">${index + 1}</td>
-            <td class="p-3 font-extrabold text-slate-800">${empName}</td>
-            <td class="p-3 text-slate-600">${data.dept}</td>
-            <td class="p-3 text-center font-bold text-emerald-700 text-sm">${data.count}</td>
-            <td class="p-3">
-              <div class="flex items-center gap-2">
-                <div class="w-full bg-slate-100 rounded-full h-2">
-                  <div class="bg-emerald-600 h-2 rounded-full" style="width: ${pct}%"></div>
-                </div>
-                <span class="text-[11px] font-bold text-slate-600">${pct}%</span>
-              </div>
-            </td>
+            <td class="p-3 font-bold">${index + 1}</td>
+            <td class="p-3 font-extrabold">${empName}</td>
+            <td class="p-3">${data.dept}</td>
+            <td class="p-3 text-center font-bold text-emerald-700">${data.count}</td>
+            <td class="p-3"><div class="bg-emerald-600 h-2 rounded-full" style="width: ${pct}%"></div></td>
           </tr>
         `;
       }).join('');
-
-      const sysCount = {};
-      approvedTasks.forEach(a => {
-        const s = a.system || 'أخرى';
-        sysCount[s] = (sysCount[s] || 0) + 1;
-      });
-      const sortedSys = Object.entries(sysCount).sort((a, b) => b[1] - a[1]);
-      systemsList.innerHTML = sortedSys.map(([sys, cnt]) => `
-        <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100">
-          <span class="font-bold text-slate-700">${sys}</span>
-          <span class="px-2 py-0.5 bg-emerald-50 text-emerald-700 font-bold rounded-lg text-xs">${cnt} طلب منجز</span>
-        </div>
-      `).join('');
-
-      const typeCount = {};
-      approvedTasks.forEach(a => {
-        const t = a.type || 'دعم فني';
-        typeCount[t] = (typeCount[t] || 0) + 1;
-      });
-      const sortedTypes = Object.entries(typeCount).sort((a, b) => b[1] - a[1]);
-      typesList.innerHTML = sortedTypes.map(([typ, cnt]) => `
-        <div class="flex items-center justify-between p-2 bg-white rounded-xl border border-slate-100">
-          <span class="font-bold text-slate-700">${typ}</span>
-          <span class="px-2 py-0.5 bg-purple-50 text-purple-700 font-bold rounded-lg text-xs">${cnt} معاملة معتمدة</span>
-        </div>
-      `).join('');
     }
 
-    // منطق نطاق التصدير
+    // ==========================================================
+    // منطق التقرير الذكي المحدث كلياً:
+    // فحص هل السجلات تخص نفس الشخص المستخرج أم أنها متعددة الموظفين
+    // ==========================================================
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -2784,28 +1976,36 @@
         return matchesQuery && matchesDate && matchesEmp && matchesType && matchesStatus && matchesDeptScope;
       });
 
-      const isIndividual = (currentUserProfile.role === 'employee') || (fEmp !== '');
+      // فحص ذكي: هل جميع الإنجازات المعروضة في التقرير تخص شخصاً واحداً فقط؟
+      const distinctEmployees = [...new Set(data.map(d => d.employeeName).filter(Boolean))];
       
-      let targetEmpName = isIndividual ? (fEmp || currentUserProfile.name) : (fDeptScope ? `تقرير منسوبي ${fDeptScope}` : 'تقرير شامل لكافة إدارات الهيكل');
+      const isIndividual = (currentUserProfile.role === 'employee') || 
+                           (fEmp !== '') || 
+                           (distinctEmployees.length === 1 && distinctEmployees[0] === currentUserProfile.name) ||
+                           (distinctEmployees.length === 1);
+
+      let targetEmpName = '';
       let targetEmpDept = currentUserProfile.department || 'الإدارة العامة لتقنية المعلومات والتحول الرقمي';
       let targetEmpSec = currentUserProfile.section || 'عام الإدارة';
       let targetEmpRole = currentUserProfile.role;
 
-      if (isIndividual && fEmp) {
-        const empUser = allUsersCache.find(u => u.name === fEmp);
+      if (isIndividual) {
+        targetEmpName = fEmp || (distinctEmployees.length === 1 ? distinctEmployees[0] : currentUserProfile.name);
+        const empUser = allUsersCache.find(u => u.name === targetEmpName);
         if (empUser) {
           targetEmpDept = empUser.department;
           targetEmpSec = empUser.section;
           targetEmpRole = empUser.role;
         } else {
-          const matchedAch = achievements.find(a => a.employeeName === fEmp);
+          const matchedAch = data.find(a => a.employeeName === targetEmpName);
           if (matchedAch) {
             targetEmpDept = matchedAch.employeeDept || targetEmpDept;
             targetEmpSec = matchedAch.employeeSection || targetEmpSec;
           }
         }
-      } else if (fDeptScope) {
-        targetEmpDept = fDeptScope;
+      } else {
+        targetEmpName = fDeptScope ? `تقرير منسوبي ${fDeptScope}` : 'تقرير شامل لكافة إدارات الهيكل';
+        if (fDeptScope) targetEmpDept = fDeptScope;
       }
 
       let periodText = 'كامل الفترة';
@@ -2813,8 +2013,8 @@
       else if (sDate) periodText = `من تاريخ ${sDate}`;
       else if (eDate) periodText = `حتى تاريخ ${eDate}`;
 
+      // تحديد الاعتماد الإداري وفق التسلسل
       let dynamicManagerTitle = '';
-      
       if (isIndividual) {
         if (targetEmpRole === 'employee') {
           if (targetEmpSec && targetEmpSec !== 'عام الإدارة' && targetEmpSec !== 'عام الإدارة / بدون قسم') {
@@ -2848,7 +2048,7 @@
       return { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle };
     }
 
-    // تصدير Word الموسع
+    // تصدير Word بدقة تامة وبدون الأعمدة الثلاثة عند التقرير الفردي
     document.getElementById('exportWordBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle } = getExportScope();
       if (data.length === 0) return alert("لا توجد إنجازات معتمدة للتصدير.");
@@ -2858,15 +2058,16 @@
       let tableRows = '';
 
       if (isIndividual) {
+        // تقرير فردي: استبعاد (الاعتماد - الموظف - إدارة الموظف) وإضافة الإدارة المستفيدة وتوسيع عمود الخدمة والإجراء
         tableHeaders = `
           <tr>
             <th style="width: 4%;">م</th>
-            <th style="width: 12%;">رقم التذكرة</th>
+            <th style="width: 13%;">رقم التذكرة</th>
             <th style="width: 10%;">التاريخ</th>
             <th style="width: 10%;">نوع الطلب</th>
             <th style="width: 12%;">اسم المستفيد</th>
             <th style="width: 15%;">الإدارة الطالبة / المستفيدة</th>
-            <th style="width: 12%;">النظام التقني</th>
+            <th style="width: 11%;">النظام التقني</th>
             <th style="width: 35%;">الخدمة والإجراء والحل المنفذ</th>
           </tr>
         `;
@@ -2883,6 +2084,7 @@
           </tr>
         `).join('');
       } else {
+        // تقرير مجمع يخص عدة موظفين تحت مسؤول
         tableHeaders = `
           <tr>
             <th style="width: 3%;">م</th>
@@ -2987,7 +2189,7 @@
             "نوع الطلب": item.type || 'دعم فني',
             "اسم المستفيد": item.beneficiary || '',
             "الإدارة الطالبة / المستفيدة": item.department || '',
-            "النظام المرتبط": item.system || '',
+            "النظام التقني": item.system || '',
             "الخدمة المطلوبة": item.service || '',
             "الإجراء والحل المنفذ": item.solution || ''
           };
@@ -2997,16 +2199,15 @@
             "رقم التذكرة": item.ticketNo || '',
             "التاريخ": item.date || '',
             "حالة الاعتماد": item.status || 'معتمد',
-            "نوع الطلب": item.type || 'دعم فني',
             "الموظف المنفذ": item.employeeName,
             "الإدارة التابع لها": item.employeeDept || '',
             "القسم": item.employeeSection || '',
+            "نوع الطلب": item.type || 'دعم فني',
             "اسم المستفيد": item.beneficiary || '',
             "الإدارة المستفيدة": item.department || '',
-            "النظام المرتبط": item.system || '',
+            "النظام": item.system || '',
             "الخدمة المطلوبة": item.service || '',
-            "الإجراء المنفذ": item.solution || '',
-            "سبب الرفض (إن وجد)": item.rejectionReason || ''
+            "الإجراء المنفذ": item.solution || ''
           };
         }
       });
@@ -3046,6 +2247,8 @@
 
       const tableHead = document.querySelector('#mainDataTable thead tr');
       const originalThead = tableHead.innerHTML;
+      const tbody = document.getElementById('achievementsTableBody');
+      const originalTbody = tbody.innerHTML;
 
       if (isIndividual) {
         tableHead.innerHTML = `
@@ -3059,9 +2262,6 @@
           <th class="py-2.5 px-3">الخدمة والإجراء المنفذ</th>
           <th class="py-2.5 px-2 text-center no-print">خيارات</th>
         `;
-
-        const tbody = document.getElementById('achievementsTableBody');
-        const originalTbody = tbody.innerHTML;
 
         tbody.innerHTML = data.map((item, idx) => `
           <tr>
