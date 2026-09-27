@@ -44,27 +44,45 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- شاشة الدخول -->
+  <!-- ================= 1. شاشة الدخول ================= -->
   <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
-    <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 w-full max-w-md">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 p-8 w-full max-w-md transition-all">
       <div class="text-center mb-6">
-        <div class="inline-flex items-center justify-center w-14 h-14 bg-emerald-700 text-white rounded-2xl mb-3 shadow-md shadow-emerald-700/30">
-          <i class="fa-solid fa-sitemap text-2xl"></i>
+        <!-- شعار جهة العمل بدلاً من شكل الهيكل -->
+        <div class="relative inline-block mb-3">
+          <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center p-2 shadow-sm border border-slate-100 overflow-hidden cursor-pointer group" onclick="document.getElementById('orgLogoUploadInput').click()" title="انقر لتحديث أو رفع شعار جهة العمل">
+            <img id="loginOrgLogo" src="logo.png" alt="شعار جهة العمل" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/ar/thumb/0/00/Emblem_of_Saudi_Arabia_%282%29.svg/250px-Emblem_of_Saudi_Arabia_%282%29.svg.png';" class="max-w-full max-h-full object-contain">
+            <div class="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs transition">
+              <i class="fa-solid fa-camera mr-1"></i> تغيير الشعار
+            </div>
+          </div>
+          <input type="file" id="orgLogoUploadInput" accept="image/*" class="hidden" onchange="handleOrgLogoUpload(event)">
         </div>
-        <h2 class="text-xl font-black text-slate-800">بوابة توثيق الإنجازات اليومية</h2>
-        <p class="text-slate-500 text-xs mt-1">الإدارة العامة لتقنية المعلومات والتحول الرقمي</p>
+
+        <h2 class="text-xl font-black text-slate-800 tracking-tight">بوابة توثيق الإنجازات اليومية</h2>
+        <p class="text-slate-500 text-xs mt-1.5 font-semibold">الإدارة العامة لتقنية المعلومات والتحول الرقمي</p>
       </div>
 
       <form id="loginForm" class="space-y-4">
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">البريد الإلكتروني</label>
-          <input type="email" id="authEmail" required placeholder="name@domain.gov.sa"
-                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+          <div class="relative">
+            <input type="email" id="authEmail" required placeholder="name@domain.gov.sa"
+                   class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 outline-none transition">
+            <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          </div>
         </div>
+
         <div>
           <label class="block text-xs font-bold text-slate-700 mb-1">كلمة المرور</label>
-          <input type="password" id="authPassword" required placeholder="••••••••"
-                 class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 outline-none">
+          <div class="relative">
+            <input type="password" id="authPassword" required placeholder="••••••••"
+                   class="w-full pr-3.5 pl-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 outline-none transition">
+            <!-- زر العين لإظهار وإخفاء كلمة المرور -->
+            <button type="button" onclick="togglePasswordVisibility('authPassword', 'eyeIconLogin')" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1 transition" title="إظهار / إخفاء كلمة المرور">
+              <i id="eyeIconLogin" class="fa-solid fa-eye text-sm"></i>
+            </button>
+          </div>
         </div>
 
         <div id="authError" class="hidden p-3 bg-red-50 border border-red-200 text-red-600 text-xs rounded-xl font-medium text-center"></div>
@@ -78,7 +96,7 @@
     </div>
   </div>
 
-  <!-- واجهة التطبيق الرئيسية -->
+  <!-- ================= 2. واجهة التطبيق الرئيسية ================= -->
   <div id="mainAppSection" class="hidden flex-1 flex flex-col">
     <!-- ترويسة الطباعة الرسمية -->
     <div id="printReportHeader" class="mb-4">
@@ -307,7 +325,7 @@
     </main>
   </div>
 
-  <!-- النوافذ الإدارية ومودال التعديل والحذف -->
+  <!-- ================= 3. النوافذ الإدارية والمودالات ================= -->
   <div id="lookupsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-teal-800 text-white flex items-center justify-between">
@@ -509,7 +527,15 @@
               </select>
             </div>
             <div id="sectionContainer"><label class="block font-bold text-slate-700 mb-1">القسم</label><select id="newEmpSection" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none"></select></div>
-            <div id="passContainer"><label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة</label><input type="text" id="newEmpPass" placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none"></div>
+            <div id="passContainer">
+              <label class="block font-bold text-slate-700 mb-1">كلمة المرور المؤقتة</label>
+              <div class="relative">
+                <input type="password" id="newEmpPass" placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-white border border-slate-300 rounded-lg outline-none">
+                <button type="button" onclick="togglePasswordVisibility('newEmpPass', 'eyeIconNewEmp')" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1">
+                  <i id="eyeIconNewEmp" class="fa-solid fa-eye text-xs"></i>
+                </button>
+              </div>
+            </div>
             <div class="sm:col-span-2 flex justify-end gap-2 pt-1">
               <button type="button" id="cancelEditEmpBtn" onclick="resetEmpForm()" class="hidden px-3 py-2 bg-slate-200 text-slate-700 font-bold rounded-lg">إلغاء</button>
               <button type="submit" id="createEmpBtn" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-lg"><span id="createEmpBtnText">حفظ</span></button>
@@ -550,7 +576,12 @@
         <input type="hidden" id="targetAdminResetUid">
         <input type="hidden" id="targetAdminResetEmail">
         <span id="targetAdminResetName" class="font-bold block text-slate-800 mb-1"></span>
-        <input type="text" id="targetAdminDirectPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none font-mono font-bold">
+        <div class="relative">
+          <input type="password" id="targetAdminDirectPassword" required placeholder="لا تقل عن 6 خانات" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none font-mono font-bold">
+          <button type="button" onclick="togglePasswordVisibility('targetAdminDirectPassword', 'eyeIconAdminReset')" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1">
+            <i id="eyeIconAdminReset" class="fa-solid fa-eye text-xs"></i>
+          </button>
+        </div>
         <div class="pt-2 flex justify-end gap-2">
           <button type="button" onclick="closeAdminDirectPasswordModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
           <button type="submit" id="saveAdminDirectPassBtn" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded-lg">حفظ</button>
@@ -566,8 +597,19 @@
         <button onclick="closeChangePasswordModal()" class="w-7 h-7 rounded-lg hover:bg-white/20 flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <form id="changePasswordForm" class="p-5 space-y-3 text-xs">
-        <input type="password" id="myNewPassword" required placeholder="كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
-        <input type="password" id="myConfirmPassword" required placeholder="تأكيد كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+        <div class="relative">
+          <input type="password" id="myNewPassword" required placeholder="كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+          <button type="button" onclick="togglePasswordVisibility('myNewPassword', 'eyeIconChange1')" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1">
+            <i id="eyeIconChange1" class="fa-solid fa-eye text-xs"></i>
+          </button>
+        </div>
+        <div class="relative">
+          <input type="password" id="myConfirmPassword" required placeholder="تأكيد كلمة المرور الجديدة" class="w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+          <button type="button" onclick="togglePasswordVisibility('myConfirmPassword', 'eyeIconChange2')" class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1">
+            <i id="eyeIconChange2" class="fa-solid fa-eye text-xs"></i>
+          </button>
+        </div>
+        <div id="changePassMsg" class="hidden text-xs p-2 rounded-lg font-semibold"></div>
         <div class="pt-2 flex justify-end gap-2">
           <button type="button" onclick="closeChangePasswordModal()" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold rounded-lg">إلغاء</button>
           <button type="submit" id="savePasswordBtn" class="px-4 py-1.5 bg-emerald-700 text-white font-bold rounded-lg">حفظ</button>
@@ -582,8 +624,18 @@
         <h3 class="font-black text-base">تحديث أمني إجباري لكلمة المرور</h3>
       </div>
       <form id="forceChangePasswordForm" class="p-6 space-y-3.5 text-xs">
-        <input type="password" id="forceNewPassword" required placeholder="كلمة المرور الجديدة" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
-        <input type="password" id="forceConfirmPassword" required placeholder="تأكيد كلمة المرور" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
+        <div class="relative">
+          <input type="password" id="forceNewPassword" required placeholder="كلمة المرور السرية الجديدة" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
+          <button type="button" onclick="togglePasswordVisibility('forceNewPassword', 'eyeIconForce1')" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1">
+            <i id="eyeIconForce1" class="fa-solid fa-eye text-xs"></i>
+          </button>
+        </div>
+        <div class="relative">
+          <input type="password" id="forceConfirmPassword" required placeholder="تأكيد كلمة المرور الجديدة" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl outline-none">
+          <button type="button" onclick="togglePasswordVisibility('forceConfirmPassword', 'eyeIconForce2')" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1">
+            <i id="eyeIconForce2" class="fa-solid fa-eye text-xs"></i>
+          </button>
+        </div>
         <button type="submit" id="saveForcePasswordBtn" class="w-full py-3 bg-emerald-700 text-white font-bold rounded-xl">حفظ ودخول</button>
       </form>
     </div>
@@ -741,13 +793,30 @@
       document.getElementById('formTicketNo').value = generateTicketNo();
     };
 
-    // معالجة رفع وحفظ صورة الموظف سحابياً
-    window.handleAvatarUpload = function(event) {
+    // تبديل إظهار وإخفاء كلمة المرور بزر العين
+    window.togglePasswordVisibility = function(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (!input || !icon) return;
+
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+      } else {
+        input.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+      }
+    };
+
+    // معالجة رفع وحفظ شعار جهة العمل سحابياً
+    window.handleOrgLogoUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
 
       if (!file.type.startsWith('image/')) {
-        alert("يرجى اختيار ملف صورة صالح (JPG, PNG, WebP).");
+        alert("يرجى اختيار ملف صورة صالح.");
         return;
       }
 
@@ -755,7 +824,67 @@
       reader.onload = function(e) {
         const img = new Image();
         img.onload = function() {
-          // ضغط الصورة إلى مقاس 160x160 px لتكون خفيفة جداً في التخزين
+          const canvas = document.createElement('canvas');
+          const maxDim = 320;
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > maxDim) {
+              height *= maxDim / width;
+              width = maxDim;
+            }
+          } else {
+            if (height > maxDim) {
+              width *= maxDim / height;
+              height = maxDim;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const base64Logo = canvas.toDataURL('image/png');
+
+          db.collection('system_settings').doc('branding').set({
+            orgLogo: base64Logo
+          }, { merge: true }).then(() => {
+            document.getElementById('loginOrgLogo').src = base64Logo;
+            alert("✅ تم حفظ شعار جهة العمل بنجاح.");
+          }).catch(err => {
+            alert("فشل حفظ الشعار: " + err.message);
+          });
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    };
+
+    // مزامنة شعار جهة العمل عند فتح صفحة الدخول
+    function loadOrgLogo() {
+      db.collection('system_settings').doc('branding').get().then(doc => {
+        if (doc.exists && doc.data().orgLogo) {
+          document.getElementById('loginOrgLogo').src = doc.data().orgLogo;
+        }
+      }).catch(() => {});
+    }
+    loadOrgLogo();
+
+    // معالجة رفع صورة الموظف
+    window.handleAvatarUpload = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        alert("يرجى اختيار ملف صورة صالح.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
           const canvas = document.createElement('canvas');
           const maxDim = 160;
           let width = img.width;
@@ -779,7 +908,6 @@
           ctx.drawImage(img, 0, 0, width, height);
           const base64Data = canvas.toDataURL('image/jpeg', 0.82);
 
-          // الحفظ في Firestore
           db.collection('users').doc(currentUser.uid).update({
             avatar: base64Data
           }).then(() => {
@@ -792,7 +920,7 @@
         };
         img.src = e.target.result;
       };
-      reader.readAsText ? reader.readAsDataURL(file) : null;
+      reader.readAsDataURL(file);
     };
 
     function displayUserAvatar(base64Data) {
@@ -1006,7 +1134,6 @@
         : `${currentUserProfile.department} (${currentUserProfile.section || ''})`;
       document.getElementById('userBadgeDept').textContent = deptDisplay;
 
-      // عرض الصورة الشخصية إن كانت موجودة
       displayUserAvatar(currentUserProfile.avatar);
 
       const roleBadge = document.getElementById('userRoleBadge');
@@ -1282,7 +1409,7 @@
                   </button>
                 ` : ''}
 
-                <!-- زر حذف الإنجاز في حالة الإضافة الخاطئة (متاح دائماً لصاحب الإنجاز أو المسؤولين) -->
+                <!-- زر حذف الإنجاز في حالة الإضافة الخاطئة -->
                 ${(isSupervisor || item.userId === currentUser.uid) ? `
                   <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" title="حذف المهمة (في حالة الإضافة الخاطئة)">
                     <i class="fa-solid fa-trash text-sm"></i>
@@ -1726,7 +1853,6 @@
       recordModal.classList.remove('hidden');
     };
 
-    // دالة حذف الإنجاز في حالة الإضافة الخاطئة
     window.deleteRecord = async function(id) {
       const item = achievements.find(x => x.id === id);
       const ticketText = item ? `رقم التذكرة: (${item.ticketNo || id})` : '';
@@ -2042,7 +2168,7 @@
       }).join('');
     }
 
-    // منطق التقرير الذكي: فحص السجلات المعروضة
+    // منطق التقرير الذكي
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
