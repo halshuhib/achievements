@@ -48,15 +48,11 @@
   <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-200/80 p-8 w-full max-w-md transition-all">
       <div class="text-center mb-6">
-        <!-- شعار جهة العمل بدلاً من شكل الهيكل -->
-        <div class="relative inline-block mb-3">
-          <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center p-2 shadow-sm border border-slate-100 overflow-hidden cursor-pointer group" onclick="document.getElementById('orgLogoUploadInput').click()" title="انقر لتحديث أو رفع شعار جهة العمل">
+        <!-- شعار جهة العمل محمي تماماً للعرض فقط وغير قابل للنقر -->
+        <div class="inline-block mb-3 select-none pointer-events-none">
+          <div class="w-24 h-24 mx-auto bg-white rounded-2xl flex items-center justify-center p-2 shadow-sm border border-slate-100 overflow-hidden">
             <img id="loginOrgLogo" src="logo.png" alt="شعار جهة العمل" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/ar/thumb/0/00/Emblem_of_Saudi_Arabia_%282%29.svg/250px-Emblem_of_Saudi_Arabia_%282%29.svg.png';" class="max-w-full max-h-full object-contain">
-            <div class="absolute inset-0 bg-black/40 rounded-2xl opacity-0 group-hover:opacity-100 flex items-center justify-center text-white text-xs transition">
-              <i class="fa-solid fa-camera mr-1"></i> تغيير الشعار
-            </div>
           </div>
-          <input type="file" id="orgLogoUploadInput" accept="image/*" class="hidden" onchange="handleOrgLogoUpload(event)">
         </div>
 
         <h2 class="text-xl font-black text-slate-800 tracking-tight">بوابة توثيق الإنجازات اليومية</h2>
@@ -78,7 +74,6 @@
           <div class="relative">
             <input type="password" id="authPassword" required placeholder="••••••••"
                    class="w-full pr-3.5 pl-10 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-emerald-600 outline-none transition">
-            <!-- زر العين لإظهار وإخفاء كلمة المرور -->
             <button type="button" onclick="togglePasswordVisibility('authPassword', 'eyeIconLogin')" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-emerald-700 p-1 transition" title="إظهار / إخفاء كلمة المرور">
               <i id="eyeIconLogin" class="fa-solid fa-eye text-sm"></i>
             </button>
@@ -113,10 +108,9 @@
       </table>
     </div>
 
-    <!-- الشريط العلوي مع صورة الموظف -->
+    <!-- الشريط العلوي -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
-        <!-- هوية المستخدم مع الصورة الرمزية القابلة للرفع -->
         <div class="flex items-center gap-3">
           <div class="relative group cursor-pointer" onclick="document.getElementById('avatarFileInput').click()" title="انقر لتغيير أو رفع صورتك الشخصية">
             <div id="avatarContainer" class="w-11 h-11 rounded-full bg-emerald-700 text-white flex items-center justify-center shadow-sm overflow-hidden border-2 border-emerald-600">
@@ -142,7 +136,6 @@
           </div>
         </div>
 
-        <!-- أزرار الإجراءات المتناسقة -->
         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
           <button id="openAddModalBtn" class="h-9 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-plus text-xs"></i>
@@ -176,7 +169,7 @@
 
           <button id="manageLookupsBtn" onclick="openLookupsModal()" class="hidden h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition items-center gap-1.5 border border-slate-200">
             <i class="fa-solid fa-sliders text-teal-600"></i>
-            <span class="hidden md:inline">إدارة القوائم المنسدلة</span>
+            <span class="hidden md:inline">إدارة القوائم والنظام</span>
           </button>
 
           <button id="backupBtn" onclick="openBackupModal()" class="hidden h-9 px-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition items-center gap-1.5 border border-slate-200">
@@ -325,13 +318,13 @@
     </main>
   </div>
 
-  <!-- ================= 3. النوافذ الإدارية والمودالات ================= -->
+  <!-- ================= 3. نافذة إدارة القوائم ونظام الهوية المخصصة لمدير النظام ================= -->
   <div id="lookupsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-teal-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-sliders text-lg"></i>
-          <h3 class="font-bold text-base">إدارة وترتيب القوائم المنسدلة للنظام</h3>
+          <h3 class="font-bold text-base">إدارة وترتيب القوائم وشعار النظام (صلاحية مدير النظام)</h3>
         </div>
         <button onclick="closeLookupsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -343,9 +336,45 @@
         <button onclick="switchLookupTab('systems')" id="tabBtnSystems" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">الأنظمة المرتبطة</button>
         <button onclick="switchLookupTab('types')" id="tabBtnTypes" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">أنواع الطلبات</button>
         <button onclick="switchLookupTab('org')" id="tabBtnOrg" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">الهيكل الداخلي (إدارات وأقسام)</button>
+        <button onclick="switchLookupTab('branding')" id="tabBtnBranding" class="px-4 py-2.5 text-slate-600 hover:text-slate-900 text-emerald-800 flex items-center gap-1.5"><i class="fa-solid fa-shield-halved"></i> شعار جهة العمل</button>
       </div>
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs flex-1">
+        <!-- تبويب الشعار والهوية لمدير النظام فقط -->
+        <div id="lookupTabContentBranding" class="hidden space-y-4">
+          <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-900 flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-xl text-emerald-600"></i>
+            <div>
+              <h4 class="font-bold">حماية وتخصيص هوية النظام المؤسسية</h4>
+              <p class="text-[11px] text-slate-600 mt-0.5">تغيير الشعار من هذه النافذة محصور بحساب مدير النظام فقط، ويظهر فورياً لجميع الموظفين في شاشة الدخول والتقارير.</p>
+            </div>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-6 p-4 border border-slate-200 rounded-2xl bg-white">
+            <div class="w-32 h-32 bg-slate-50 border border-slate-200 rounded-2xl p-2 flex items-center justify-center shadow-inner">
+              <img id="adminPreviewOrgLogo" src="logo.png" alt="معاينة الشعار" onerror="this.onerror=null; this.src='https://upload.wikimedia.org/wikipedia/ar/thumb/0/00/Emblem_of_Saudi_Arabia_%282%29.svg/250px-Emblem_of_Saudi_Arabia_%282%29.svg.png';" class="max-w-full max-h-full object-contain">
+            </div>
+
+            <div class="space-y-3 flex-1 text-right">
+              <div>
+                <h5 class="font-bold text-slate-800 text-sm">رفع وتعيين شعار جديد:</h5>
+                <p class="text-slate-500 text-[11px] mt-0.5">يُفضل استخدام صورة ذات خلفية شفافة بصيغة PNG أو JPG بمقاس مناسب.</p>
+              </div>
+
+              <div class="flex flex-wrap items-center gap-2">
+                <button type="button" onclick="document.getElementById('adminLogoInput').click()" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl transition flex items-center gap-1.5 shadow-sm">
+                  <i class="fa-solid fa-cloud-arrow-up"></i>
+                  <span>اختيار صورة من الجهاز</span>
+                </button>
+                <button type="button" onclick="resetDefaultOrgLogo()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition">
+                  استعادة الشعار الافتراضي
+                </button>
+                <input type="file" id="adminLogoInput" accept="image/*" class="hidden" onchange="handleAdminOrgLogoUpload(event)">
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="lookupTabContentDestDepts" class="space-y-3">
           <div class="flex gap-2">
             <input type="text" id="newDestDeptInput" placeholder="أدخل اسم الجهة أو المحافظة المستفيدة..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
@@ -397,6 +426,7 @@
     </div>
   </div>
 
+  <!-- باقي المودالات -->
   <div id="viewRecordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -700,7 +730,7 @@
         </div>
 
         <div><label class="block font-bold text-slate-700 mb-1">الخدمة المطلوبة</label><input type="text" id="formService" required class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none"></div>
-        <div><label class="block font-bold text-slate-700 mb-1">الإجراء والحل المنفذ</label><textarea id="formSolution" required rows="3" class="w-full px-3 py-2 bg-slate-50 rounded-xl border border-slate-200 outline-none resize-none"></textarea></div>
+        <div><label class="block font-bold text-slate-700 mb-1">الإجراء والحل المنفذ</label><textarea id="formSolution" required rows="3" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl outline-none resize-none"></textarea></div>
 
         <div class="pt-3 flex items-center justify-end gap-2 border-t border-slate-100">
           <button type="button" id="cancelRecordModalBtn" class="px-4 py-2 font-semibold text-slate-600 hover:bg-slate-100 rounded-xl">إلغاء</button>
@@ -793,7 +823,7 @@
       document.getElementById('formTicketNo').value = generateTicketNo();
     };
 
-    // تبديل إظهار وإخفاء كلمة المرور بزر العين
+    // إظهار وإخفاء كلمة المرور بزر العين
     window.togglePasswordVisibility = function(inputId, iconId) {
       const input = document.getElementById(inputId);
       const icon = document.getElementById(iconId);
@@ -810,8 +840,27 @@
       }
     };
 
-    // معالجة رفع وحفظ شعار جهة العمل سحابياً
-    window.handleOrgLogoUpload = function(event) {
+    // مزامنة شعار جهة العمل في واجهة الدخول ولوحة المدير
+    function loadOrgLogo() {
+      db.collection('system_settings').doc('branding').onSnapshot(doc => {
+        if (doc.exists && doc.data().orgLogo) {
+          const logoSrc = doc.data().orgLogo;
+          const loginLogo = document.getElementById('loginOrgLogo');
+          const adminPreview = document.getElementById('adminPreviewOrgLogo');
+          if (loginLogo) loginLogo.src = logoSrc;
+          if (adminPreview) adminPreview.src = logoSrc;
+        }
+      }, () => {});
+    }
+    loadOrgLogo();
+
+    // رفع الشعار حصرياً من نافذة مدير النظام
+    window.handleAdminOrgLogoUpload = function(event) {
+      if (currentUserProfile.role !== 'admin') {
+        alert("تعديل الشعار متاح لمدير النظام فقط.");
+        return;
+      }
+
       const file = event.target.files[0];
       if (!file) return;
 
@@ -848,10 +897,11 @@
           const base64Logo = canvas.toDataURL('image/png');
 
           db.collection('system_settings').doc('branding').set({
-            orgLogo: base64Logo
+            orgLogo: base64Logo,
+            updatedBy: currentUserProfile.name,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
           }, { merge: true }).then(() => {
-            document.getElementById('loginOrgLogo').src = base64Logo;
-            alert("✅ تم حفظ شعار جهة العمل بنجاح.");
+            alert("✅ تم تحديث وتعميم شعار جهة العمل بنجاح.");
           }).catch(err => {
             alert("فشل حفظ الشعار: " + err.message);
           });
@@ -861,17 +911,18 @@
       reader.readAsDataURL(file);
     };
 
-    // مزامنة شعار جهة العمل عند فتح صفحة الدخول
-    function loadOrgLogo() {
-      db.collection('system_settings').doc('branding').get().then(doc => {
-        if (doc.exists && doc.data().orgLogo) {
-          document.getElementById('loginOrgLogo').src = doc.data().orgLogo;
-        }
-      }).catch(() => {});
-    }
-    loadOrgLogo();
+    window.resetDefaultOrgLogo = function() {
+      if (currentUserProfile.role !== 'admin') return;
+      if (confirm("هل ترغب في استعادة الشعار الافتراضي للنظام؟")) {
+        db.collection('system_settings').doc('branding').delete().then(() => {
+          document.getElementById('loginOrgLogo').src = 'logo.png';
+          document.getElementById('adminPreviewOrgLogo').src = 'logo.png';
+          alert("✅ تمت استعادة الشعار الافتراضي.");
+        }).catch(err => alert("حدث خطأ: " + err.message));
+      }
+    };
 
-    // معالجة رفع صورة الموظف
+    // معالجة رفع وحفظ الصورة الشخصية للموظف
     window.handleAvatarUpload = function(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1397,26 +1448,22 @@
             
             <td class="py-2.5 px-2 text-center whitespace-nowrap no-print">
               <div class="inline-flex items-center gap-1">
-                <!-- زر عرض تفاصيل المهمة -->
                 <button onclick="viewRecordDetails('${item.id}')" class="text-emerald-700 hover:text-emerald-900 p-1 rounded hover:bg-emerald-50" title="عرض تفاصيل المهمة">
                   <i class="fa-solid fa-eye text-sm"></i>
                 </button>
 
-                <!-- زر تعديل الإنجاز -->
                 ${canEdit ? `
                   <button onclick="editRecord('${item.id}')" class="text-blue-600 hover:text-blue-800 p-1 rounded hover:bg-blue-50" title="تعديل الإنجاز">
                     <i class="fa-solid fa-pen text-sm"></i>
                   </button>
                 ` : ''}
 
-                <!-- زر حذف الإنجاز في حالة الإضافة الخاطئة -->
                 ${(isSupervisor || item.userId === currentUser.uid) ? `
                   <button onclick="deleteRecord('${item.id}')" class="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50" title="حذف المهمة (في حالة الإضافة الخاطئة)">
                     <i class="fa-solid fa-trash text-sm"></i>
                   </button>
                 ` : ''}
 
-                <!-- أزرار الاعتماد الإداري للمسؤولين -->
                 ${isSupervisor ? `
                   ${item.status === 'بانتظار الاعتماد' ? `
                     <button onclick="approveRecord('${item.id}')" class="px-2 py-1 text-[10px] font-bold rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 transition" title="اعتماد">
@@ -1440,7 +1487,6 @@
                   ` : ''}
                 ` : ''}
 
-                <!-- زر معالجة المرفوض للموظف -->
                 ${(!isSupervisor && item.userId === currentUser.uid && item.status === 'مرفوض') ? `
                   <button onclick="openResubmitModal('${item.id}')" class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white shadow-xs transition" title="معالجة">
                     <i class="fa-solid fa-wrench ml-0.5"></i> معالجة
@@ -1466,6 +1512,7 @@
       document.getElementById('rejectedStatLabel').textContent = isSupervisor ? 'أرشيف المرفوضات' : 'الطلبات المرفوضة';
     }
 
+    // إدارة القوائم المنسدلة
     const lookupsModal = document.getElementById('lookupsModal');
     window.openLookupsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -1475,13 +1522,15 @@
     window.closeLookupsModal = function() { lookupsModal.classList.add('hidden'); };
 
     window.switchLookupTab = function(tab) {
-      ['Systems', 'Types', 'Org', 'DestDepts'].forEach(t => {
-        document.getElementById(`lookupTabContent${t}`).classList.add('hidden');
+      ['Systems', 'Types', 'Org', 'DestDepts', 'Branding'].forEach(t => {
+        const pane = document.getElementById(`lookupTabContent${t}`);
+        if (pane) pane.classList.add('hidden');
         const btn = document.getElementById(`tabBtn${t}`);
         if (btn) btn.className = 'px-4 py-2.5 text-slate-600 hover:text-slate-900';
       });
       const activeTabId = tab.charAt(0).toUpperCase() + tab.slice(1);
-      document.getElementById(`lookupTabContent${activeTabId}`).classList.remove('hidden');
+      const activePane = document.getElementById(`lookupTabContent${activeTabId}`);
+      if (activePane) activePane.classList.remove('hidden');
       const activeBtn = document.getElementById(`tabBtn${activeTabId}`);
       if (activeBtn) activeBtn.className = 'px-4 py-2.5 text-teal-800 border-b-2 border-teal-700 bg-white font-bold';
     };
