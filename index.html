@@ -44,7 +44,7 @@
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col antialiased">
 
-  <!-- ================= 1. شاشة الدخول ================= -->
+  <!-- 1. شاشة الدخول -->
   <div id="authSection" class="min-h-screen flex items-center justify-center p-4 bg-slate-100">
     <div class="bg-white rounded-2xl shadow-xl border border-slate-200 p-8 w-full max-w-md">
       <div class="text-center mb-6">
@@ -78,9 +78,9 @@
     </div>
   </div>
 
-  <!-- ================= 2. واجهة التطبيق الرئيسية ================= -->
+  <!-- 2. واجهة التطبيق الرئيسية -->
   <div id="mainAppSection" class="hidden flex-1 flex flex-col">
-    <!-- ترويسة الطباعة الرسمية -->
+    <!-- ترويسة الطباعة -->
     <div id="printReportHeader" class="mb-4">
       <div class="text-center pb-2 mb-2">
         <h2 id="printReportTitle" style="font-size: 18pt; font-weight: bold; margin:0;">تقرير الإنجازات والمهام اليومية المعتمدة</h2>
@@ -98,7 +98,6 @@
     <!-- الشريط العلوي -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm no-print">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex flex-wrap items-center justify-between gap-3">
-        <!-- هوية المستخدم -->
         <div class="flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-emerald-700 text-white flex items-center justify-center shadow-sm">
             <i class="fa-solid fa-clipboard-list text-sm"></i>
@@ -116,7 +115,6 @@
           </div>
         </div>
 
-        <!-- أزرار الإجراءات المتناسقة -->
         <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
           <button id="openAddModalBtn" class="h-9 px-3 bg-emerald-700 hover:bg-emerald-800 text-white rounded-lg text-xs font-bold transition flex items-center gap-1.5 shadow-sm">
             <i class="fa-solid fa-plus text-xs"></i>
@@ -299,13 +297,13 @@
     </main>
   </div>
 
-  <!-- ================= 3. نافذة إدارة القوائم المنسدلة ================= -->
+  <!-- 3. نافذة إدارة القوائم المنسدلة مع التحكم الكامل بالترتيب -->
   <div id="lookupsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-3xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-teal-800 text-white flex items-center justify-between">
         <div class="flex items-center gap-2">
           <i class="fa-solid fa-sliders text-lg"></i>
-          <h3 class="font-bold text-base">إدارة وتحديث القوائم المنسدلة للنظام (بدون تدخل برمجي)</h3>
+          <h3 class="font-bold text-base">إدارة وترتيب القوائم المنسدلة للنظام (حفظ سحابي فوري)</h3>
         </div>
         <button onclick="closeLookupsModal()" class="w-8 h-8 rounded-lg hover:bg-white/20 flex items-center justify-center transition">
           <i class="fa-solid fa-xmark text-lg"></i>
@@ -313,33 +311,56 @@
       </div>
 
       <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold overflow-x-auto">
-        <button onclick="switchLookupTab('systems')" id="tabBtnSystems" class="px-4 py-2.5 text-teal-800 border-b-2 border-teal-700 bg-white">الأنظمة المرتبطة</button>
+        <button onclick="switchLookupTab('destDepts')" id="tabBtnDestDepts" class="px-4 py-2.5 text-teal-800 border-b-2 border-teal-700 bg-white">الإدارات والمحافظات المستفيدة</button>
+        <button onclick="switchLookupTab('systems')" id="tabBtnSystems" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">الأنظمة المرتبطة</button>
         <button onclick="switchLookupTab('types')" id="tabBtnTypes" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">أنواع الطلبات</button>
         <button onclick="switchLookupTab('org')" id="tabBtnOrg" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">الهيكل الداخلي (إدارات وأقسام)</button>
-        <button onclick="switchLookupTab('destDepts')" id="tabBtnDestDepts" class="px-4 py-2.5 text-slate-600 hover:text-slate-900">الإدارات والمحافظات المستفيدة</button>
       </div>
 
       <div class="p-5 overflow-y-auto space-y-4 text-xs flex-1">
-        <div id="lookupTabContentSystems" class="space-y-3">
+        <!-- تبويب الإدارات المستفيدة -->
+        <div id="lookupTabContentDestDepts" class="space-y-3">
+          <div class="flex gap-2">
+            <input type="text" id="newDestDeptInput" placeholder="أدخل اسم الجهة أو المحافظة المستفيدة..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+            <button onclick="addDestDeptItem()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition flex items-center gap-1">
+              <i class="fa-solid fa-plus"></i> إضافة جهة
+            </button>
+          </div>
+          <div class="text-[11px] text-slate-500 font-semibold mb-1 flex items-center gap-1">
+            <i class="fa-solid fa-up-down text-teal-700"></i> استخدم الأسهم لتقديم أو تأخير ظهور الجهات في القائمة:
+          </div>
+          <div id="destDeptsContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
+        </div>
+
+        <!-- تبويب الأنظمة -->
+        <div id="lookupTabContentSystems" class="hidden space-y-3">
           <div class="flex gap-2">
             <input type="text" id="newSystemInput" placeholder="أدخل اسم النظام التقني الجديد..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
             <button onclick="addSystemItem()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition flex items-center gap-1">
               <i class="fa-solid fa-plus"></i> إضافة نظام
             </button>
           </div>
+          <div class="text-[11px] text-slate-500 font-semibold mb-1 flex items-center gap-1">
+            <i class="fa-solid fa-up-down text-teal-700"></i> التحكم في ترتيب ظهور الأنظمة:
+          </div>
           <div id="systemsListContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
         </div>
 
+        <!-- تبويب أنواع الطلبات -->
         <div id="lookupTabContentTypes" class="hidden space-y-3">
           <div class="flex gap-2">
-            <input type="text" id="newTypeInput" placeholder="أدخل نوع الطلب الجديد (مثال: صيانة أجهزة)..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
+            <input type="text" id="newTypeInput" placeholder="أدخل نوع الطلب الجديد..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
             <button onclick="addTypeItem()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition flex items-center gap-1">
               <i class="fa-solid fa-plus"></i> إضافة نوع
             </button>
           </div>
+          <div class="text-[11px] text-slate-500 font-semibold mb-1 flex items-center gap-1">
+            <i class="fa-solid fa-up-down text-teal-700"></i> التحكم في ترتيب ظهور أنواع الطلبات:
+          </div>
           <div id="typesListContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
         </div>
 
+        <!-- تبويب الهيكل الداخلي -->
         <div id="lookupTabContentOrg" class="hidden space-y-4">
           <div class="p-3 bg-slate-50 border border-slate-200 rounded-xl space-y-2">
             <h5 class="font-bold text-slate-800">إضافة قسم جديد تحت إدارة معينة:</h5>
@@ -353,26 +374,16 @@
           </div>
           <div id="orgStructureContainer" class="space-y-3 max-h-80 overflow-y-auto"></div>
         </div>
-
-        <div id="lookupTabContentDestDepts" class="hidden space-y-3">
-          <div class="flex gap-2">
-            <input type="text" id="newDestDeptInput" placeholder="أدخل اسم الجهة أو المحافظة المستفيدة..." class="flex-1 px-3 py-2 bg-slate-50 border border-slate-300 rounded-lg outline-none">
-            <button onclick="addDestDeptItem()" class="px-4 py-2 bg-teal-700 hover:bg-teal-800 text-white font-bold rounded-lg transition flex items-center gap-1">
-              <i class="fa-solid fa-plus"></i> إضافة جهة
-            </button>
-          </div>
-          <div id="destDeptsContainer" class="divide-y divide-slate-100 border border-slate-200 rounded-xl max-h-80 overflow-y-auto"></div>
-        </div>
       </div>
 
       <div class="p-3 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
-        <span class="text-[11px] text-slate-400 font-semibold">تُحدث القوائم تلقائياً في السحابة وتنعكس فورياً لدى جميع المستخدمين.</span>
+        <span class="text-[11px] text-slate-400 font-semibold">يتم حفظ الترتيب تلقائياً في السحابة فور الضغط على أي سهم.</span>
         <button onclick="closeLookupsModal()" class="px-5 py-2 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition">إغلاق</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= 4. نافذة عرض تفاصيل المهمة ================= -->
+  <!-- 4. نافذة عرض تفاصيل المهمة -->
   <div id="viewRecordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -423,7 +434,7 @@
         </div>
 
         <div>
-          <span class="text-slate-400 block text-[11px] mb-1">الإدارة المستفيدة:</span>
+          <span class="text-slate-400 block text-[11px] mb-1">الإدارة الطالبة / المستفيدة:</span>
           <div id="viewDetailDepartment" class="p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-bold text-slate-800"></div>
         </div>
 
@@ -449,7 +460,7 @@
     </div>
   </div>
 
-  <!-- ================= 5. نافذة رفض الطلب مع ذكر السبب ================= -->
+  <!-- 5. نافذة رفض الطلب مع ذكر السبب -->
   <div id="rejectReasonModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-rose-700 text-white flex items-center justify-between">
@@ -479,7 +490,7 @@
     </div>
   </div>
 
-  <!-- ================= 6. نافذة التراجع الاستثنائي عن الرفض ================= -->
+  <!-- 6. نافذة التراجع الاستثنائي عن الرفض -->
   <div id="unrejectModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-amber-700 text-white flex items-center justify-between">
@@ -509,7 +520,7 @@
     </div>
   </div>
 
-  <!-- ================= 7. نافذة معالجة وإعادة إرسال الطلب المرفوض ================= -->
+  <!-- 7. نافذة معالجة وإعادة إرسال الطلب المرفوض -->
   <div id="resubmitModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -548,7 +559,7 @@
     </div>
   </div>
 
-  <!-- ================= 8. نافذة إدارة الهيكل والموظفين ================= -->
+  <!-- 8. نافذة إدارة الهيكل والموظفين -->
   <div id="permissionsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -564,7 +575,7 @@
       <div class="p-5 overflow-y-auto space-y-4">
         <div class="p-3 bg-amber-50 border border-amber-200 text-amber-900 rounded-xl text-xs flex items-center gap-2">
           <i class="fa-solid fa-shield-halved text-base text-amber-600"></i>
-          <span><b>ضابط أمني ومؤسسي:</b> تعيين كلمة مرور الموظف من هنا يتم فورياً ويجبره النظام على تغييرها بنفسه. الحذف متاح للموظفين الذين ليس لديهم مهام، أما من لديهم مهام فيلزم استخدام "الأرشفة" لحفظ التاريخ.</span>
+          <span><b>ضابط حماية السجلات:</b> عند تعديل إدارة أو قسم الموظف، يقوم النظام تلقائياً بتحديث كافة إنجازاته لتتبع القسم الجديد فوراً دون فقدان أي إنجاز.</span>
         </div>
 
         <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
@@ -649,7 +660,7 @@
     </div>
   </div>
 
-  <!-- ================= 9. نافذة تعيين كلمة المرور المباشرة ================= -->
+  <!-- 9. نافذة تعيين كلمة المرور المباشرة -->
   <div id="adminDirectPasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -682,7 +693,7 @@
     </div>
   </div>
 
-  <!-- ================= 10. نافذة تغيير كلمة المرور الاختيارية ================= -->
+  <!-- 10. نافذة تغيير كلمة المرور الاختيارية -->
   <div id="changePasswordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-sm rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-emerald-800 text-white flex items-center justify-between">
@@ -710,7 +721,7 @@
     </div>
   </div>
 
-  <!-- ================= 11. شاشة تغيير كلمة المرور الإجبارية ================= -->
+  <!-- 11. شاشة تغيير كلمة المرور الإجبارية -->
   <div id="forceChangePasswordModal" class="fixed inset-0 z-[100] hidden bg-slate-900/85 backdrop-blur-sm flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col border border-emerald-500/30">
       <div class="p-5 bg-gradient-to-r from-emerald-800 to-teal-800 text-white text-center">
@@ -740,7 +751,7 @@
     </div>
   </div>
 
-  <!-- ================= 12. نافذة النسخ الاحتياطي وتصفير السجلات ================= -->
+  <!-- 12. نافذة النسخ الاحتياطي وتصفير السجلات -->
   <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden flex flex-col">
       <div class="p-4 bg-slate-800 text-white flex items-center justify-between">
@@ -789,7 +800,7 @@
     </div>
   </div>
 
-  <!-- ================= 13. نافذة تسجيل وتعديل الإنجاز ================= -->
+  <!-- 13. نافذة تسجيل وتعديل الإنجاز -->
   <div id="recordModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
@@ -874,7 +885,7 @@
     </div>
   </div>
 
-  <!-- ================= 14. نافذة التقارير الإحصائية ================= -->
+  <!-- 14. نافذة التقارير الإحصائية -->
   <div id="analyticsModal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 no-print">
     <div class="bg-white w-full max-w-4xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
       <div class="p-4 bg-gradient-to-r from-emerald-800 to-teal-800 text-white flex items-center justify-between">
@@ -1375,6 +1386,7 @@
       });
     }
 
+    // حل المشكلة: استعلام الموظف يعتمد على معرفه الثابت userId فلا تختفي إنجازاته أبداً
     function subscribeToAchievements() {
       let query = db.collection('achievements');
 
@@ -1558,7 +1570,6 @@
           `;
         }
 
-        // إتاحة التعديل للجميع (مدراء أو موظف صاحب الطلب طالما لم يعتمد)
         const canEdit = isSupervisor || (item.userId === currentUser.uid && item.status !== 'معتمد');
 
         return `
@@ -1647,6 +1658,7 @@
       document.getElementById('rejectedStatLabel').textContent = isSupervisor ? 'أرشيف المرفوضات' : 'الطلبات المرفوضة';
     }
 
+    // إدارة القوائم المنسدلة مع دعم تغيير الترتيب (Reordering)
     const lookupsModal = document.getElementById('lookupsModal');
     window.openLookupsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -1671,26 +1683,64 @@
     };
 
     function renderLookupsManagerUI() {
+      // 1. الإدارات المستفيدة مع أزرار الترتيب والحذف
+      const destDeptsList = document.getElementById('destDeptsContainer');
+      destDeptsList.innerHTML = currentLookups.departmentsList.map((d, idx) => `
+        <div class="flex items-center justify-between p-2 bg-white hover:bg-slate-50">
+          <span class="font-semibold text-slate-800">${d}</span>
+          <div class="flex items-center gap-1">
+            <button onclick="moveArrayItem('departmentsList', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأعلى">
+              <i class="fa-solid fa-arrow-up"></i>
+            </button>
+            <button onclick="moveArrayItem('departmentsList', ${idx}, 1)" ${idx === currentLookups.departmentsList.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأسفل">
+              <i class="fa-solid fa-arrow-down"></i>
+            </button>
+            <button onclick="removeDestDeptItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded" title="حذف">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      // 2. الأنظمة مع أزرار الترتيب
       const sysList = document.getElementById('systemsListContainer');
       sysList.innerHTML = currentLookups.systems.map((s, idx) => `
         <div class="flex items-center justify-between p-2.5 bg-white hover:bg-slate-50">
           <span class="font-bold text-slate-800">${s}</span>
-          <button onclick="removeSystemItem(${idx})" class="text-red-500 hover:text-red-700 px-2 py-1 rounded" title="حذف">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
+          <div class="flex items-center gap-1">
+            <button onclick="moveArrayItem('systems', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأعلى">
+              <i class="fa-solid fa-arrow-up"></i>
+            </button>
+            <button onclick="moveArrayItem('systems', ${idx}, 1)" ${idx === currentLookups.systems.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأسفل">
+              <i class="fa-solid fa-arrow-down"></i>
+            </button>
+            <button onclick="removeSystemItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded" title="حذف">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
         </div>
       `).join('');
 
+      // 3. أنواع الطلبات مع أزرار الترتيب
       const typesList = document.getElementById('typesListContainer');
       typesList.innerHTML = currentLookups.types.map((t, idx) => `
         <div class="flex items-center justify-between p-2.5 bg-white hover:bg-slate-50">
           <span class="font-bold text-slate-800">${t}</span>
-          <button onclick="removeTypeItem(${idx})" class="text-red-500 hover:text-red-700 px-2 py-1 rounded" title="حذف">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
+          <div class="flex items-center gap-1">
+            <button onclick="moveArrayItem('types', ${idx}, -1)" ${idx === 0 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأعلى">
+              <i class="fa-solid fa-arrow-up"></i>
+            </button>
+            <button onclick="moveArrayItem('types', ${idx}, 1)" ${idx === currentLookups.types.length - 1 ? 'disabled class="opacity-20 p-1 text-slate-400"' : 'class="p-1 text-teal-700 hover:bg-teal-50 rounded"'} title="تحريك لأسفل">
+              <i class="fa-solid fa-arrow-down"></i>
+            </button>
+            <button onclick="removeTypeItem(${idx})" class="text-red-500 hover:text-red-700 p-1 rounded" title="حذف">
+              <i class="fa-solid fa-trash-can"></i>
+            </button>
+          </div>
         </div>
       `).join('');
 
+      // 4. الهيكل الداخلي
       const targetOrgSelect = document.getElementById('targetOrgDeptSelect');
       targetOrgSelect.innerHTML = Object.keys(currentLookups.orgStructure).map(d => `<option value="${d}">${d}</option>`).join('');
 
@@ -1702,26 +1752,39 @@
             <span class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full font-bold">${sections.length} قسم</span>
           </div>
           <div class="flex flex-wrap gap-1.5 pt-1">
-            ${sections.map(sec => `
+            ${sections.map((sec, sIdx) => `
               <span class="inline-flex items-center gap-1.5 bg-slate-100 text-slate-800 px-2.5 py-1 rounded-lg text-[11px] font-semibold">
                 <span>${sec}</span>
-                <button onclick="removeOrgSectionItem('${dept}', '${sec}')" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="moveOrgSectionItem('${dept}', ${sIdx}, -1)" ${sIdx === 0 ? 'disabled class="opacity-30"' : 'class="text-teal-700 hover:text-teal-900"'} title="تحريك لليمين"><i class="fa-solid fa-chevron-right text-[10px]"></i></button>
+                <button onclick="moveOrgSectionItem('${dept}', ${sIdx}, 1)" ${sIdx === sections.length - 1 ? 'disabled class="opacity-30"' : 'class="text-teal-700 hover:text-teal-900"'} title="تحريك لليسار"><i class="fa-solid fa-chevron-left text-[10px]"></i></button>
+                <button onclick="removeOrgSectionItem('${dept}', '${sec}')" class="text-red-400 hover:text-red-600 ml-1"><i class="fa-solid fa-xmark"></i></button>
               </span>
             `).join('')}
           </div>
         </div>
       `).join('');
-
-      const destDeptsList = document.getElementById('destDeptsContainer');
-      destDeptsList.innerHTML = currentLookups.departmentsList.map((d, idx) => `
-        <div class="flex items-center justify-between p-2 bg-white hover:bg-slate-50">
-          <span class="font-semibold text-slate-800">${d}</span>
-          <button onclick="removeDestDeptItem(${idx})" class="text-red-500 hover:text-red-700 px-2 py-0.5 rounded" title="حذف">
-            <i class="fa-solid fa-trash-can"></i>
-          </button>
-        </div>
-      `).join('');
     }
+
+    // دالة عامة لتحريك العناصر وتغيير الترتيب
+    window.moveArrayItem = async function(arrayName, index, direction) {
+      const arr = currentLookups[arrayName];
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= arr.length) return;
+      const temp = arr[index];
+      arr[index] = arr[targetIndex];
+      arr[targetIndex] = temp;
+      await saveLookupsToFirestore();
+    };
+
+    window.moveOrgSectionItem = async function(dept, index, direction) {
+      const sections = currentLookups.orgStructure[dept];
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= sections.length) return;
+      const temp = sections[index];
+      sections[index] = sections[targetIndex];
+      sections[targetIndex] = temp;
+      await saveLookupsToFirestore();
+    };
 
     async function saveLookupsToFirestore() {
       try {
@@ -1859,7 +1922,7 @@
       });
     };
 
-    // الرفض من المعتمد
+    // الرفض
     const rejectReasonModal = document.getElementById('rejectReasonModal');
     const rejectReasonForm = document.getElementById('rejectReasonForm');
 
@@ -1895,7 +1958,7 @@
       closeRejectReasonModal();
     });
 
-    // التراجع الاستثنائي المسبّب عن الرفض
+    // التراجع عن الرفض
     const unrejectModal = document.getElementById('unrejectModal');
     const unrejectForm = document.getElementById('unrejectForm');
 
@@ -1928,7 +1991,7 @@
       closeUnrejectModal();
     });
 
-    // معالجة وإعادة رفع الطلب
+    // معالجة وإعادة رفع
     const resubmitModal = document.getElementById('resubmitModal');
     const resubmitForm = document.getElementById('resubmitForm');
 
@@ -2122,7 +2185,7 @@
       }
     });
 
-    // إجبار تغيير كلمة المرور
+    // إجبار التغيير
     const forceChangePasswordModal = document.getElementById('forceChangePasswordModal');
     const forceChangePasswordForm = document.getElementById('forceChangePasswordForm');
 
@@ -2231,7 +2294,7 @@
       }
     });
 
-    // إدارة الهيكل
+    // إدارة الهيكل مع التحديث التسلسلي التلقائي لجميع سجلات الموظف عند نقل القسم
     const permissionsModal = document.getElementById('permissionsModal');
     window.openPermissionsModal = function() {
       if (currentUserProfile.role !== 'admin') return;
@@ -2352,7 +2415,7 @@
 
       document.getElementById('passContainer').classList.add('hidden');
       document.getElementById('empFormHeading').innerHTML = `<i class="fa-solid fa-user-pen text-emerald-700"></i> <span>تعديل بيانات الموظف: ${u.name}</span>`;
-      document.getElementById('createEmpBtnText').textContent = 'حفظ التعديلات';
+      document.getElementById('createEmpBtnText').textContent = 'حفظ التعديلات وتحديث السجلات';
       document.getElementById('cancelEditEmpBtn').classList.remove('hidden');
     };
 
@@ -2424,6 +2487,7 @@
 
       if (editUid) {
         try {
+          // 1. تحديث وثيقة المستخدم
           await db.collection('users').doc(editUid).update({
             name: name,
             department: dept,
@@ -2431,8 +2495,31 @@
             email: email,
             role: role
           });
+
+          // 2. تحديث تسلسلي (Cascading Update) لكافة إنجازات هذا الموظف بالقسم والإدارة الجديدة
+          const empTasksSnap = await db.collection('achievements').where('userId', '==', editUid).get();
+          if (!empTasksSnap.empty) {
+            const batch = db.batch();
+            empTasksSnap.docs.forEach(docSnap => {
+              batch.update(docSnap.ref, {
+                employeeName: name,
+                employeeDept: dept,
+                employeeSection: sec
+              });
+            });
+            await batch.commit();
+          }
+
+          if (currentUser.uid === editUid) {
+            currentUserProfile.name = name;
+            currentUserProfile.department = dept;
+            currentUserProfile.section = sec;
+            currentUserProfile.role = role;
+            loadUserProfile(currentUser);
+          }
+
           msg.className = "text-xs p-2 rounded-lg font-semibold bg-emerald-50 text-emerald-700 block";
-          msg.textContent = "✅ تم تحديث بيانات الموظف ودوره بالهيكل بنجاح.";
+          msg.textContent = "✅ تم تحديث بيانات الموظف ومزامنة إنجازاته السابقة مع القسم الجديد بنجاح.";
           resetEmpForm();
           loadUsersList();
         } catch (err) {
@@ -2661,7 +2748,7 @@
       `).join('');
     }
 
-    // منطق التقرير مع توسيع المساحات للتقرير الفردي
+    // منطق نطاق التصدير
     function getExportScope() {
       const fEmp = document.getElementById('employeeFilter').value;
       const q = document.getElementById('searchInput').value.toLowerCase().trim();
@@ -2761,7 +2848,7 @@
       return { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle };
     }
 
-    // تصدير Word (مع استبعاد اسم الموظف والادارة والاعتماد من الجدول الفردي وإضافة الإدارة الطالبة وتوسيع عمود الإجراء)
+    // تصدير Word الموسع
     document.getElementById('exportWordBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle } = getExportScope();
       if (data.length === 0) return alert("لا توجد إنجازات معتمدة للتصدير.");
@@ -2771,7 +2858,6 @@
       let tableRows = '';
 
       if (isIndividual) {
-        // جدول فردي: تم استبعاد (الاعتماد - الموظف - إدارة الموظف) وإضافة الإدارة المستفيدة وتوسيع عمود الخدمة والإجراء بنسبة 35%
         tableHeaders = `
           <tr>
             <th style="width: 4%;">م</th>
@@ -2797,7 +2883,6 @@
           </tr>
         `).join('');
       } else {
-        // جدول مجمع للإدارات
         tableHeaders = `
           <tr>
             <th style="width: 3%;">م</th>
@@ -2934,7 +3019,7 @@
       XLSX.writeFile(wb, `سجل_إنجازات_${safeName}_${new Date().toISOString().split('T')[0]}.xlsx`);
     });
 
-    // الطباعة الرسمية مع توسيع مساحة التقرير الفردي
+    // الطباعة الرسمية
     document.getElementById('printBtn').addEventListener('click', () => {
       const { data, isIndividual, targetEmpName, targetEmpDept, periodText, dynamicManagerTitle } = getExportScope();
       if (data.length === 0) return alert("لا توجد إنجازات معتمدة للطباعة.");
@@ -2959,7 +3044,6 @@
         </div>
       `;
 
-      // إذا كان التقرير فردياً، نخصص جدول الطباعة لنفس الأعمدة الموسعة
       const tableHead = document.querySelector('#mainDataTable thead tr');
       const originalThead = tableHead.innerHTML;
 
